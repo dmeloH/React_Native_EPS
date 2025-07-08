@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
 import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
-import { crearMedico } from "../../Src/Servicios/MedicoService";
+import { crearMedico } from "../../Src/Servicios/MedicosService";
 
 export default function AgregarMedico({ navigation }) {
     const [nombre, setNombre] = useState("");

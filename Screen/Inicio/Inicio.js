@@ -1,18 +1,16 @@
 // src/Screen/Inicio/Inicio.js
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, StatusBar, Dimensions } from 'react-native';
-import { Ionicons, Feather, Entypo, FontAwesome6, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
-
-const { width } = Dimensions.get('window'); // Obtener el ancho de la pantalla para estilos responsivos
-const itemWidth = (width / 2) - 30; // 2 ítems por fila con margen
 
 import Fontisto from '@expo/vector-icons/Fontisto';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
-
+const { width } = Dimensions.get('window');
+const itemWidth = (width / 2) - 30;
 
 export default function Inicio() {
     const navigation = useNavigation();
@@ -23,79 +21,48 @@ export default function Inicio() {
 
     return (
         <SafeAreaView style={styles.safeArea}>
-            <StatusBar barStyle="dark-content" backgroundColor="#f0f2f5" /> {/* Estilo de la barra de estado */}
-            <ScrollView style={styles.container}>
+            <StatusBar barStyle="dark-content" backgroundColor="#f0f2f5" />
+            <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
                 {/* Encabezado */}
                 <View style={styles.header}>
                     <Text style={styles.headerTitle}>Bienvenido a Eps</Text>
-                    <Text style={styles.headerSubtitle}>Estado: <Text style={styles.statusText}>Habilitado</Text></Text>
-                    <Text style={styles.headerSubtitle}>Carlos Estiven Rodriguez</Text>
-                    
+                    <Text style={styles.headerSubtitle}>
+                        Estado: <Text style={styles.statusText}>Habilitado</Text>
+                    </Text>
                 </View>
 
-                {/* Contenedor de las casillas de la cuadrícula */}
+                {/* Iconos con nombres */}
                 <View style={styles.gridContainer}>
-                    {/* Casilla de Citas */}
-                    <TouchableOpacity
-                        style={styles.gridItem}
-                        onPress={() => navigateToFlow('CitasFlow')}
-                    >
-                        <Fontisto name="date" size={24} color="black" />
-                        <Text style={styles.gridItemText}>Citas</Text>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('CitasFlow')}>
+                        <Fontisto name="date" size={45} color="black" style={styles.iconShadow} />
+                        <Text style={styles.iconLabel}>Citas</Text>
                     </TouchableOpacity>
 
-                    {/* Casilla de Consultorios */}
-                    <TouchableOpacity
-                        style={styles.gridItem}
-                        onPress={() => navigateToFlow('ConsultoriosFlow')}
-                    >
-                        <MaterialCommunityIcons name="microsoft-office" size={24} color="gold" />
-                        <Text style={styles.gridItemText}>Consultorios</Text>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('ConsultoriosFlow')}>
+                        <MaterialCommunityIcons name="microsoft-office" size={45} color="gold" style={styles.iconShadow} />
+                        <Text style={styles.iconLabel}>Consultorios</Text>
                     </TouchableOpacity>
 
-                    {/* Casilla de Eps */}
-                    <TouchableOpacity
-                        style={styles.gridItem}
-                        onPress={() => navigateToFlow('EpsFlow')}
-                    >
-                        <MaterialIcons name="health-and-safety" size={24} color="silver" />
-                        <Text style={styles.gridItemText}>Eps</Text>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('EpsFlow')}>
+                        <MaterialIcons name="health-and-safety" size={45} color="silver" style={styles.iconShadow} />
+                        <Text style={styles.iconLabel}>Eps</Text>
                     </TouchableOpacity>
 
-                    {/* Casilla de Especialidades */}
-                    <TouchableOpacity
-                        style={styles.gridItem}
-                        onPress={() => navigateToFlow('EspecialidadesFlow')}
-                    >
-                        <MaterialCommunityIcons name="professional-hexagon" size={24} color="red" />
-                        <Text style={styles.gridItemText}>Especialidades</Text>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('TipoCitasFlow')}>
+                        <MaterialCommunityIcons name="professional-hexagon" size={45} color="red" style={styles.iconShadow} />
+                        <Text style={styles.iconLabel}>Especialidades</Text>
                     </TouchableOpacity>
-                    {/* Casilla de Medicos */}
-                    <TouchableOpacity
-                        style={styles.gridItem}
-                        onPress={() => navigateToFlow('MedicosFlow')}
-                    >
-                        <Fontisto name="doctor" size={24} color="lightblue" />
-                        <Text style={styles.gridItemText}>Medicos</Text>
+
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('MedicosFlow')}>
+                        <Fontisto name="doctor" size={45} color="skyblue" style={styles.iconShadow} />
+                        <Text style={styles.iconLabel}>Medicos</Text>
                     </TouchableOpacity>
-                    {/* Casilla de Pacientes */}
-                    <TouchableOpacity
-                        style={styles.gridItem}
-                        onPress={() => navigateToFlow('PacientesFlow')}
-                    >
-                        <FontAwesome6 name="people-group" size={24} color="brown" />
-                        <Text style={styles.gridItemText}>Pacientes</Text>
-                    </TouchableOpacity>
-                    {/* Casilla de Sedes */}
-                    <TouchableOpacity
-                        style={styles.gridItem}
-                        onPress={() => navigateToFlow('SedesFlow')}
-                    >
-                        <FontAwesome5 name="laptop-house" size={24} color="yellow" />
-                        <Text style={styles.gridItemText}>Sedes</Text>
+
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('CoberturasFlow')}>
+                        <FontAwesome5 name="laptop-house" size={45} color="orange" style={styles.iconShadow} />
+                        <Text style={styles.iconLabel}>Sedes</Text>
                     </TouchableOpacity>
                 </View>
-
             </ScrollView>
         </SafeAreaView>
     );
@@ -104,59 +71,56 @@ export default function Inicio() {
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
-        backgroundColor: '#f0f2f5', // Un fondo gris claro para toda la pantalla
+        backgroundColor: '#f0f2f5',
     },
     container: {
         flex: 1,
-        backgroundColor: '#f0f2f5', // Asegura que el fondo sea consistente
-        padding: 20, // Padding general para el contenido
+        paddingHorizontal: 20,
+    },
+    scrollContent: {
+        alignItems: 'center', // Centra todo el contenido
+        paddingBottom: 40,
     },
     header: {
         alignItems: 'center',
-        marginBottom: 40, // Más espacio debajo del encabezado
-        marginTop: 20, // Espacio superior para el encabezado
+        marginTop: 30,
+        marginBottom: 190,
     },
     headerTitle: {
-        fontSize: 32, // Tamaño de fuente más grande para el título
-        fontWeight: '800', // Más negrita
-        color: '#333', // Color de texto oscuro
+        fontSize: 32,
+        fontWeight: '800',
+        color: '#333',
         marginBottom: 5,
     },
     headerSubtitle: {
         fontSize: 18,
-        color: '#666', // Color de texto gris medio
+        color: '#666',
     },
     statusText: {
         fontWeight: 'bold',
-        color: '#28a745', // Un verde brillante para "Habilitado"
+        color: '#28a745',
     },
     gridContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'space-around', // Distribuye los ítems uniformemente
-        paddingHorizontal: 5, // Pequeño padding horizontal
-    },
-    gridItem: {
-        width: itemWidth, // Ancho calculado para 2 ítems por fila
-        height: itemWidth, // Para hacerlo cuadrado
-        backgroundColor: '#ffffff', // Fondo blanco para las casillas
-        borderRadius: 15, // Bordes más redondeados
-        marginVertical: 10, // Margen vertical entre filas
-        alignItems: 'center',
         justifyContent: 'center',
-        // Sombras para Android
-        elevation: 8,
-        // Sombras para iOS
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.1,
-        shadowRadius: 6,
+        gap: 20,
     },
-    gridItemText: {
-        marginTop: 15, // Más espacio entre el icono y el texto
-        fontSize: 17, // Tamaño de fuente ligeramente más grande
-        fontWeight: '600', // Negrita media
-        color: '#444', // Color de texto oscuro
+    iconContainer: {
+        width: itemWidth,
+        alignItems: 'center',
+        marginVertical: 15,
+    },
+    iconShadow: {
+        textShadowColor: 'rgba(0, 0, 0, 0.3)',
+        textShadowOffset: { width: 2, height: 4 },
+        textShadowRadius: 6,
+    },
+    iconLabel: {
+        marginTop: 15,
+        fontSize: 16,
+        fontWeight: '600',
+        color: '#444',
         textAlign: 'center',
     },
 });

@@ -4,24 +4,24 @@ import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
 import BotonComponent from "../../components/BottonComponent"; // Asegúrate de que la ruta sea correcta
 import EspecialidadCard from "../../components/EspecialidadCard";
 import { useNavigation } from "@react-navigation/native";
-import { listarConsultorios, eliminarConsultorio } from "../../Src/Servicios/ConsultorioService";
+import { listarUsuarios, eliminarUsuarios } from "../../Src/Servicios/UsuariosService";
 
-export default function ListarConsultorio (){
-    const [consultorios, setConsultorios] = useState([]);
+export default function ListarUsuarios (){
+    const [usuarios, setUsuarios] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigation = useNavigation();
 
-    const handleConsultorios = async () => {
+    const handleUsuarios = async () => {
         setLoading(true);
         try {
-            const result = await listarConsultorios();
+            const result = await listarUsuarios();
             if (result.success) {
-                setConsultorios(result.data);
+                setUsuarios(result.data);
             } else {
-                Alert.alert ("Error", result.message || "No se pudierón cargas los consultorios");
+                Alert.alert ("Error", result.message || "No se pudierón cargas los usuarios");
             }
         } catch (error) {
-            Alert.alert ("Error", "No se pudierón cargas los consultorios");
+            Alert.alert ("Error", "No se pudierón cargas los usuarios");
         } finally {
             setLoading(false);
         }
@@ -29,13 +29,13 @@ export default function ListarConsultorio (){
     };
 
     useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', handleConsultorios);
+        const unsubscribe = navigation.addListener('focus', handleUsuarios);
         return unsubscribe;
     }, [navigation]);
 
     const handleEliminar = (id) => {
         Alert.alert(
-            "Eliminar Consultorio",
+            "Eliminar Usuarios",
             "¿Estás seguro de que deseas eliminar este consultorio?",
             [
                 { text: "Cancelar", style: "cancel" },
@@ -45,12 +45,12 @@ export default function ListarConsultorio (){
 
                     onPress: async () => {
                         try {
-                            const result = await eliminarConsultorio(id);
+                            const result = await eliminarUsuarios(id);
                             if (result.success) {
                                 // setEspecialidades (especialidades.filter((e) => e.id !== id));
-                                handleConsultorios();
+                                handleUsuarios();
                             } else {
-                                Alert.alert("Error", result.message || "No se pudo eliminar el Consultorio");
+                                Alert.alert("Error", result.message || "No se pudo eliminar el Usuarios");
                             }
                         } catch (error) {
                             Alert.alert("Error", "No se pudo eliminar el consultorio");
@@ -62,7 +62,7 @@ export default function ListarConsultorio (){
     }
 
     const handleCrear = () => {
-        navigation.navigate('CrearConsultorio');
+        navigation.navigate('CrearUsuarios');
     };
 
     if (loading) {
@@ -74,7 +74,7 @@ export default function ListarConsultorio (){
     }
 
     const handleEditar = (consultorio) => {
-        navigation.navigate("EditarConsultorio", {consultorio});
+        navigation.navigate("EditarUsuarios", {consultorio});
 
 
     }
@@ -82,22 +82,22 @@ export default function ListarConsultorio (){
     return (
         <View style={{flex: 1}}>
             <FlatList
-            data={consultorios}
+            data={usuarios}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
-                <ConsultorioCard
+                <UsuariosCard
                 consultorio= {item}
                 onEdit={() => handleEditar (item)}
                 onDelete={() => handleEliminar (item.id)}
             />
             )}
-            ListEmptyComponent = {<Text style = {styles.emptyText}>No Hay Consultorios Registrados. </Text>}
+            ListEmptyComponent = {<Text style = {styles.emptyText}>No Hay Usuarios Registrados. </Text>}
             />
 
             <TouchableOpacity style={styles.botonCrear} onPress={handleCrear}>
                 <View style={styles.botonCrearContent}>
                     <Ionicons name="add-circle-outline" size={24} color="#fff" style={styles.botonCrearIcon} />
-                    <Text style={styles.textoBotonCrear}>Nuevo Consultorio</Text>
+                    <Text style={styles.textoBotonCrear}>Nuevo Usuarios</Text>
                 </View>
             </TouchableOpacity>
         </View>

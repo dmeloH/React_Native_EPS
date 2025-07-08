@@ -1,35 +1,35 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import ListarSede from "../../../Screen/Sedes/ListarSede";
-import DetalleSede from "../../../Screen/Sedes/DetalleSede";
-import EditarSede from "../../../Screen/Sedes/EditarSede";
-import AgregarSede from "../../../Screen/Sedes/AgregarSede";
+import ListarCoberturas from "../../../Screen/Coberturas/ListarCoberturas";
+import DetalleCoberturas from "../../../Screen/Coberturas/DetalleCoberturas";
+import EditarCoberturas from "../../../Screen/Coberturas/EditarCoberturas";
+import AgregarCoberturas from "../../../Screen/Coberturas/AgregarCoberturas";
 
 
 const Stack = createStackNavigator();
 
-export default function SedesStack () {
+export default function CoberturasStack () {
     return (
         <Stack.Navigator>
             <Stack.Screen 
-                name= "ListarSedes"
-                component={ListarSede}
-                options={{ title: "Sedes" }}
+                name= "ListarCoberturas"
+                component={ListarCoberturas}
+                options={{ title: "Coberturas" }}
             />
              <Stack.Screen 
-                name= "DetalleSede"
-                component={DetalleSede}
-                options={{ title: "Detalle Sede" }}
+                name= "DetalleCoberturas"
+                component={DetalleCoberturas}
+                options={{ title: "Detalle Coberturas" }}
             />
              <Stack.Screen 
-                name= "EditarSede"
-                component={EditarSede}
-                options={{ title: "Nuevo/Editar Sedes" }}
+                name= "EditarCoberturas"
+                component={EditarCoberturas}
+                options={{ title: "Nuevo/Editar Coberturas" }}
             />
             <Stack.Screen
-                name= "CrearSede" // Nuevo nombre de ruta para la pantalla de creación
-                component={AgregarSede} // Asigna el nuevo componente
-                options={{ title: "Nueva Sede" }}
+                name= "CrearCoberturas" // Nuevo nombre de ruta para la pantalla de creación
+                component={AgregarCoberturas} // Asigna el nuevo componente
+                options={{ title: "Nueva Cobertura" }}
             />
         </Stack.Navigator>
     );

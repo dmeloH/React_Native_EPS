@@ -3,20 +3,20 @@ import { View, Text, TextInput, StyleSheet, Button, TouchableOpacity, ActivityIn
 import { useRoute } from '@react-navigation/native';
 import BotonComponent from "../../components/BottonComponent";
 
-import { crearSede, editarSede } from "../../Src/Servicios/SedeService";
+import { crearCobertura, editarCobertura } from "../../Src/Servicios/CoberturasService";
 
-export default function EditarSede({ navigation }) {
+export default function EditarCobertura({ navigation }) {
     const route = useRoute();
 
-    const sede = route.params?.sede;
+    const cobertura = route.params?.cobertura;
 
-    const [nombre, setNombre] = useState(sede?.Nombre || "");
-    const [direccion, setDireccion] = useState(sede?.Dirección || "");
-    const [telefono, setTelefono] = useState(sede?.Telefono || "");
+    const [nombre, setNombre] = useState(cobertura?.Nombre || "");
+    const [direccion, setDireccion] = useState(cobertura?.Dirección || "");
+    const [telefono, setTelefono] = useState(cobertura?.Telefono || "");
 
     const [loading, setLoading] = useState(false);
 
-    const esEdicion = !!sede;
+    const esEdicion = !!cobertura;
 
     const handleGuardar = async () => {
         if (!nombre || !direccion || !telefono) {
@@ -28,13 +28,13 @@ export default function EditarSede({ navigation }) {
         let result;
         try {
             if (esEdicion) {
-                result = await editarSede(sede.id, {
+                result = await editarCobertura(cobertura.id, {
                     Nombre: nombre,
                     Direccion: direccion,
                     Telefono: telefono
                 });
             } else {
-                result = await crearSede({
+                result = await crearCobertura({
                     Nombre: nombre,
                     Direccion: direccion,
                     Telefono: telefono
@@ -45,11 +45,11 @@ export default function EditarSede({ navigation }) {
                 Alert.alert("Éxito", esEdicion ? "Telefono actualizado correctamente" : "Telefono creado correctamente");
                 navigation.goBack();
             } else {
-                Alert.alert("Error", result.message || "No se pudo guardar la sede");
+                Alert.alert("Error", result.message || "No se pudo guardar la cobertura");
             }
         } catch (error) {
             console.error("Error al guardar eede:", error);
-            Alert.alert("Error", error.message || "Ocurrió un error inesperado al guardar la sede.");
+            Alert.alert("Error", error.message || "Ocurrió un error inesperado al guardar la cobertura.");
         } finally {
             setLoading(false);
         }
@@ -57,7 +57,7 @@ export default function EditarSede({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{esEdicion ? "Editar Sede" : "Nueva Sede"}</Text>
+            <Text style={styles.title}>{esEdicion ? "Editar Cobertura" : "Nueva Cobertura"}</Text>
 
             <TextInput
                 style={styles.input}
@@ -88,7 +88,7 @@ export default function EditarSede({ navigation }) {
                 {loading ? (
                     <ActivityIndicator color="#fff" />
                 ) : (
-                    <Text style={styles.textoBoton} >{esEdicion ? "Guardar cambios" : "Crear sede"}</Text>
+                    <Text style={styles.textoBoton} >{esEdicion ? "Guardar cambios" : "Crear cobertura"}</Text>
                 )}
             </TouchableOpacity>
 

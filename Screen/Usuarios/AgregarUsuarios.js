@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
-import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
+import { Ionicons } from '@expo/vector-icons'; // Importa Iconos
 import { crearCita } from "../../Src/Servicios/CitasService";
 
-export default function AgregarConsultorio({ navigation }) {
+export default function AgregarUsuarios({ navigation }) {
     const [nombre, setNombre] = useState("");
     const [numero, setNumero] = useState("");
     const [idsede, setIdSede] = useState("");
@@ -35,21 +35,21 @@ export default function AgregarConsultorio({ navigation }) {
 
         setLoading(true);
         try {
-            const result = await crearConsultorio({
+            const result = await crearUsuarios({
                 Nombre: nombre,
                 Numero: numero,
                 IdSede: idsede        
             });
 
             if (result.success) {
-                Alert.alert("Éxito", "Consultorio creado correctamente");
+                Alert.alert("Éxito", "Usuarios creado correctamente");
                 navigation.goBack();
             } else {
-                Alert.alert("Error", getAlertMessage(result.message, "No se pudo crear el consultorio"));
+                Alert.alert("Error", getAlertMessage(result.message, "No se pudo crear el Usuario"));
             }
         } catch (error) {
-            console.error("Error al crear consultorio:", error);
-            Alert.alert("Error", getAlertMessage(error.message, "Ocurrió un error inesperado al crear el consultorio."));
+            console.error("Error al crear Usuario:", error);
+            Alert.alert("Error", getAlertMessage(error.message, "Ocurrió un error inesperado al crear el Usuario."));
         } finally {
             setLoading(false);
         }
@@ -57,7 +57,7 @@ export default function AgregarConsultorio({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Nuevo Consultorio</Text>
+            <Text style={styles.title}>Nuevo Usuarios</Text>
 
             <TextInput
                 style={styles.input}
@@ -90,7 +90,7 @@ export default function AgregarConsultorio({ navigation }) {
                 ) : (
                     <View style={styles.botonContent}> {/* Contenedor para el icono y el texto */}
                         <Ionicons name="add-circle-outline" size={20} color="#fff" style={styles.botonIcon} />
-                        <Text style={styles.textoBoton}>Crear consultorio</Text>
+                        <Text style={styles.textoBoton}>Crear Usuario</Text>
                     </View>
                 )}
             </TouchableOpacity>

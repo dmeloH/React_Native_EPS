@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
 import BotonComponent from "../../components/BottonComponent"; // Asegúrate de que la ruta sea correcta
 import CitaCard from "../../components/CitaCard";
 import { useNavigation } from "@react-navigation/native";
-import { listarCitas, eliminarCita } from "../../Src/Servicios/CitaService";
+import { listarCitas, eliminarCitas } from "../../Src/Servicios/CitasService";
 
 export default function ListarCita (){
     const [citas, setCitas] = useState([]);
@@ -45,7 +45,7 @@ export default function ListarCita (){
 
                     onPress: async () => {
                         try {
-                            const result = await eliminarCita(id);
+                            const result = await eliminarCitas(id);
                             if (result.success) {
                                 // setEspecialidades (especialidades.filter((e) => e.id !== id));
                                 handleCitas();

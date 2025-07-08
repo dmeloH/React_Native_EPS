@@ -4,24 +4,24 @@ import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
 import BotonComponent from "../../components/BottonComponent"; // Asegúrate de que la ruta sea correcta
 import EspecialidadCard from "../../components/EspecialidadCard";
 import { useNavigation } from "@react-navigation/native";
-import { listarSedes, eliminarSede } from "../../Src/Servicios/SedeService";
+import { listarCoberturas, eliminarCobertura } from "../../Src/Servicios/CoberturasService";
 
-export default function ListarSede (){
-    const [sedes, setSedes] = useState([]);
+export default function ListarCobertura (){
+    const [Coberturas, setCoberturas] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigation = useNavigation();
 
-    const handleSedes = async () => {
+    const handleCoberturas = async () => {
         setLoading(true);
         try {
-            const result = await listarSedes();
+            const result = await listarCoberturas();
             if (result.success) {
-                setSedes(result.data);
+                setCoberturas(result.data);
             } else {
-                Alert.alert ("Error", result.message || "No se pudierón cargas las sedes");
+                Alert.alert ("Error", result.message || "No se pudierón cargas las Coberturas");
             }
         } catch (error) {
-            Alert.alert ("Error", "No se pudierón cargas las sedes");
+            Alert.alert ("Error", "No se pudierón cargas las Coberturas");
         } finally {
             setLoading(false);
         }
@@ -29,14 +29,14 @@ export default function ListarSede (){
     };
 
     useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', handleSedes);
+        const unsubscribe = navigation.addListener('focus', handleCoberturas);
         return unsubscribe;
     }, [navigation]);
 
     const handleEliminar = (id) => {
         Alert.alert(
-            "Eliminar Sede",
-            "¿Estás seguro de que deseas eliminar esta sede?",
+            "Eliminar Cobertura",
+            "¿Estás seguro de que deseas eliminar esta Cobertura?",
             [
                 { text: "Cancelar", style: "cancel" },
                 {
@@ -45,15 +45,15 @@ export default function ListarSede (){
 
                     onPress: async () => {
                         try {
-                            const result = await eliminarSede(id);
+                            const result = await eliminarCobertura(id);
                             if (result.success) {
                                 // setEspecialidades (especialidades.filter((e) => e.id !== id));
-                                handleSedes();
+                                handleCoberturas();
                             } else {
-                                Alert.alert("Error", result.message || "No se pudo eliminar la Sede");
+                                Alert.alert("Error", result.message || "No se pudo eliminar la Cobertura");
                             }
                         } catch (error) {
-                            Alert.alert("Error", "No se pudo eliminar la sede");
+                            Alert.alert("Error", "No se pudo eliminar la Cobertura");
                         }
                     },
                 }
@@ -62,7 +62,7 @@ export default function ListarSede (){
     }
 
     const handleCrear = () => {
-        navigation.navigate('CrearSede');
+        navigation.navigate('CrearCobertura');
     };
 
     if (loading) {
@@ -73,8 +73,8 @@ export default function ListarSede (){
         );
     }
 
-    const handleEditar = (sede) => {
-        navigation.navigate("EditarSede", {sede});
+    const handleEditar = (Cobertura) => {
+        navigation.navigate("EditarCobertura", {Cobertura});
 
 
     }
@@ -82,22 +82,22 @@ export default function ListarSede (){
     return (
         <View style={{flex: 1}}>
             <FlatList
-            data={sedes}
+            data={Coberturas}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
-                <SedeCard
-                sede= {item}
+                <CoberturaCard
+                Cobertura= {item}
                 onEdit={() => handleEditar (item)}
                 onDelete={() => handleEliminar (item.id)}
             />
             )}
-            ListEmptyComponent = {<Text style = {styles.emptyText}>No Hay Sedes Registradas. </Text>}
+            ListEmptyComponent = {<Text style = {styles.emptyText}>No Hay Coberturas Registradas. </Text>}
             />
 
             <TouchableOpacity style={styles.botonCrear} onPress={handleCrear}>
                 <View style={styles.botonCrearContent}>
                     <Ionicons name="add-circle-outline" size={24} color="#fff" style={styles.botonCrearIcon} />
-                    <Text style={styles.textoBotonCrear}>Nueva Sede</Text>
+                    <Text style={styles.textoBotonCrear}>Nueva Cobertura</Text>
                 </View>
             </TouchableOpacity>
         </View>

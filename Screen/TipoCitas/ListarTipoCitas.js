@@ -2,26 +2,26 @@ import { View, Text, FlatList, Alert, ActivityIndicator, TouchableOpacity, Style
 import React, {useEffect, useState} from 'react';
 import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
 import BotonComponent from "../../components/BottonComponent"; // Asegúrate de que la ruta sea correcta
-import EspecialidadCard from "../../components/EspecialidadCard";
+import CitaCard from "../../components/CitaCard";
 import { useNavigation } from "@react-navigation/native";
-import { listarEspecialidades, eliminarEspecialidad } from "../../Src/Servicios/EspecialidadService";
+import { listarTipoCitas, eliminarTipoCitas } from "../../Src/Servicios/TipoCitasService";
 
-export default function ListarEspecialidad (){
-    const [especialidades, setEspecialidades] = useState([]);
+export default function ListarTipoCitas (){
+    const [tipoCitas, setTipoCitas] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigation = useNavigation();
 
-    const handleEspecialidades = async () => {
+    const handleTipoCitas = async () => {
         setLoading(true);
         try {
-            const result = await listarEspecialidades();
+            const result = await listarTipoCitas();
             if (result.success) {
-                setEspecialidades(result.data);
+                setTipoCitas(result.data);
             } else {
-                Alert.alert ("Error", result.message || "No se pudierón cargas las especialidades");
+                Alert.alert ("Error", result.message || "No se pudierón cargas las tipoCitas");
             }
         } catch (error) {
-            Alert.alert ("Error", "No se pudierón cargas las especialidades");
+            Alert.alert ("Error", "No se pudierón cargas las tipoCitas");
         } finally {
             setLoading(false);
         }
@@ -29,13 +29,13 @@ export default function ListarEspecialidad (){
     };
 
     useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', handleEspecialidades);
+        const unsubscribe = navigation.addListener('focus', handleTipoCitas);
         return unsubscribe;
     }, [navigation]);
 
     const handleEliminar = (id) => {
         Alert.alert(
-            "Eliminar Especialidad",
+            "Eliminar TipoCitas",
             "¿Estás seguro de que deseas eliminar esta especialidad?",
             [
                 { text: "Cancelar", style: "cancel" },
@@ -45,12 +45,12 @@ export default function ListarEspecialidad (){
 
                     onPress: async () => {
                         try {
-                            const result = await eliminarEspecialidad(id);
+                            const result = await eliminarTipoCitas(id);
                             if (result.success) {
-                                // setEspecialidades (especialidades.filter((e) => e.id !== id));
-                                handleEspecialidades();
+                                // setTipoCitas (tipoCitas.filter((e) => e.id !== id));
+                                handleTipoCitas();
                             } else {
-                                Alert.alert("Error", result.message || "No se pudo eliminar la Especialidad");
+                                Alert.alert("Error", result.message || "No se pudo eliminar la TipoCitas");
                             }
                         } catch (error) {
                             Alert.alert("Error", "No se pudo eliminar la especialidad");
@@ -62,7 +62,7 @@ export default function ListarEspecialidad (){
     }
 
     const handleCrear = () => {
-        navigation.navigate('CrearEspecialidad');
+        navigation.navigate('CrearTipoCitas');
     };
 
     if (loading) {
@@ -74,7 +74,7 @@ export default function ListarEspecialidad (){
     }
 
     const handleEditar = (especialidad) => {
-        navigation.navigate("EditarEspecialidad", {especialidad});
+        navigation.navigate("EditarTipoCitas", {especialidad});
 
 
     }
@@ -82,22 +82,22 @@ export default function ListarEspecialidad (){
     return (
         <View style={{flex: 1}}>
             <FlatList
-            data={especialidades}
+            data={tipoCitas}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
-                <EspecialidadCard
+                <CitaCard
                 especialidad= {item}
                 onEdit={() => handleEditar (item)}
                 onDelete={() => handleEliminar (item.id)}
             />
             )}
-            ListEmptyComponent = {<Text style = {styles.emptyText}>No Hay Especialidades Registradas. </Text>}
+            ListEmptyComponent = {<Text style = {styles.emptyText}>No Hay TipoCitas Registradas. </Text>}
             />
 
             <TouchableOpacity style={styles.botonCrear} onPress={handleCrear}>
                 <View style={styles.botonCrearContent}>
                     <Ionicons name="add-circle-outline" size={24} color="#fff" style={styles.botonCrearIcon} />
-                    <Text style={styles.textoBotonCrear}>Nueva Especialidad</Text>
+                    <Text style={styles.textoBotonCrear}>Nueva TipoCitas</Text>
                 </View>
             </TouchableOpacity>
         </View>

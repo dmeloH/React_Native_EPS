@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet, Button, TouchableOpacity, ActivityIn
 import { useRoute } from '@react-navigation/native';
 import BotonComponent from "../../components/BottonComponent";
 
-import { crearMedico, editarMedico } from "../../Src/Servicios/MedicoService";
+import { crearMedico, editarMedico } from "../../Src/Servicios/MedicosService";
 
 export default function EditarMedico({ navigation }) {
     const route = useRoute();

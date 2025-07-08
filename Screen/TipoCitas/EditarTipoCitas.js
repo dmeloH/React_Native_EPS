@@ -3,18 +3,18 @@ import { View, Text, TextInput, StyleSheet, Button, TouchableOpacity, ActivityIn
 import { useRoute } from '@react-navigation/native';
 import BotonComponent from "../../components/BottonComponent";
 
-import { crearEspecialidad, editarEspecialidad } from "../../Src/Servicios/EspecialidadService";
+import { crearTipoCita, editarTipoCita } from "../../Src/Servicios/TipoCitasService";
 
-export default function EditarEspecialidad({ navigation }) {
+export default function EditarTipoCita({ navigation }) {
     const route = useRoute();
 
-    const especialidad = route.params?.especialidad;
+    const tipoCita = route.params?.tipoCita;
 
-    const [nombre, setNombre] = useState(especialidad?.Nombre || "");
-    const [descripcion, setDescripcion] = useState(especialidad?.Descripcion || "");
+    const [nombre, setNombre] = useState(tipoCita?.Nombre || "");
+    const [descripcion, setDescripcion] = useState(tipoCita?.Descripcion || "");
     const [loading, setLoading] = useState(false);
 
-    const esEdicion = !!especialidad;
+    const esEdicion = !!tipoCita;
 
     const handleGuardar = async () => {
         if (!nombre || !descripcion) {
@@ -26,26 +26,26 @@ export default function EditarEspecialidad({ navigation }) {
         let result;
         try {
             if (esEdicion) {
-                result = await editarEspecialidad(especialidad.id, {
+                result = await editarTipoCita(tipoCita.id, {
                     Nombre: nombre,
                     Descripcion: descripcion,
                 });
             } else {
-                result = await crearEspecialidad({
+                result = await crearTipoCita({
                     Nombre: nombre,
                     Descripcion: descripcion,
                 });
             }
 
             if (result.success) {
-                Alert.alert("Éxito", esEdicion ? "Especialidad actualizada correctamente" : "Especialidad creada correctamente");
+                Alert.alert("Éxito", esEdicion ? "TipoCita actualizada correctamente" : "TipoCita creada correctamente");
                 navigation.goBack();
             } else {
-                Alert.alert("Error", result.message || "No se pudo guardar la especialidad");
+                Alert.alert("Error", result.message || "No se pudo guardar la tipoCita");
             }
         } catch (error) {
-            console.error("Error al guardar especialidad:", error);
-            Alert.alert("Error", error.message || "Ocurrió un error inesperado al guardar la especialidad.");
+            console.error("Error al guardar tipoCita:", error);
+            Alert.alert("Error", error.message || "Ocurrió un error inesperado al guardar la tipoCita.");
         } finally {
             setLoading(false);
         }
@@ -53,7 +53,7 @@ export default function EditarEspecialidad({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{esEdicion ? "Editar Especialidad" : "Nueva Especialidad"}</Text>
+            <Text style={styles.title}>{esEdicion ? "Editar TipoCita" : "Nueva TipoCita"}</Text>
 
             <TextInput
                 style={styles.input}
@@ -75,7 +75,7 @@ export default function EditarEspecialidad({ navigation }) {
                 {loading ? (
                     <ActivityIndicator color="#fff" />
                 ) : (
-                    <Text style={styles.textoBoton} >{esEdicion ? "Guardar cambios" : "Crear especialidad"}</Text>
+                    <Text style={styles.textoBoton} >{esEdicion ? "Guardar cambios" : "Crear tipoCita"}</Text>
                 )}
             </TouchableOpacity>
 

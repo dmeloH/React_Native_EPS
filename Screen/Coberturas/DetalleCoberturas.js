@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator, SafeAreaView } from "react-native";
 import BotonComponent from "../../components/BottonComponent"; 
 
-export default function DetalleSede({ route, navigation }) {
+export default function DetalleCobertura({ route, navigation }) {
    
-    const { sedeId } = route.params;
+    const { coberturaId } = route.params;
 
-    const [sede, setSede] = useState(null);
+    const [cobertura, setCobertura] = useState(null);
     const [loading, setLoading] = useState(true);
 
   
@@ -14,26 +14,26 @@ export default function DetalleSede({ route, navigation }) {
 
     useEffect(() => {
         // Simular una carga de datos basada en el especialidadId
-        const foundSede = sedesEjemplo.find(e => e.id === sedeId);
-        setSede(foundSede);
+        const foundCobertura = coberturasEjemplo.find(e => e.id === coberturaId);
+        setCobertura(foundCobertura);
         setLoading(false);
-    }, [sedeId]);
+    }, [coberturaId]);
 
     if (loading) {
         return (
             <View style={[styles.container, { justifyContent: 'center', alignItems: 'center', backgroundColor: '#f0f4f8' }]}>
                 <ActivityIndicator size="large" color="#007B8C" />
-                <Text style={{ marginTop: 15, fontSize: 18, color: '#555' }}>Cargando detalles de la Sede...</Text>
+                <Text style={{ marginTop: 15, fontSize: 18, color: '#555' }}>Cargando detalles de la Cobertura...</Text>
             </View>
         );
     }
 
-    if (!sede) {
+    if (!cobertura) {
         return (
             <SafeAreaView style={[styles.container, {backgroundColor: '#f0f4f8'}]}>
-                <Text style={[styles.title, {color: '#2c3e50'}]}>Detalle de la Sede</Text>
+                <Text style={[styles.title, {color: '#2c3e50'}]}>Detalle de la Cobertura</Text>
                 <View style={[styles.detailCard, {backgroundColor: '#FFFFFF', shadowColor: 'rgba(0, 0, 0, 0.1)'}]}>
-                    <Text style={[styles.errorText, {color: 'red'}]}>No se encontraron detalles para esta sede.</Text>
+                    <Text style={[styles.errorText, {color: 'red'}]}>No se encontraron detalles para esta cobertura.</Text>
                     <BotonComponent
                         title="Volver al Listado"
                         onPress={() => navigation.goBack()}
@@ -47,16 +47,16 @@ export default function DetalleSede({ route, navigation }) {
 
     return (
         <SafeAreaView style={[styles.container, {backgroundColor: '#f0f4f8'}]}>
-            <Text style={[styles.title, {color: '#2c3e50'}]}>Detalle de la Sede</Text>
+            <Text style={[styles.title, {color: '#2c3e50'}]}>Detalle de la Cobertura</Text>
 
             <View style={[styles.detailCard, {backgroundColor: '#FFFFFF', shadowColor: 'rgba(0, 0, 0, 0.1)'}]}>
-                <Text style={[styles.especialidadName, {color: '#2c3e50'}]}>{sede.Nombre}</Text>
-                <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>ID: </Text>{sede.id}</Text>
-                <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>Dirección: </Text>{sede.Descripcion}</Text>
-                <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>Telefono: </Text>{sede.Descripcion}</Text>
+                <Text style={[styles.especialidadName, {color: '#2c3e50'}]}>{cobertura.Nombre}</Text>
+                <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>ID: </Text>{cobertura.id}</Text>
+                <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>Dirección: </Text>{cobertura.Descripcion}</Text>
+                <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>Telefono: </Text>{cobertura.Descripcion}</Text>
 
-                {sede.Area && (
-                    <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>Área: </Text>{sede.Area}</Text>
+                {cobertura.Area && (
+                    <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>Área: </Text>{cobertura.Area}</Text>
                 )}
             </View>
 
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
         alignItems: "flex-start",
         marginBottom: 20,
     },
-    sedeName: {
+    coberturaName: {
         fontSize: 24,
         fontWeight: "bold",
         marginBottom: 15,

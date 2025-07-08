@@ -46,7 +46,7 @@ export const logoutUser = async () => {
 export const Register = async (name, email, password, role) => { // Añadido 'telefono' aquí
     try {
         // Asegúrate de que tu API espera 'telefono' si lo estás enviando
-        const response = await api.post("/registrar", {name, email, password, role});
+        const response = await api.post("/register", {name, email, password, role});
         const { token } = response.data;
 
         await AsyncStorage.setItem("userToken", token);

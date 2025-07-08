@@ -26,10 +26,10 @@ const formatErrorMessage = (errorResponseData) => {
 };
 
 
-export const listarEspecialidades = async () => {
+export const listarTipoCita = async () => {
     try {
-        const response = await api.get("/listarEspecialidades");
-        console.log("Respuesta listarEspecialidades:", response.data);
+        const response = await api.get("/listarTipoCita");
+        console.log("Respuesta listarTipoCita:", response.data);
         return { success: true, data: response.data };
     } catch (error) {
         const errorMessage = error.response ? formatErrorMessage(error.response.data) : "Error de conexión";
@@ -41,15 +41,15 @@ export const listarEspecialidades = async () => {
     }
 }
 
-export const eliminarEspecialidad = async (id) => {
+export const eliminarTipoCita = async (id) => {
     console.log("Intentando eliminar especialidad con ID:", id);
     try {
-        const response = await api.delete(`/eliminarEspecialidad/${id}`);
-        console.log("Respuesta eliminarEspecialidad:", response.data);
-        return { success: true, message: response.data.message || "Especialidad eliminada correctamente" };
+        const response = await api.delete(`/eliminarTipoCita/${id}`);
+        console.log("Respuesta eliminarTipoCita:", response.data);
+        return { success: true, message: response.data.message || "TipoCita eliminada correctamente" };
     } catch (error) {
         const errorMessage = error.response ? formatErrorMessage(error.response.data) : "Error de conexión";
-        console.error("Error al eliminar Especialidad:", error.response ? error.response.data : error.message);
+        console.error("Error al eliminar TipoCita:", error.response ? error.response.data : error.message);
         return {
             success: false,
             message: errorMessage,
@@ -57,10 +57,10 @@ export const eliminarEspecialidad = async (id) => {
     }
 };
 
-export const crearEspecialidad = async (data) => {
+export const crearTipoCita = async (data) => {
     try {
-        const response = await api.post("/crearEspecialidad", data);
-        console.log("Respuesta crearEspecialidad:", response.data);
+        const response = await api.post("/crearTipoCita", data);
+        console.log("Respuesta crearTipoCita:", response.data);
         return { success: true, data: response.data };
     } catch (error) {
         const errorMessage = error.response ? formatErrorMessage(error.response.data) : "Error de conexión";
@@ -72,11 +72,11 @@ export const crearEspecialidad = async (data) => {
     }
 };
 
-export const editarEspecialidad = async (id, data) => { // Asegúrate de que 'id' se pase como primer argumento
+export const editarTipoCita = async (id, data) => { // Asegúrate de que 'id' se pase como primer argumento
     try {
         // La URL debe incluir el ID de la especialidad a editar
-        const response = await api.put(`/editarEspecialidad/${id}`, data); // Asumiendo que tu ruta de Laravel es /actualizarEspecialidad/{id}
-        console.log("Respuesta editarEspecialidad:", response.data);
+        const response = await api.put(`/editarTipoCita/${id}`, data); // Asumiendo que tu ruta de Laravel es /actualizarTipoCita/{id}
+        console.log("Respuesta editarTipoCita:", response.data);
         return { success: true, data: response.data };
     } catch (error) {
         const errorMessage = error.response ? formatErrorMessage(error.response.data) : "Error de conexión";

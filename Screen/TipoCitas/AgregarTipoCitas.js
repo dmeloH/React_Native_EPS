@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
 import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
-import { crearEspecialidad } from "../../Src/Servicios/EspecialidadService";
+import { crearTipoCitas } from "../../Src/Servicios/TipoCitasService";
 
-export default function AgregarEspecialidad({ navigation }) {
+export default function AgregarTipoCita({ navigation }) {
     const [nombre, setNombre] = useState("");
     const [descripcion, setDescripcion] = useState("");
     const [loading, setLoading] = useState(false);
@@ -33,20 +33,20 @@ export default function AgregarEspecialidad({ navigation }) {
 
         setLoading(true);
         try {
-            const result = await crearEspecialidad({
+            const result = await crearTipoCita({
                 Nombre: nombre,
                 Descripcion: descripcion,
             });
 
             if (result.success) {
-                Alert.alert("Éxito", "Especialidad creada correctamente");
+                Alert.alert("Éxito", "TipoCita creada correctamente");
                 navigation.goBack();
             } else {
-                Alert.alert("Error", getAlertMessage(result.message, "No se pudo crear la especialidad"));
+                Alert.alert("Error", getAlertMessage(result.message, "No se pudo crear el tipo de la cita"));
             }
         } catch (error) {
-            console.error("Error al crear especialidad:", error);
-            Alert.alert("Error", getAlertMessage(error.message, "Ocurrió un error inesperado al crear la especialidad."));
+            console.error("Error al crear el tipo de la cita:", error);
+            Alert.alert("Error", getAlertMessage(error.message, "Ocurrió un error inesperado al crear el tipo de la cita."));
         } finally {
             setLoading(false);
         }
@@ -54,7 +54,7 @@ export default function AgregarEspecialidad({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Nueva Especialidad</Text>
+            <Text style={styles.title}>Nueva Tipo Cita</Text>
 
             <TextInput
                 style={styles.input}
@@ -78,7 +78,7 @@ export default function AgregarEspecialidad({ navigation }) {
                 ) : (
                     <View style={styles.botonContent}> {/* Contenedor para el icono y el texto */}
                         <Ionicons name="add-circle-outline" size={20} color="#fff" style={styles.botonIcon} />
-                        <Text style={styles.textoBoton}>Crear especialidad</Text>
+                        <Text style={styles.textoBoton}>Crear tipo de la cita</Text>
                     </View>
                 )}
             </TouchableOpacity>

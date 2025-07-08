@@ -2,38 +2,38 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator, SafeAreaView } from "react-native";
 import BotonComponent from "../../components/BottonComponent"; 
 
-export default function DetalleEspecialidad({ route, navigation }) {
+export default function DetalleTipoCita({ route, navigation }) {
    
-    const { especialidadId } = route.params;
+    const { tipoCitaId } = route.params;
 
-    const [especialidad, setEspecialidad] = useState(null);
+    const [tipoCita, setTipoCita] = useState(null);
     const [loading, setLoading] = useState(true);
 
   
     
 
     useEffect(() => {
-        // Simular una carga de datos basada en el especialidadId
-        const foundEspecialidad = especialidadesEjemplo.find(e => e.id === especialidadId);
-        setEspecialidad(foundEspecialidad);
+        // Simular una carga de datos basada en el tipoCitaId
+        const foundTipoCita = tipoCitaesEjemplo.find(e => e.id === tipoCitaId);
+        setTipoCita(foundTipoCita);
         setLoading(false);
-    }, [especialidadId]);
+    }, [tipoCitaId]);
 
     if (loading) {
         return (
             <View style={[styles.container, { justifyContent: 'center', alignItems: 'center', backgroundColor: '#f0f4f8' }]}>
                 <ActivityIndicator size="large" color="#007B8C" />
-                <Text style={{ marginTop: 15, fontSize: 18, color: '#555' }}>Cargando detalles de la Especialidad...</Text>
+                <Text style={{ marginTop: 15, fontSize: 18, color: '#555' }}>Cargando detalles de la TipoCita...</Text>
             </View>
         );
     }
 
-    if (!especialidad) {
+    if (!tipoCita) {
         return (
             <SafeAreaView style={[styles.container, {backgroundColor: '#f0f4f8'}]}>
-                <Text style={[styles.title, {color: '#2c3e50'}]}>Detalle de Especialidad</Text>
+                <Text style={[styles.title, {color: '#2c3e50'}]}>Detalle de TipoCita</Text>
                 <View style={[styles.detailCard, {backgroundColor: '#FFFFFF', shadowColor: 'rgba(0, 0, 0, 0.1)'}]}>
-                    <Text style={[styles.errorText, {color: 'red'}]}>No se encontraron detalles para esta especialidad.</Text>
+                    <Text style={[styles.errorText, {color: 'red'}]}>No se encontraron detalles para esta tipoCita.</Text>
                     <BotonComponent
                         title="Volver al Listado"
                         onPress={() => navigation.goBack()}
@@ -47,14 +47,14 @@ export default function DetalleEspecialidad({ route, navigation }) {
 
     return (
         <SafeAreaView style={[styles.container, {backgroundColor: '#f0f4f8'}]}>
-            <Text style={[styles.title, {color: '#2c3e50'}]}>Detalle de Especialidad</Text>
+            <Text style={[styles.title, {color: '#2c3e50'}]}>Detalle de TipoCita</Text>
 
             <View style={[styles.detailCard, {backgroundColor: '#FFFFFF', shadowColor: 'rgba(0, 0, 0, 0.1)'}]}>
-                <Text style={[styles.especialidadName, {color: '#2c3e50'}]}>{especialidad.Nombre}</Text>
-                <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>ID: </Text>{especialidad.id}</Text>
-                <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>Descripción: </Text>{especialidad.Descripcion}</Text>
-                {especialidad.Area && (
-                    <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>Área: </Text>{especialidad.Area}</Text>
+                <Text style={[styles.tipoCitaName, {color: '#2c3e50'}]}>{tipoCita.Nombre}</Text>
+                <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>ID: </Text>{tipoCita.id}</Text>
+                <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>Descripción: </Text>{tipoCita.Descripcion}</Text>
+                {tipoCita.Area && (
+                    <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>Área: </Text>{tipoCita.Area}</Text>
                 )}
             </View>
 
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
         alignItems: "flex-start",
         marginBottom: 20,
     },
-    especialidadName: {
+    tipoCitaName: {
         fontSize: 24,
         fontWeight: "bold",
         marginBottom: 15,

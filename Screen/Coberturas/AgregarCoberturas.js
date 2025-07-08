@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
 import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
-import { crearSede } from "../../Src/Servicios/SedeService";
+import { crearCoberturas } from "../../Src/Servicios/CoberturasService";
 
-export default function AgregarSede({ navigation }) {
+export default function AgregarCoberturas({ navigation }) {
     const [nombre, setNombre] = useState("");
     const [direccion, setDireccion] = useState("");
     const [telefono, setTelefono] = useState("");
@@ -35,14 +35,14 @@ export default function AgregarSede({ navigation }) {
 
         setLoading(true);
         try {
-            const result = await crearSede({
+            const result = await crearCoberturas({
                 Nombre: nombre,
                 Direccion: direccion,
                 Telefono: telefono
             });
 
             if (result.success) {
-                Alert.alert("Éxito", "Sede creada correctamente");
+                Alert.alert("Éxito", "Coberturas creada correctamente");
                 navigation.goBack();
             } else {
                 Alert.alert("Error", getAlertMessage(result.message, "No se pudo crear la sede"));
@@ -57,7 +57,7 @@ export default function AgregarSede({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Nueva Sede</Text>
+            <Text style={styles.title}>Nueva Cobertura</Text>
 
             <TextInput
                 style={styles.input}
@@ -90,7 +90,7 @@ export default function AgregarSede({ navigation }) {
                 ) : (
                     <View style={styles.botonContent}> {/* Contenedor para el icono y el texto */}
                         <Ionicons name="add-circle-outline" size={20} color="#fff" style={styles.botonIcon} />
-                        <Text style={styles.textoBoton}>Crear Sede</Text>
+                        <Text style={styles.textoBoton}>Crear Cobertura</Text>
                     </View>
                 )}
             </TouchableOpacity>

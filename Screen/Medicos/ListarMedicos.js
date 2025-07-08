@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
 import BotonComponent from "../../components/BottonComponent"; // Asegúrate de que la ruta sea correcta
 import MedicoCard from "../../components/MedicoCard";
 import { useNavigation } from "@react-navigation/native";
-import { listarMedicos, eliminarMedico } from "../../Src/Servicios/MedicoService";
+import { listarMedicos, eliminarMedico } from "../../Src/Servicios/MedicosService";
 
 export default function ListarMedico (){
     const [medicos, setMedicos] = useState([]);

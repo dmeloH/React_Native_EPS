@@ -26,10 +26,10 @@ const formatErrorMessage = (errorResponseData) => {
 };
 
 
-export const listarConsultorios = async () => {
+export const ListarUsuarios = async () => {
     try {
-        const response = await api.get("/listarConsultorios");
-        console.log("Respuesta listarConsultorios:", response.data);
+        const response = await api.get("/listarUsuarios");
+        console.log("Respuesta listarUsuarios:", response.data);
         return { success: true, data: response.data };
     } catch (error) {
         const errorMessage = error.response ? formatErrorMessage(error.response.data) : "Error de conexión";
@@ -41,15 +41,15 @@ export const listarConsultorios = async () => {
     }
 }
 
-export const eliminarEspecialidad = async (id) => {
+export const eliminarUsuarios = async (id) => {
     console.log("Intentando eliminar consultorio con ID:", id);
     try {
-        const response = await api.delete(`/eliminarConsultorio/${id}`);
-        console.log("Respuesta eliminarConsultorio:", response.data);
-        return { success: true, message: response.data.message || "Consultorio eliminada correctamente" };
+        const response = await api.delete(`/eliminarUsuario/${id}`);
+        console.log("Respuesta eliminarUsuario:", response.data);
+        return { success: true, message: response.data.message || "Usuario eliminada correctamente" };
     } catch (error) {
         const errorMessage = error.response ? formatErrorMessage(error.response.data) : "Error de conexión";
-        console.error("Error al eliminar Consultorio:", error.response ? error.response.data : error.message);
+        console.error("Error al eliminar Usuario:", error.response ? error.response.data : error.message);
         return {
             success: false,
             message: errorMessage,
@@ -57,10 +57,10 @@ export const eliminarEspecialidad = async (id) => {
     }
 };
 
-export const crearEspecialidad = async (data) => {
+export const CrearUsuarios = async (data) => {
     try {
-        const response = await api.post("/crearConsultorio", data);
-        console.log("Respuesta crearConsultorio:", response.data);
+        const response = await api.post("/crearUsuario", data);
+        console.log("Respuesta crearUsuario:", response.data);
         return { success: true, data: response.data };
     } catch (error) {
         const errorMessage = error.response ? formatErrorMessage(error.response.data) : "Error de conexión";
@@ -72,11 +72,11 @@ export const crearEspecialidad = async (data) => {
     }
 };
 
-export const editarConsultorio = async (id, data) => { // Asegúrate de que 'id' se pase como primer argumento
+export const EditarUsuarios = async (id, data) => { // Asegúrate de que 'id' se pase como primer argumento
     try {
         // La URL debe incluir el ID de la especialidad a editar
-        const response = await api.put(`/editarConsultorio/${id}`, data); // Asumiendo que tu ruta de Laravel es /actualizarEspecialidad/{id}
-        console.log("Respuesta editarConsultorio:", response.data);
+        const response = await api.put(`/editarUsuario/${id}`, data); // Asumiendo que tu ruta de Laravel es /actualizarUsuario/{id}
+        console.log("Respuesta editarUsuario:", response.data);
         return { success: true, data: response.data };
     } catch (error) {
         const errorMessage = error.response ? formatErrorMessage(error.response.data) : "Error de conexión";

@@ -1,34 +1,34 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import ListarConsultorio from "../../../Screen/Consultorios/ListarConsultorio";
-import DetalleConsultorio from "../../../Screen/Consultorios/DetalleConsultorio";
-import EditarConsultorio from "../../../Screen/Consultorios/EditarConsultorio";
-import AgregarConsultorio from "../../../Screen/Consultorios/AgregarConsultorio";
+import ListarUsuarios from "../../../Screen/Usuarios/ListarUsuarios";
+import DetalleUsuarios from "../../../Screen/Usuarios/DetalleUsuarios";
+import EditarUsuarios from "../../../Screen/Usuarios/EditarUsuarios";
+import AgregarUsuarios from "../../../Screen/Usuarios/AgregarUsuarios";
 
 const Stack = createStackNavigator();
 
-export default function ConsultoriosStack () {
+export default function UsuariosStack () {
     return (
         <Stack.Navigator>
             <Stack.Screen 
-                name= "ListarConsultorios"
-                component={ListarConsultorio}
+                name= "ListarUsuarios"
+                component={ListarUsuarios}
                 options={{ title: "consultorios" }}
             />
              <Stack.Screen 
-                name= "DetalleConsultorios"
-                component={DetalleConsultorio}
-                options={{ title: "Detalle Consultorio" }}
+                name= "DetalleUsuarios"
+                component={DetalleUsuarios}
+                options={{ title: "Detalle Usuarios" }}
             />
              <Stack.Screen 
-                name= "EditarConsultorios"
-                component={EditarConsultorio}
-                options={{ title: "Nuevo/Editar Consultorios" }}
+                name= "EditarUsuarios"
+                component={EditarUsuarios}
+                options={{ title: "Nuevo/Editar Usuarios" }}
             />
             <Stack.Screen
-                name= "CrearConsultorio" // Nuevo nombre de ruta para la pantalla de creación
-                component={AgregarConsultorio} // Asigna el nuevo componente
-                options={{ title: "Nuevo Consultorio" }}
+                name= "CrearUsuarios" // Nuevo nombre de ruta para la pantalla de creación
+                component={AgregarUsuarios} // Asigna el nuevo componente
+                options={{ title: "Nuevo Usuarios" }}
             />
         </Stack.Navigator>
     );

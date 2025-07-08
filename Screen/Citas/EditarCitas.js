@@ -1,21 +1,44 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { View, Text, TextInput, StyleSheet, Button, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
 import { useRoute } from '@react-navigation/native';
 import BotonComponent from "../../components/BottonComponent";
 
-import { crearCita, editarCita } from "../../Src/Servicios/CitaService";
+import { crearCita, editarCita } from "../../Src/Servicios/CitasService";
+import { listarCitas } from "../../Src/Servicios/CitasService";
+import { Picker } from "@react-native-picker/picker";
 
-export default function EditarCita({ navigation }) {
+export default function EditarCitas({ navigation }) {
     const route = useRoute();
-
     const cita = route.params?.cita;
 
-    const [nombre, setNombre] = useState(cita?.Nombre || "");
+    const [usuarios_id, setUsuarios] = useState(cita?.Nombre || "");
+    const [tipo_cita, setTipoCita] = useState(cita?.Nombre || "");
     const [fecha, setFecha] = useState(cita?.Fecha || "");
-    const [estado, setEstado] = useState(cita?.Estado || "");
     const [hora, setHora] = useState(cita?.Hora || "");
-    const [tipo, setTipo] = useState(cita?.Tipo || "");
+    const [estado, setEstado] = useState(cita?.Estado || "");
+    const [costo_total, setCostoTotal] = useState(cita?.Estado || "");
+    const [valor_eps, setValorEps] = useState(cita?.Estado || "");
+    const [valor_usuario, setValorUsuario] = useState(cita?.Estado || "");
 
+    useEffect(() => {
+        const cargarUsuarios = async () => {
+            const result = await listarUsuarios();
+            if (result.success) {
+                setUsuarios(result.data);
+            };
+        };
+        cargarUsuarios();
+    }, []);
+
+    useEffect(() => {
+        const cargarMedicos = async () => {
+            const result = await listarMedicos();
+            if (result.success) {
+                setMedicos(result.data);
+            };
+        };
+        cargarMedicos();
+    }, []);
 
 
     const [loading, setLoading] = useState(false);
@@ -23,7 +46,7 @@ export default function EditarCita({ navigation }) {
     const esEdicion = !!cita;
 
     const handleGuardar = async () => {
-        if (!nombre || !fecha || !estado || !hora || !tipo) {
+        if (!tipo_cita || !fecha || !estado || !hora || !costo_total || !valor_eps || !valor_usuario) {
             Alert.alert("Campos requeridos", "Por favor, ingrese todos los campos");
             return;
         }
@@ -33,20 +56,24 @@ export default function EditarCita({ navigation }) {
         try {
             if (esEdicion) {
                 result = await editarCita(cita.id, {
-                    Nombre: nombre,
+                    TipoCita: tipo_cita,
                     Fecha: fecha,
-                    Estado: estado,
                     Hora: hora,
-                    Tipo: tipo
+                    Estado: estado,
+                    CostoTotal: costo_total,
+                    ValorEps: valor_eps,
+                    ValorUsuario: valor_usuario
                 });
             } else {
                 result = await crearCita({
-                    Nombre: nombre,
+                    TipoCita: tipo_cita,
                     Fecha: fecha,
-                    Estado: estado,
                     Hora: hora,
-                    Tipo: tipo
-                    
+                    Estado: estado,
+                    CostoTotal: costo_total,
+                    ValorEps: valor_eps,
+                    ValorUsuario: valor_usuario
+
                 });
             }
 
@@ -67,12 +94,32 @@ export default function EditarCita({ navigation }) {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{esEdicion ? "Editar Cita" : "Nueva Cita"}</Text>
+            <Picker
+                selectedValue={usuarios_id}
+                onValueChange={(itemValue) => setNombre(itemValue)}
+                style={styles.input}
+            >
+                <Picker.Item label="Seleccione un usuario" value="" />
+                {usuarios.map((a) => (
+                    <Picker.Item key={a.id} label={`${a.nombre} ${a.apellidos}`} value={a.id.toString()} />
+                ))}
+            </Picker>
+            <Picker
+                selectedValue={medico_id}
+                onValueChange={(itemValue) => setNombre(itemValue)}
+                style={styles.input}
+            >
+                <Picker.Item label="Seleccione un medico" value="" />
+                {medicos.map((a) => (
+                    <Picker.Item key={a.id} label={`${a.nombre} ${a.apellidos}`} value={a.id.toString()} />
+                ))}
+            </Picker>
 
             <TextInput
                 style={styles.input}
-                placeholder="Nombre"
+                placeholder="Tipo Cita"
                 value={nombre}
-                onChangeText={setNombre}
+                onChangeText={setTipoCita}
             />
 
             <TextInput
@@ -105,15 +152,31 @@ export default function EditarCita({ navigation }) {
             />
             <TextInput
                 style={styles.input}
-                placeholder="Tipo"
+                placeholder="Costo Total"
                 value={tipo}
-                onChangeText={setTipo}
+                onChangeText={setCostoTotal}
                 multiline
                 numberOfLines={4}
                 textAlignVertical="top"
             />
-
-            
+            <TextInput
+                style={styles.input}
+                placeholder="Valor EPS"
+                value={valor_eps}
+                onChangeText={setValorEps}
+                multiline
+                numberOfLines={4}
+                textAlignVertical="top"
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Valor Usuario"
+                value={valor_usuario}
+                onChangeText={setValorUsuario}
+                multiline
+                numberOfLines={4}
+                textAlignVertical="top"
+            />
 
             <TouchableOpacity style={styles.boton} onPress={handleGuardar} disabled={loading}>
                 {loading ? (

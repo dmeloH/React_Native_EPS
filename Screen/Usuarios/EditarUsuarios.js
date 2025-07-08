@@ -3,12 +3,12 @@ import { View, Text, TextInput, StyleSheet, Button, TouchableOpacity, ActivityIn
 import { useRoute } from '@react-navigation/native';
 import BotonComponent from "../../components/BottonComponent";
 
-import { crearConsultorio, editarConsultorio } from "../../Src/Servicios/ConsultorioService";
+import { crearUsuarios, editarUsuarios } from "../../Src/Servicios/UsuariosService";
 
-export default function editarConsultorio({ navigation }) {
+export default function EditarUsuarios({ navigation }) {
     const route = useRoute();
 
-    const consultorio = route.params?.consultorio;
+    const usuario = route.params?.usuario;
 
     const [nombre, setNombre] = useState(especialidad?.Nombre || "");
     const [numero, setNumero] = useState(especialidad?.Numero || "");
@@ -16,7 +16,7 @@ export default function editarConsultorio({ navigation }) {
 
     const [loading, setLoading] = useState(false);
 
-    const esEdicion = !!consultorio;
+    const esEdicion = !!usuario;
 
     const handleGuardar = async () => {
         if (!nombre || !numero || !idsede) {
@@ -28,27 +28,27 @@ export default function editarConsultorio({ navigation }) {
         let result;
         try {
             if (esEdicion) {
-                result = await editarConsultorio(consultorio.id, {
+                result = await editarUsuarios(usuario.id, {
                     Nombre: nombre,
                     Numero: numero,
                     IdSede: idsede
                 });
             } else {
-                result = await crearConsultorio({
+                result = await crearUsuarios({
                     Nombre: nombre,
                     Descripcion: descripcion,
                 });
             }
 
             if (result.success) {
-                Alert.alert("Éxito", esEdicion ? "Consultorio actualizado correctamente" : "Consultorio creado correctamente");
+                Alert.alert("Éxito", esEdicion ? "Usuarios actualizado correctamente" : "Usuarios creado correctamente");
                 navigation.goBack();
             } else {
-                Alert.alert("Error", result.message || "No se pudo guardar el consultorio");
+                Alert.alert("Error", result.message || "No se pudo guardar el usuario");
             }
         } catch (error) {
-            console.error("Error al guardar consultorio:", error);
-            Alert.alert("Error", error.message || "Ocurrió un error inesperado al guardar el consultorio.");
+            console.error("Error al guardar usuario:", error);
+            Alert.alert("Error", error.message || "Ocurrió un error inesperado al guardar el usuario.");
         } finally {
             setLoading(false);
         }
@@ -56,7 +56,7 @@ export default function editarConsultorio({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{esEdicion ? "Editar Consultorio" : "Nuevo Consultorio"}</Text>
+            <Text style={styles.title}>{esEdicion ? "Editar Usuarios" : "Nuevo Usuarios"}</Text>
 
             <TextInput
                 style={styles.input}
@@ -87,7 +87,7 @@ export default function editarConsultorio({ navigation }) {
                 {loading ? (
                     <ActivityIndicator color="#fff" />
                 ) : (
-                    <Text style={styles.textoBoton} >{esEdicion ? "Guardar cambios" : "Crear consultorio"}</Text>
+                    <Text style={styles.textoBoton} >{esEdicion ? "Guardar cambios" : "Crear usuario"}</Text>
                 )}
             </TouchableOpacity>
 

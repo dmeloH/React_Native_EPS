@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
 import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
-import { crearCita } from "../../Src/Servicios/CitaService";
+import { crearCita } from "../../Src/Servicios/CitasService";
 
 export default function AgregarCita({ navigation }) {
     const [tipo_cita, setTipoCita] = useState("");
@@ -46,7 +46,9 @@ export default function AgregarCita({ navigation }) {
                 Fecha: fecha,
                 Hora: hora,
                 Estado: estado,
-                Tipo: tipo
+                CostoTotal: costo_total,
+                ValorEps: valor_eps,
+                ValorUsuario: valor_usuario
             });
 
             if (result.success) {

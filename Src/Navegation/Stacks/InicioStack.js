@@ -5,13 +5,12 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 // Importa la pantalla de Inicio (el "dashboard" con las 4 casillas)
 import Inicio from "../../../Screen/Inicio/Inicio";
-import CitasStack from "./CitaStack";
-import ConsultoriosStack from "./ConsultorioStack";
+import CitasStack from "./CitasStack";
 import EpsStack from "./EpsStack";
-import EspecialidadesStack from "./EspecialidadStack";
-import MedicosStack from "./MedicoStack";
-import PacientesStack from "./PacienteStack";
-import SedesStack from "./SedeStack";
+import MedicosStack from "./MedicosStack";
+import CoberturasStack from "./CoberturasStack";
+import TipoCitasStack from "./TipoCitasStack";
+import UsuariosStack from "./UsuariosStack";
 
 const Stack = createStackNavigator();
 
@@ -30,8 +29,8 @@ export default function InicioStack () {
             />
 
             <Stack.Screen
-                name="ConsultoriosFlow" 
-                component={ConsultoriosStack}
+                name="UsuariosFlow" 
+                component={UsuariosStack}
                 options={{ headerShown: false }}
             />
 
@@ -42,8 +41,8 @@ export default function InicioStack () {
             />
 
             <Stack.Screen
-                name="EspecialidadesFlow" 
-                component={EspecialidadesStack}
+                name="TipoCitasFlow" 
+                component={TipoCitasStack}
                 options={{ headerShown: false }}
             />
             <Stack.Screen
@@ -52,13 +51,8 @@ export default function InicioStack () {
                 options={{ headerShown: false }}
             />
             <Stack.Screen
-                name="PacientesFlow" 
-                component={PacientesStack}
-                options={{ headerShown: false }}
-            />
-            <Stack.Screen
-                name="SedesFlow" 
-                component={SedesStack}
+                name="CoberturasFlow" 
+                component={CoberturasStack}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>

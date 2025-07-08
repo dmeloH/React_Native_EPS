@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator, SafeAreaView } from "react-native";
 import BotonComponent from "../../components/BottonComponent"; 
 
-export default function DetalleConsultorio({ route, navigation }) {
+export default function DetalleUsuario({ route, navigation }) {
    
-    const { consultorioId } = route.params;
+    const { usuarioId } = route.params;
 
-    const [consultorio, setConsultorio] = useState(null);
+    const [usuario, setUsuario] = useState(null);
     const [loading, setLoading] = useState(true);
 
   
@@ -14,26 +14,26 @@ export default function DetalleConsultorio({ route, navigation }) {
 
     useEffect(() => {
         // Simular una carga de datos basada en el especialidadId
-        const foundConsultorio = consultoriosEjemplo.find(co => co.id === consultorioId);
+        const foundUsuario = usuariosEjemplo.find(co => co.id === usuarioId);
         setEspecialidad(foundEspecialidad);
         setLoading(false);
-    }, [consultorioId]);
+    }, [usuarioId]);
 
     if (loading) {
         return (
             <View style={[styles.container, { justifyContent: 'center', alignItems: 'center', backgroundColor: '#f0f4f8' }]}>
                 <ActivityIndicator size="large" color="#007B8C" />
-                <Text style={{ marginTop: 15, fontSize: 18, color: '#555' }}>Cargando detalles del Consultorio...</Text>
+                <Text style={{ marginTop: 15, fontSize: 18, color: '#555' }}>Cargando detalles del Usuario...</Text>
             </View>
         );
     }
 
-    if (!consultorio) {
+    if (!usuario) {
         return (
             <SafeAreaView style={[styles.container, {backgroundColor: '#f0f4f8'}]}>
-                <Text style={[styles.title, {color: '#2c3e50'}]}>Detalle del Consultorio</Text>
+                <Text style={[styles.title, {color: '#2c3e50'}]}>Detalle del Usuario</Text>
                 <View style={[styles.detailCard, {backgroundColor: '#FFFFFF', shadowColor: 'rgba(0, 0, 0, 0.1)'}]}>
-                    <Text style={[styles.errorText, {color: 'red'}]}>No se encontraron detalles para este consultorio.</Text>
+                    <Text style={[styles.errorText, {color: 'red'}]}>No se encontraron detalles para este usuario.</Text>
                     <BotonComponent
                         title="Volver al Listado"
                         onPress={() => navigation.goBack()}
@@ -47,16 +47,16 @@ export default function DetalleConsultorio({ route, navigation }) {
 
     return (
         <SafeAreaView style={[styles.container, {backgroundColor: '#f0f4f8'}]}>
-            <Text style={[styles.title, {color: '#2c3e50'}]}>Detalle del Consultorio</Text>
+            <Text style={[styles.title, {color: '#2c3e50'}]}>Detalle del Usuario</Text>
 
             <View style={[styles.detailCard, {backgroundColor: '#FFFFFF', shadowColor: 'rgba(0, 0, 0, 0.1)'}]}>
-                <Text style={[styles.consultorioName, {color: '#2c3e50'}]}>{consultorio.Nombre}</Text>
-                <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>ID: </Text>{consultorio.id}</Text>
-                <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>Número: </Text>{consultorio.Numero}</Text>
-                <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>Id Sede: </Text>{consultorio.IdSede}</Text>
+                <Text style={[styles.usuarioName, {color: '#2c3e50'}]}>{usuario.Nombre}</Text>
+                <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>ID: </Text>{usuario.id}</Text>
+                <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>Número: </Text>{usuario.Numero}</Text>
+                <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>Id Sede: </Text>{usuario.IdSede}</Text>
 
-                {consultorio.Area && (
-                    <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>Área: </Text>{consultorio.Area}</Text>
+                {usuario.Area && (
+                    <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>Área: </Text>{usuario.Area}</Text>
                 )}
             </View>
 
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
         alignItems: "flex-start",
         marginBottom: 20,
     },
-    consultorioName: {
+    usuarioName: {
         fontSize: 24,
         fontWeight: "bold",
         marginBottom: 15,
