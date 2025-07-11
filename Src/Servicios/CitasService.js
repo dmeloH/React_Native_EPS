@@ -28,7 +28,7 @@ const formatErrorMessage = (errorResponseData) => {
 
 export const listarCitas = async () => {
     try {
-        const response = await api.get("/listarCitas");
+        const response = await api.get("/citas");
         console.log("Respuesta listarCitas:", response.data);
         return { success: true, data: response.data };
     } catch (error) {
@@ -44,7 +44,7 @@ export const listarCitas = async () => {
 export const eliminarCita = async (id) => {
     console.log("Intentando eliminar cita con ID:", id);
     try {
-        const response = await api.delete(`/eliminarCita/${id}`);
+        const response = await api.delete(`/citas/${id}`);
         console.log("Respuesta eliminarEspecialidad:", response.data);
         return { success: true, message: response.data.message || "Cita eliminada correctamente" };
     } catch (error) {
@@ -59,7 +59,7 @@ export const eliminarCita = async (id) => {
 
 export const crearCita = async (data) => {
     try {
-        const response = await api.post("/crearCita", data);
+        const response = await api.post("/citas", data);
         console.log("Respuesta crearCita:", response.data);
         return { success: true, data: response.data };
     } catch (error) {
@@ -74,7 +74,7 @@ export const crearCita = async (data) => {
 
 export const editarCita = async (id, data) => { // Asegúrate de que 'id' se pase como primer argumento
     try {
-        const response = await api.put(`/editarCita/${id}`, data); // Asumiendo que tu ruta de Laravel es /actualizarEspecialidad/{id}
+        const response = await api.put(`/citas/${id}`, data); // Asumiendo que tu ruta de Laravel es /actualizarEspecialidad/{id}
         console.log("Respuesta editarCita:", response.data);
         return { success: true, data: response.data };
     } catch (error) {

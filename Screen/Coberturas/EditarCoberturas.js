@@ -10,16 +10,15 @@ export default function EditarCobertura({ navigation }) {
 
     const cobertura = route.params?.cobertura;
 
-    const [nombre, setNombre] = useState(cobertura?.Nombre || "");
-    const [direccion, setDireccion] = useState(cobertura?.Dirección || "");
-    const [telefono, setTelefono] = useState(cobertura?.Telefono || "");
+    const [tipo_afiliacion, setTipoAfiliacion] = useState(cobertura?.tipo_afiliacion || "");
+    const [porcentaje_cubrimiento, setPorecntajeCubrimiento] = useState(cobertura?.porcentaje_cubrimiento || "");
 
     const [loading, setLoading] = useState(false);
 
     const esEdicion = !!cobertura;
 
     const handleGuardar = async () => {
-        if (!nombre || !direccion || !telefono) {
+        if (!tipo_afiliacion || !porcentaje_cubrimiento) {
             Alert.alert("Campos requeridos", "Por favor, ingrese todos los campos");
             return;
         }
@@ -29,20 +28,19 @@ export default function EditarCobertura({ navigation }) {
         try {
             if (esEdicion) {
                 result = await editarCobertura(cobertura.id, {
-                    Nombre: nombre,
-                    Direccion: direccion,
-                    Telefono: telefono
+                    TipoAfiliacion: tipo_afiliacion,
+                    PorcentajeCubrimiento: porcentaje_cubrimiento
                 });
             } else {
                 result = await crearCobertura({
-                    Nombre: nombre,
-                    Direccion: direccion,
-                    Telefono: telefono
+                    TipoAfiliacion: tipo_afiliacion,
+                    PorcentajeCubrimiento: porcentaje_cubrimiento
+
                 });
             }
 
             if (result.success) {
-                Alert.alert("Éxito", esEdicion ? "Telefono actualizado correctamente" : "Telefono creado correctamente");
+                Alert.alert("Éxito", esEdicion ? "Tipo de afiliación actualizado correctamente" : "Tipo de afiliación creado correctamente");
                 navigation.goBack();
             } else {
                 Alert.alert("Error", result.message || "No se pudo guardar la cobertura");
@@ -61,24 +59,15 @@ export default function EditarCobertura({ navigation }) {
 
             <TextInput
                 style={styles.input}
-                placeholder="Nombre"
-                value={nombre}
-                onChangeText={setNombre}
+                placeholder="Tipo de afiliación"
+                value={tipo_afiliacion}
+                onChangeText={setTipoAfiliacion}
             />
             <TextInput
                 style={styles.input}
-                placeholder="Dirección"
-                value={direccion}
-                onChangeText={setDireccion}
-                multiline
-                numberOfLines={4}
-                textAlignVertical="top"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Telefono"
-                value={telefono}
-                onChangeText={setTelefono}
+                placeholder="Porcentaje de cubrimiento"
+                value={porcentaje_cubrimiento}
+                onChangeText={setPorecntajeCubrimiento}
                 multiline
                 numberOfLines={4}
                 textAlignVertical="top"

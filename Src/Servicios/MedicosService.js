@@ -28,7 +28,7 @@ const formatErrorMessage = (errorResponseData) => {
 
 export const listarMedicos = async () => {
     try {
-        const response = await api.get("/listarMedicos");
+        const response = await api.get("/medicos");
         console.log("Respuesta listarMedicos:", response.data);
         return { success: true, data: response.data };
     } catch (error) {
@@ -44,7 +44,7 @@ export const listarMedicos = async () => {
 export const eliminarMedico = async (id) => {
     console.log("Intentando eliminar medico con ID:", id);
     try {
-        const response = await api.delete(`/eliminarMedico/${id}`);
+        const response = await api.delete(`/medicos/${id}`);
         console.log("Respuesta eliminarMedico:", response.data);
         return { success: true, message: response.data.message || "Medico eliminado correctamente" };
     } catch (error) {
@@ -59,7 +59,7 @@ export const eliminarMedico = async (id) => {
 
 export const crearMedico = async (data) => {
     try {
-        const response = await api.post("/crearMedico", data);
+        const response = await api.post("/medicos", data);
         console.log("Respuesta crearMedico:", response.data);
         return { success: true, data: response.data };
     } catch (error) {
@@ -75,7 +75,7 @@ export const crearMedico = async (data) => {
 export const editarMedico = async (id, data) => { // Asegúrate de que 'id' se pase como primer argumento
     try {
         // La URL debe incluir el ID de la especialidad a editar
-        const response = await api.put(`/editarMedico/${id}`, data); // Asumiendo que tu ruta de Laravel es /actualizarEspecialidad/{id}
+        const response = await api.put(`/medicos/${id}`, data); // Asumiendo que tu ruta de Laravel es /actualizarEspecialidad/{id}
         console.log("Respuesta editarMedico:", response.data);
         return { success: true, data: response.data };
     } catch (error) {

@@ -41,14 +41,13 @@ export default function AgregarCita({ navigation }) {
         setLoading(true);
         try {
             const result = await crearCita({
-                TipoCita: tipo_cita,
-                Descripcion: descripcion,
+                TipoCita: (tipo_cita),
                 Fecha: fecha,
                 Hora: hora,
                 Estado: estado,
-                CostoTotal: costo_total,
-                ValorEps: valor_eps,
-                ValorUsuario: valor_usuario
+                CostoTotal: (costo_total),
+                ValorEps: (valor_eps),
+                ValorUsuario: (valor_usuario)
             });
 
             if (result.success) {
@@ -105,7 +104,7 @@ export default function AgregarCita({ navigation }) {
             <TextInput
                 style={styles.input}
                 placeholder="Costo Total"
-                value={tipo}
+                value={costo_total}
                 onChangeText={setCostoTotal}
                 multiline
                 numberOfLines={4}
@@ -114,7 +113,7 @@ export default function AgregarCita({ navigation }) {
             <TextInput
                 style={styles.input}
                 placeholder="Valor EPS"
-                value={hora}
+                value={valor_eps}
                 onChangeText={setValorEps}
                 multiline
                 numberOfLines={4}
@@ -123,7 +122,7 @@ export default function AgregarCita({ navigation }) {
             <TextInput
                 style={styles.input}
                 placeholder="Valor Usuario"
-                value={tipo}
+                value={valor_usuario}
                 onChangeText={setValorUsuario}
                 multiline
                 numberOfLines={4}
@@ -140,7 +139,9 @@ export default function AgregarCita({ navigation }) {
                     </View>
                 )}
             </TouchableOpacity>
+
         </View>
+     
     );
 }
 

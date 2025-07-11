@@ -6,23 +6,26 @@ import BotonComponent from "../../components/BottonComponent";
 import { crearCita, editarCita } from "../../Src/Servicios/CitasService";
 import { listarCitas } from "../../Src/Servicios/CitasService";
 import { Picker } from "@react-native-picker/picker";
+import ListarUsuarios from "../Usuarios/ListarUsuarios";
+import { listarMedicos } from "../../Src/Servicios/MedicosService";
 
 export default function EditarCitas({ navigation }) {
     const route = useRoute();
     const cita = route.params?.cita;
 
-    const [usuarios_id, setUsuarios] = useState(cita?.Nombre || "");
-    const [tipo_cita, setTipoCita] = useState(cita?.Nombre || "");
+    const [medico_id, setMedicos] = useState(cita?.medico_id || "");
+    const [usuarios_id, setUsuarios] = useState(cita?.usuarios_id || "");
+    const [tipo_cita, setTipoCita] = useState(cita?.tipo_cita || "");
     const [fecha, setFecha] = useState(cita?.Fecha || "");
     const [hora, setHora] = useState(cita?.Hora || "");
     const [estado, setEstado] = useState(cita?.Estado || "");
-    const [costo_total, setCostoTotal] = useState(cita?.Estado || "");
-    const [valor_eps, setValorEps] = useState(cita?.Estado || "");
-    const [valor_usuario, setValorUsuario] = useState(cita?.Estado || "");
+    const [costo_total, setCostoTotal] = useState(cita?.costo_total || "");
+    const [valor_eps, setValorEps] = useState(cita?.valor_eps || "");
+    const [valor_usuario, setValorUsuario] = useState(cita?.valor_usuario || "");
 
     useEffect(() => {
         const cargarUsuarios = async () => {
-            const result = await listarUsuarios();
+            const result = await ListarUsuarios();
             if (result.success) {
                 setUsuarios(result.data);
             };

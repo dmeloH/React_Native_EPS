@@ -34,33 +34,28 @@ export default function Inicio() {
                 {/* Iconos con nombres */}
                 <View style={styles.gridContainer}>
                     <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('CitasFlow')}>
-                        <Fontisto name="date" size={45} color="black" style={styles.iconShadow} />
+                        <Fontisto name="date" size={45} color="#FF8282" style={styles.iconShadow} />
                         <Text style={styles.iconLabel}>Citas</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('ConsultoriosFlow')}>
-                        <MaterialCommunityIcons name="microsoft-office" size={45} color="gold" style={styles.iconShadow} />
-                        <Text style={styles.iconLabel}>Consultorios</Text>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('UsuariosFlow')}>
+                        <MaterialCommunityIcons name="account-multiple-plus" size={45} color="#FF8282" style={styles.iconShadow} />
+                        <Text style={styles.iconLabel}>Usuarios</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('EpsFlow')}>
-                        <MaterialIcons name="health-and-safety" size={45} color="silver" style={styles.iconShadow} />
+                        <MaterialCommunityIcons name="city-variant" size={45} color="#FF6363" style={styles.iconShadow} />
                         <Text style={styles.iconLabel}>Eps</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('TipoCitasFlow')}>
-                        <MaterialCommunityIcons name="professional-hexagon" size={45} color="red" style={styles.iconShadow} />
-                        <Text style={styles.iconLabel}>Especialidades</Text>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('CoberturasFlow')}>
+                        <MaterialCommunityIcons name="mother-heart" size={45} color="#FF6363" style={styles.iconShadow} />
+                        <Text style={styles.iconLabel}>Coberturas</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('MedicosFlow')}>
-                        <Fontisto name="doctor" size={45} color="skyblue" style={styles.iconShadow} />
+                        <Fontisto name="doctor" size={45} color="#rgb(190, 228, 208)" style={styles.iconShadow} />
                         <Text style={styles.iconLabel}>Medicos</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('CoberturasFlow')}>
-                        <FontAwesome5 name="laptop-house" size={45} color="orange" style={styles.iconShadow} />
-                        <Text style={styles.iconLabel}>Sedes</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>
@@ -84,7 +79,7 @@ const styles = StyleSheet.create({
     header: {
         alignItems: 'center',
         marginTop: 30,
-        marginBottom: 190,
+        marginBottom: 100,
     },
     headerTitle: {
         fontSize: 32,

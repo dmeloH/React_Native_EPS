@@ -26,14 +26,14 @@ const formatErrorMessage = (errorResponseData) => {
 };
 
 
-export const listarPacientes = async () => {
+export const listarEps = async () => {
     try {
-        const response = await api.get("/listarPacientes");
+        const response = await api.get("/eps");
         console.log("Respuesta listarPacientes:", response.data);
         return { success: true, data: response.data };
     } catch (error) {
         const errorMessage = error.response ? formatErrorMessage(error.response.data) : "Error de conexión";
-        console.error("Error al listar especialidades:", error.response ? error.response.data : error.message);
+        console.error("Error al listar eps:", error.response ? error.response.data : error.message);
         return {
             success: false,
             message: errorMessage,
@@ -41,15 +41,15 @@ export const listarPacientes = async () => {
     }
 }
 
-export const eliminarPaciente = async (id) => {
+export const eliminarEps = async (id) => {
     console.log("Intentando eliminar paciente con ID:", id);
     try {
-        const response = await api.delete(`/eliminarPaciente/${id}`);
-        console.log("Respuesta eliminarPaciente:", response.data);
+        const response = await api.delete(`/eps/${id}`);
+        console.log("Respuesta eliminar eps:", response.data);
         return { success: true, message: response.data.message || "Paciente eliminado correctamente" };
     } catch (error) {
         const errorMessage = error.response ? formatErrorMessage(error.response.data) : "Error de conexión";
-        console.error("Error al eliminar Paciente:", error.response ? error.response.data : error.message);
+        console.error("Error al eliminar eps:", error.response ? error.response.data : error.message);
         return {
             success: false,
             message: errorMessage,
@@ -57,14 +57,14 @@ export const eliminarPaciente = async (id) => {
     }
 };
 
-export const crearEspecialidad = async (data) => {
+export const crearEps = async (data) => {
     try {
-        const response = await api.post("/crearPaciente", data);
+        const response = await api.post("/eps", data);
         console.log("Respuesta crearPaciente:", response.data);
         return { success: true, data: response.data };
     } catch (error) {
         const errorMessage = error.response ? formatErrorMessage(error.response.data) : "Error de conexión";
-        console.error("Error al crear paciente:", error.response ? error.response.data : error.message);
+        console.error("Error al crear eps:", error.response ? error.response.data : error.message);
         return {
             success: false,
             message: errorMessage
@@ -72,15 +72,15 @@ export const crearEspecialidad = async (data) => {
     }
 };
 
-export const editarPaciente = async (id, data) => { // Asegúrate de que 'id' se pase como primer argumento
+export const editarEps = async (id, data) => { // Asegúrate de que 'id' se pase como primer argumento
     try {
         // La URL debe incluir el ID de la especialidad a editar
-        const response = await api.put(`/editarPaciente/${id}`, data); // Asumiendo que tu ruta de Laravel es /actualizarEspecialidad/{id}
+        const response = await api.put(`/eps/${id}`, data); // Asumiendo que tu ruta de Laravel es /actualizarEspecialidad/{id}
         console.log("Respuesta editarPaciente:", response.data);
         return { success: true, data: response.data };
     } catch (error) {
         const errorMessage = error.response ? formatErrorMessage(error.response.data) : "Error de conexión";
-        console.error("Error al editar la especialidad:", error.response ? error.response.data : error.message);
+        console.error("Error al editar la eps:", error.response ? error.response.data : error.message);
         return {
             success: false,
             message: errorMessage

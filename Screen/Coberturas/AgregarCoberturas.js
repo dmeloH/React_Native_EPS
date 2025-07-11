@@ -4,9 +4,8 @@ import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
 import { crearCoberturas } from "../../Src/Servicios/CoberturasService";
 
 export default function AgregarCoberturas({ navigation }) {
-    const [nombre, setNombre] = useState("");
-    const [direccion, setDireccion] = useState("");
-    const [telefono, setTelefono] = useState("");
+    const [tipo_afiliacion, setTipoAfiliacion] = useState("");
+    const [porcentaje_cubrimiento, setPorecntajeCubrimiento] = useState("");
 
     const [loading, setLoading] = useState(false);
 
@@ -28,7 +27,7 @@ export default function AgregarCoberturas({ navigation }) {
     };
 
     const handleGuardar = async () => {
-        if (!nombre || !direccion || !telefono) {
+        if (!tipo_afiliacion || !porcentaje_cubrimiento) {
             Alert.alert("Campos requeridos", "Por favor, ingrese todos los campos");
             return;
         }
@@ -36,9 +35,8 @@ export default function AgregarCoberturas({ navigation }) {
         setLoading(true);
         try {
             const result = await crearCoberturas({
-                Nombre: nombre,
-                Direccion: direccion,
-                Telefono: telefono
+                TipoAfiliacion: tipo_afiliacion,
+                PorcentajeCubrimiento: porcentaje_cubrimiento
             });
 
             if (result.success) {
@@ -61,29 +59,19 @@ export default function AgregarCoberturas({ navigation }) {
 
             <TextInput
                 style={styles.input}
-                placeholder="Nombre"
-                value={nombre}
-                onChangeText={setNombre}
+                placeholder="Tipo de Afiliación"
+                value={tipo_afiliacion}
+                onChangeText={setTipoAfiliacion}
             />
             <TextInput
                 style={styles.input}
-                placeholder="Dirección"
-                value={direccion}
-                onChangeText={setDireccion}
+                placeholder="Porcentaje de Cubrimiento"
+                value={porcentaje_cubrimiento}
+                onChangeText={setPorecntajeCubrimiento}
                 multiline
                 numberOfLines={4}
                 textAlignVertical="top"
             />
-            <TextInput
-                style={styles.input}
-                placeholder="Telefono"
-                value={telefono}
-                onChangeText={setTelefono}
-                multiline
-                numberOfLines={4}
-                textAlignVertical="top"
-            />
-
             <TouchableOpacity style={styles.boton} onPress={handleGuardar} disabled={loading}>
                 {loading ? (
                     <ActivityIndicator color="#fff" />
