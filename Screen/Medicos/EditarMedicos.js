@@ -11,20 +11,20 @@ export default function EditarMedico({ navigation }) {
     const medico = route.params?.medico;
 
     const [nombre, setNombre] = useState(medico?.Nombre || "");
-    const [apellido, setApellido] = useState(medico?.Apellido || "");
-    const [correo, setCorreo] = useState(medico?.Correo || "");
+    const [especialidad, setEspecialidad] = useState(medico?.Especialidad || "");
+    const [numero_documento, setNumeroDocumento] = useState(medico?.NumeroDocumento || "");
+    const [registro_profesional, setRegistroProfesional] = useState(medico?.RegistroProfesional || "");
     const [telefono, setTelefono] = useState(medico?.Telefono || "");
-    const [tipodocumento, setTipoDocumento] = useState(medico?.TipoDocumento || "");
-    const [numerodocumento, setNumeroDocumento] = useState(medico?.NumeroDocumento || "");
-    const [activo, setActivo] = useState(medico?.Activo || "");
-    const [idEspecialidad, setIdEspecialidad] = useState(medico?.idEspecialidad || "");
+    const [correo, setCorreo] = useState(medico?.Correo || "");
+    const [direccion, setDireccion] = useState(medico?.Direccion || "");
+    const [estado, setEstado] = useState(medico?.Estado || "");
 
     const [loading, setLoading] = useState(false);
 
     const esEdicion = !!medico;
 
     const handleGuardar = async () => {
-        if (!nombre || !apellido || !correo || !telefono || !tipodocumento || !numerodocumento || !activo || !idEspecialidad) {
+        if (!nombre || !especialidad || !numero_documento || !registro_profesional || !telefono || !correo || !direccion || !estado) {
             Alert.alert("Campos requeridos", "Por favor, ingrese todos los campos");
             return;
         }
@@ -35,24 +35,24 @@ export default function EditarMedico({ navigation }) {
             if (esEdicion) {
                 result = await editarMedico(medico.id, {
                     Nombre: nombre,
-                    Apellido: apellido,
-                    Correo: correo,
+                    Especialidad: especialidad,
+                    NumeroDocumento: numero_documento,
+                    RegistroProfesional: registro_profesional,
                     Telefono: telefono,
-                    TipoDocumento: tipodocumento,
-                    NumeroDocumento: numerodocumento,
-                    Activo: activo,
-                    idEspecialidad: idEspecialidad     
+                    Correo: correo,
+                    Direccion: direccion,
+                    Estado: estado
                 });
             } else {
                 result = await crearMedico({
                     Nombre: nombre,
-                    Apellido: apellido,
-                    Correo: correo,
+                    Especialidad: especialidad,
+                    NumeroDocumento: numero_documento,
+                    RegistroProfesional: registro_profesional,
                     Telefono: telefono,
-                    TipoDocumento: tipodocumento,
-                    NumeroDocumento: numerodocumento,
-                    Activo: activo,
-                    idEspecialidad: idEspecialidad
+                    Correo: correo,
+                    Direccion: direccion,
+                    Estado: estado
                 });
             }
 
@@ -82,9 +82,36 @@ export default function EditarMedico({ navigation }) {
             />
             <TextInput
                 style={styles.input}
-                placeholder="Apellido"
-                value={apellido}
-                onChangeText={setApellido}
+                placeholder="Especialidad"
+                value={especialidad}
+                onChangeText={setEspecialidad}
+                multiline
+                numberOfLines={4}
+                textAlignVertical="top"
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Número Documento"
+                value={numero_documento}
+                onChangeText={setNumeroDocumento}
+                multiline
+                numberOfLines={4}
+                textAlignVertical="top"
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Registro Profesional"
+                value={registro_profesional}
+                onChangeText={setRegistroProfesional}
+                multiline
+                numberOfLines={4}
+                textAlignVertical="top"
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Teléfono"
+                value={telefono}
+                onChangeText={setTelefono}
                 multiline
                 numberOfLines={4}
                 textAlignVertical="top"
@@ -100,45 +127,18 @@ export default function EditarMedico({ navigation }) {
             />
             <TextInput
                 style={styles.input}
-                placeholder="Telefono"
-                value={telefono}
-                onChangeText={setTelefono}
+                placeholder="Dirección"
+                value={direccion}
+                onChangeText={setDireccion}
                 multiline
                 numberOfLines={4}
                 textAlignVertical="top"
             />
             <TextInput
                 style={styles.input}
-                placeholder="Tipo Documento"
-                value={tipodocumento}
-                onChangeText={setTipoDocumento}
-                multiline
-                numberOfLines={4}
-                textAlignVertical="top"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Número Documento"
-                value={numerodocumento}
-                onChangeText={setNumeroDocumento}
-                multiline
-                numberOfLines={4}
-                textAlignVertical="top"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Activo"
-                value={activo}
-                onChangeText={setActivo}
-                multiline
-                numberOfLines={4}
-                textAlignVertical="top"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Id Especialidad"
-                value={idEspecialidad}
-                onChangeText={setIdEspecialidad}
+                placeholder="Estado"
+                value={estado}
+                onChangeText={setEstado}
                 multiline
                 numberOfLines={4}
                 textAlignVertical="top"

@@ -1,10 +1,9 @@
 import { View, Text, FlatList, Alert, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
-import BotonComponent from "../../components/BottonComponent"; // Asegúrate de que la ruta sea correcta
-import EspecialidadCard from "../../components/EspecialidadCard";
 import { useNavigation } from "@react-navigation/native";
 import { listarUsuarios, eliminarUsuarios } from "../../Src/Servicios/UsuariosService";
+import UsuariosCard from '../../components/UsuariosCard';
 
 export default function ListarUsuarios (){
     const [usuarios, setUsuarios] = useState([]);
@@ -12,16 +11,18 @@ export default function ListarUsuarios (){
     const navigation = useNavigation();
 
     const handleUsuarios = async () => {
+        console.log("Cargando usuarios...");
         setLoading(true);
         try {
             const result = await listarUsuarios();
             if (result.success) {
                 setUsuarios(result.data);
+                console.log("Usuarios cargados:", result.data);
             } else {
-                Alert.alert ("Error", result.message || "No se pudierón cargas los usuarios");
+                Alert.alert ("Error", result.message || "No se pudieron cargar los usuarios");
             }
         } catch (error) {
-            Alert.alert ("Error", "No se pudierón cargas los usuarios");
+            Alert.alert ("Error", "No se pudieron cargar los usuarios");
         } finally {
             setLoading(false);
         }

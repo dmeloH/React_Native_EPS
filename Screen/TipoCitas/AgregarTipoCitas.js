@@ -4,8 +4,9 @@ import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
 import { crearTipoCitas } from "../../Src/Servicios/TipoCitasService";
 
 export default function AgregarTipoCita({ navigation }) {
-    const [nombre, setNombre] = useState("");
-    const [descripcion, setDescripcion] = useState("");
+    const [general, setGeneral] = useState("");
+    const [especialista, setEspecialista] = useState("");
+    const [urgencia, setUrgencia] = useState("");
     const [loading, setLoading] = useState(false);
 
     const getAlertMessage = (msg, defaultMsg) => {
@@ -26,7 +27,7 @@ export default function AgregarTipoCita({ navigation }) {
     };
 
     const handleGuardar = async () => {
-        if (!nombre || !descripcion) {
+        if (!general || !especialista || !urgencia) {
             Alert.alert("Campos requeridos", "Por favor, ingrese todos los campos");
             return;
         }
@@ -58,19 +59,29 @@ export default function AgregarTipoCita({ navigation }) {
 
             <TextInput
                 style={styles.input}
-                placeholder="Nombre"
-                value={nombre}
-                onChangeText={setNombre}
+                placeholder="general"
+                value={general}
+                onChangeText={setGeneral}
             />
             <TextInput
                 style={styles.input}
-                placeholder="Descripción"
-                value={descripcion}
-                onChangeText={setDescripcion}
+                placeholder="especialista"
+                value={especialista}
+                onChangeText={setEspecialista}
                 multiline
                 numberOfLines={4}
                 textAlignVertical="top"
             />
+             <TextInput
+                style={styles.input}
+                placeholder="urgencia"
+                value={urgencia}
+                onChangeText={setUrgencia}
+                multiline
+                numberOfLines={4}
+                textAlignVertical="top"
+            />
+            
 
             <TouchableOpacity style={styles.boton} onPress={handleGuardar} disabled={loading}>
                 {loading ? (

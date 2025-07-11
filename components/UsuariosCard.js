@@ -1,31 +1,30 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function CitaCard ({ cita, onEdit, onDelete}){
+export default function UsuariosCard({ usuario, onEdit, onDelete }) {
     return (
-        <View style= {styles.card}>
-            <View style= {styles.info}>
-                <Text style= {styles.nombre}>{cita.TipoCita}</Text>
-                <Text style= {styles.detalle}>Descripción: {cita.Fecha}</Text>
-                <Text style= {styles.detalle}>Descripción: {cita.Hora}</Text>
-                <Text style= {styles.detalle}>Descripción: {cita.Estado}</Text>
-                <Text style= {styles.detalle}>Descripción: {cita.CostoTotal}</Text>
-                <Text style= {styles.detalle}>Descripción: {cita.ValorEps}</Text>
-                <Text style= {styles.detalle}>Descripción: {cita.ValorUsuario}</Text>
+        <View style={styles.card}>
+            <View style={styles.info}>
+                <Text style={styles.nombre_completo}>{usuario.NombreCompleto}</Text>
+                <Text style={styles.detalle}>Descripción: {usuario.TipoDocumento}</Text>
+                <Text style={styles.detalle}>Descripción: {usuario.NumeroDocumento}</Text>
+                <Text style={styles.detalle}>Descripción: {usuario.FechaNacimiento}</Text>
+                <Text style={styles.detalle}>Descripción: {usuario.TipoAfiliacion}</Text>
+                <Text style={styles.detalle}>Descripción: {usuario.EpsId}</Text>
             </View>
-            <View style = {styles.actions}>
+            <View style={styles.actions}>
                 <TouchableOpacity onPress={onEdit} style={styles.iconBtn}>
-                    <Ionicons name= "create-outline" size={24} color="#1976D2" />     
+                    <Ionicons name="create-outline" size={24} color="#1976D2" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={onDelete} style={styles.iconBtn}>
-                    <Ionicons name= "trash-outline" size={24} color="#D32F2F" />
+                    <Ionicons name="trash-outline" size={24} color="#D32F2F" />
                 </TouchableOpacity>
             </View>
         </View>
     );
 }
 
-const styles = StyleSheet.create ({
+const styles = StyleSheet.create({
     card: {
         backgroundColor: '#fff',
         borderRadius: 8,
@@ -59,4 +58,4 @@ const styles = StyleSheet.create ({
         marginLeft: 10,
     },
 });
-    
+

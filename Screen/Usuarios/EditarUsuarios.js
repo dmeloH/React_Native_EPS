@@ -10,16 +10,20 @@ export default function EditarUsuarios({ navigation }) {
 
     const usuario = route.params?.usuario;
 
-    const [nombre, setNombre] = useState(especialidad?.Nombre || "");
-    const [numero, setNumero] = useState(especialidad?.Numero || "");
-    const [idsede, setIdSede] = useState(especialidad?.IdSede || "");
+    const [nombre_completo, setNombreCompleto] = useState(especialidad?.NombreCompleto || "");
+    const [tipo_documento, setTipoDocumento] = useState(especialidad?.TipoDocumento || "");
+    const [numero_documento, setNumeroDocumento] = useState(especialidad?.NumeroDocumento || "");
+    const [fecha_nacimiento, setFechaNacimiento] = useState(especialidad?.FechaNacimiento || "");
+    const [tipo_afiliacion, setTipoAfiliacion] = useState(especialidad?.TipoAfiliacion || "");
+    const [correo, setCorreo] = useState(especialidad?.Correo || "");
+    const [eps_id, setEps_id] = useState(especialidad?.EpsId || "");
 
     const [loading, setLoading] = useState(false);
 
     const esEdicion = !!usuario;
 
     const handleGuardar = async () => {
-        if (!nombre || !numero || !idsede) {
+        if (!nombre_completo || !tipo_documento || !numero_documento || !fecha_nacimiento || !tipo_afiliacion || !correo || !eps_id) {
             Alert.alert("Campos requeridos", "Por favor, ingrese todos los campos");
             return;
         }
@@ -29,14 +33,23 @@ export default function EditarUsuarios({ navigation }) {
         try {
             if (esEdicion) {
                 result = await editarUsuarios(usuario.id, {
-                    Nombre: nombre,
-                    Numero: numero,
-                    IdSede: idsede
+                    NombreCompleto: nombre_completo,
+                    TipoDocumento: tipo_documento,
+                    NumeroDocumento: numero_documento,
+                    FechaNacimiento: fecha_nacimiento,
+                    TipoAfiliacion: tipo_afiliacion,
+                    Correo: correo,
+                    EpsId: eps_id
                 });
             } else {
                 result = await crearUsuarios({
-                    Nombre: nombre,
-                    Descripcion: descripcion,
+                    NombreCompleto: nombre_completo,
+                    TipoDocumento: tipo_documento,
+                    NumeroDocumento: numero_documento,
+                    FechaNacimiento: fecha_nacimiento,
+                    TipoAfiliacion: tipo_afiliacion,
+                    Correo: correo,
+                    EpsId: eps_id
                 });
             }
 
@@ -60,24 +73,57 @@ export default function EditarUsuarios({ navigation }) {
 
             <TextInput
                 style={styles.input}
-                placeholder="Nombre"
-                value={nombre}
-                onChangeText={setNombre}
+                placeholder="Nombre Completo"
+                value={nombre_completo}
+                onChangeText={setNombreCompleto}
             />
             <TextInput
                 style={styles.input}
-                placeholder="Número"
-                value={numero}
-                onChangeText={setNumero}
+                placeholder="Tipo Documento"
+                value={tipo_documento}
+                onChangeText={setTipoDocumento}
                 multiline
                 numberOfLines={4}
                 textAlignVertical="top"
             />
             <TextInput
                 style={styles.input}
-                placeholder="Id Sede"
-                value={idsede}
-                onChangeText={setIdSede}
+                placeholder="Número Documento"
+                value={numero_documento}
+                onChangeText={setNumeroDocumento}
+                multiline
+                numberOfLines={4}
+                textAlignVertical="top"
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Fecha Nacimiento"
+                value={fecha_nacimiento}
+                onChangeText={setFechaNacimiento}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Tipo Afiliación"
+                value={tipo_afiliacion}
+                onChangeText={setTipoAfiliacion}
+                multiline
+                numberOfLines={4}
+                textAlignVertical="top"
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Correo"
+                value={correo}
+                onChangeText={setCorreo}
+                multiline
+                numberOfLines={4}
+                textAlignVertical="top"
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Eps ID"
+                value={eps_id}
+                onChangeText={setEps_id}
                 multiline
                 numberOfLines={4}
                 textAlignVertical="top"

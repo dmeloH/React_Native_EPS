@@ -4,9 +4,13 @@ import { Ionicons } from '@expo/vector-icons'; // Importa Iconos
 import { crearCita } from "../../Src/Servicios/CitasService";
 
 export default function AgregarUsuarios({ navigation }) {
-    const [nombre, setNombre] = useState("");
-    const [numero, setNumero] = useState("");
-    const [idsede, setIdSede] = useState("");
+    const [nombre_completo, setNombreCompleto] = useState("");
+    const [tipo_documento, setTipoDocumento] = useState("");
+    const [numero_documento, setNumeroDocumento] = useState("");
+    const [fecha_nacimiento, setFechaNacimiento] = useState("");
+    const [tipo_afiliacion, setTipoAfiliacion] = useState("");
+    const [correo, setCorreo] = useState("");
+    const [eps_id, setEps_id] = useState("");
     
     const [loading, setLoading] = useState(false);
 
@@ -28,7 +32,7 @@ export default function AgregarUsuarios({ navigation }) {
     };
 
     const handleGuardar = async () => {
-        if (!nombre || !numero || !idsede) {
+        if (!nombre_completo || !tipo_documento || !numero_documento || !fecha_nacimiento || !tipo_afiliacion || !correo || !eps_id) {
             Alert.alert("Campos requeridos", "Por favor, ingrese todos los campos");
             return;
         }
@@ -36,9 +40,13 @@ export default function AgregarUsuarios({ navigation }) {
         setLoading(true);
         try {
             const result = await crearUsuarios({
-                Nombre: nombre,
-                Numero: numero,
-                IdSede: idsede        
+                NombreCompleto: nombre_completo,
+                TipoDocumento: tipo_documento,
+                NumeroDocumento: numero_documento,
+                FechaNacimiento: fecha_nacimiento,
+                TipoAfiliacion: tipo_afiliacion,
+                Correo: correo,
+                EpsId: eps_id   
             });
 
             if (result.success) {
@@ -61,24 +69,57 @@ export default function AgregarUsuarios({ navigation }) {
 
             <TextInput
                 style={styles.input}
-                placeholder="Nombre"
-                value={nombre}
-                onChangeText={setNombre}
+                placeholder="Nombre Completo"
+                value={nombre_completo}
+                onChangeText={setNombreCompleto}
             />
             <TextInput
                 style={styles.input}
-                placeholder="Número"
-                value={numero}
-                onChangeText={setNumero}
+                placeholder="Tipo Documento"
+                value={tipo_documento}
+                onChangeText={setTipoDocumento}
                 multiline
                 numberOfLines={4}
                 textAlignVertical="top"
             />
             <TextInput
                 style={styles.input}
-                placeholder="Id Sede"
-                value={idsede}
-                onChangeText={setIdSede}
+                placeholder="Número Documento"
+                value={numero_documento}
+                onChangeText={setNumeroDocumento}
+                multiline
+                numberOfLines={4}
+                textAlignVertical="top"
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Fecha Nacimiento"
+                value={fecha_nacimiento}
+                onChangeText={setFechaNacimiento}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Tipo Afiliación"
+                value={tipo_afiliacion}
+                onChangeText={setTipoAfiliacion}
+                multiline
+                numberOfLines={4}
+                textAlignVertical="top"
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Correo"
+                value={correo}
+                onChangeText={setCorreo}
+                multiline
+                numberOfLines={4}
+                textAlignVertical="top"
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Eps ID"
+                value={eps_id}
+                onChangeText={setEps_id}
                 multiline
                 numberOfLines={4}
                 textAlignVertical="top"

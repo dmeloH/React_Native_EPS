@@ -10,14 +10,15 @@ export default function EditarTipoCita({ navigation }) {
 
     const tipoCita = route.params?.tipoCita;
 
-    const [nombre, setNombre] = useState(tipoCita?.Nombre || "");
-    const [descripcion, setDescripcion] = useState(tipoCita?.Descripcion || "");
+    const [general, setGeneral] = useState(tipoCita?.General || "");
+    const [especialista, setespecialista] = useState(tipoCita?.Especialista || "");
+    const [urgencia, setUrgencia] = useState(tipoCita?.Urgencia || "");
     const [loading, setLoading] = useState(false);
 
     const esEdicion = !!tipoCita;
 
     const handleGuardar = async () => {
-        if (!nombre || !descripcion) {
+        if (!general || !especialista || !urgencia) {
             Alert.alert("Campos requeridos", "Por favor, ingrese todos los campos");
             return;
         }
@@ -57,15 +58,24 @@ export default function EditarTipoCita({ navigation }) {
 
             <TextInput
                 style={styles.input}
-                placeholder="Nombre"
-                value={nombre}
-                onChangeText={setNombre}
+                placeholder="General"
+                value={general}
+                onChangeText={setGeneral}
             />
             <TextInput
                 style={styles.input}
-                placeholder="Descripción"
-                value={descripcion}
-                onChangeText={setDescripcion}
+                placeholder="Especialista"
+                value={especialista}
+                onChangeText={setespecialista}
+                multiline
+                numberOfLines={4}
+                textAlignVertical="top"
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Urgencia"
+                value={urgencia}
+                onChangeText={setUrgencia}
                 multiline
                 numberOfLines={4}
                 textAlignVertical="top"

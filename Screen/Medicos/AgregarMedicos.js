@@ -5,13 +5,13 @@ import { crearMedico } from "../../Src/Servicios/MedicosService";
 
 export default function AgregarMedico({ navigation }) {
     const [nombre, setNombre] = useState("");
-    const [apellido, setApellido] = useState("");
-    const [correo, setCorreo] = useState("");
+    const [especialidad, setEspecialidad] = useState("");
+    const [numero_documento, setNumeroDocumento] = useState("");
+    const [registro_profesional, setRegistroProfesional] = useState("");
     const [telefono, setTelefono] = useState("");
-    const [tipodocumento, setTipoDocumento] = useState("");
-    const [numerodocumento, setNumeroDocumento] = useState("");
-    const [activo, setActivo] = useState("");
-    const [idespecialidad, setIdEspecialidad] = useState("");
+    const [correo, setCorreo] = useState("");
+    const [direccion, setDireccion] = useState("");
+    const [estado, setEstado] = useState("");
 
     const [loading, setLoading] = useState(false);
 
@@ -33,7 +33,7 @@ export default function AgregarMedico({ navigation }) {
     };
 
     const handleGuardar = async () => {
-        if (!nombre || !apellido || !correo || !telefono || !tipodocumento || !numerodocumento || !activo || !idespecialidad) {
+        if (!nombre || !especialidad || !numero_documento || !registro_profesional || !telefono || !correo || !direccion || !estado) {
             Alert.alert("Campos requeridos", "Por favor, ingrese todos los campos");
             return;
         }
@@ -42,13 +42,13 @@ export default function AgregarMedico({ navigation }) {
         try {
             const result = await crearMedico({
                 Nombre: nombre,
-                Apellido: apellido,
-                Correo: correo,
+                Especialidad: especialidad,
+                NumeroDocumento: numero_documento,
+                RegistroProfesional: registro_profesional,
                 Telefono: telefono,
-                TipoDocumento: tipodocumento,
-                NumeroDocumento: numerodocumento,
-                Activo: activo,
-                IdEspecialidad: idespecialidad
+                Correo: correo,
+                Direccion: direccion,
+                Estado: estado
             });
 
             if (result.success) {
@@ -77,9 +77,36 @@ export default function AgregarMedico({ navigation }) {
             />
             <TextInput
                 style={styles.input}
-                placeholder="Apellido"
-                value={apellido}
-                onChangeText={setApellido}
+                placeholder="Especialidad"
+                value={especialidad}
+                onChangeText={setEspecialidad}
+                multiline
+                numberOfLines={4}
+                textAlignVertical="top"
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Número Documento"
+                value={numero_documento}
+                onChangeText={setNumeroDocumento}
+                multiline
+                numberOfLines={4}
+                textAlignVertical="top"
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Registro Profesional"
+                value={registro_profesional}
+                onChangeText={setRegistroProfesional}
+                multiline
+                numberOfLines={4}
+                textAlignVertical="top"
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Teléfono"
+                value={telefono}
+                onChangeText={setTelefono}
                 multiline
                 numberOfLines={4}
                 textAlignVertical="top"
@@ -95,45 +122,18 @@ export default function AgregarMedico({ navigation }) {
             />
             <TextInput
                 style={styles.input}
-                placeholder="Telefono"
-                value={telefono}
-                onChangeText={setTelefono}
+                placeholder="Dirección"
+                value={direccion}
+                onChangeText={setDireccion}
                 multiline
                 numberOfLines={4}
                 textAlignVertical="top"
             />
             <TextInput
                 style={styles.input}
-                placeholder="Tipo Documento"
-                value={tipodocumento}
-                onChangeText={setTipoDocumento}
-                multiline
-                numberOfLines={4}
-                textAlignVertical="top"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Número Documento"
-                value={numerodocumento}
-                onChangeText={setNumeroDocumento}
-                multiline
-                numberOfLines={4}
-                textAlignVertical="top"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Activo"
-                value={activo}
-                onChangeText={setActivo}
-                multiline
-                numberOfLines={4}
-                textAlignVertical="top"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Id Especialidad"
-                value={idespecialidad}
-                onChangeText={setIdEspecialidad}
+                placeholder="Estado"
+                value={estado}
+                onChangeText={setEstado}
                 multiline
                 numberOfLines={4}
                 textAlignVertical="top"

@@ -26,10 +26,9 @@ const formatErrorMessage = (errorResponseData) => {
 };
 
 
-export const ListarUsuarios = async () => {
+export const listarUsuarios = async () => {
     try {
         const response = await api.get("/usuarios");
-        console.log("Respuesta listarUsuarios:", response.data);
         return { success: true, data: response.data };
     } catch (error) {
         const errorMessage = error.response ? formatErrorMessage(error.response.data) : "Error de conexión";
