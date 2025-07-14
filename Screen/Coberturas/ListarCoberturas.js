@@ -1,13 +1,12 @@
 import { View, Text, FlatList, Alert, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
-import BotonComponent from "../../components/BottonComponent"; // Asegúrate de que la ruta sea correcta
-import EspecialidadCard from "../../components/EspecialidadCard";
 import { useNavigation } from "@react-navigation/native";
 import { listarCoberturas, eliminarCobertura } from "../../Src/Servicios/CoberturasService";
+import CoberturasCard from '../../components/CoberturasCard';
 
 export default function ListarCobertura (){
-    const [Coberturas, setCoberturas] = useState([]);
+    const [cobertura, setCoberturas] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigation = useNavigation();
 
@@ -62,7 +61,7 @@ export default function ListarCobertura (){
     }
 
     const handleCrear = () => {
-        navigation.navigate('crearCobertura');
+        navigation.navigate('EditarCoberturas');
     };
 
     if (loading) {
@@ -73,22 +72,25 @@ export default function ListarCobertura (){
         );
     }
 
-    const handleEditar = (Cobertura) => {
-        navigation.navigate("EditarCobertura", {Cobertura});
+    const handleEditar = (cobertura) => {
+        navigation.navigate("EditarCoberturas", {cobertura});
+    }
 
-
+    const handleDetalle = (cobertura) => {
+        navigation.navigate("DetalleCoberturas", {cobertura});
     }
 
     return (
         <View style={{flex: 1}}>
             <FlatList
-            data={Coberturas}
+            data={cobertura}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
-                <CoberturaCard
-                Cobertura= {item}
+                <CoberturasCard
+                cobertura= {item}
                 onEdit={() => handleEditar (item)}
                 onDelete={() => handleEliminar (item.id)}
+                onDetail={() => handleDetalle(item)}
             />
             )}
             ListEmptyComponent = {<Text style = {styles.emptyText}>No Hay Coberturas Registradas. </Text>}

@@ -1,25 +1,18 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function UsuariosCard({ usuarios, onEdit, onDelete, onDetails }) {
+export default function CoberturasCard({ cobertura, onEdit, onDelete, onDetail }) {
     return (
+
+        //         'tipo_afiliacion',
+        // 'porcentaje_cubrimiento',
         <View style={styles.card}>
             <View style={styles.info}>
-                {/* 'nombre_completo',
-                'tipo_documento',
-                'numero_documento',
-                'fecha_nacimiento',
-                'eps_id',
-                'cobertura_id', // nuevo campo relacionado */}
-                <Text style={styles.nombre_completo}>{usuarios?.nombre_completo ?? 'Sin nombre'}</Text>
-                <Text style={styles.detalle}>Tipo documento: {usuarios?.tipo_documento ?? '-'}</Text>
-                <Text style={styles.detalle}>Número documento: {usuarios?.numero_documento ?? '-'}</Text>
-                <Text style={styles.detalle}>Fecha nacimiento: {usuarios?.fecha_nacimiento ?? '-'}</Text>
-                <Text style={styles.detalle}>Cobertura: {usuarios?.cobertura_id ?? '-'}</Text>
-                <Text style={styles.detalle}>Eps: {usuarios?.eps_id ?? '-'}</Text>
+                <Text style={styles.detalle}>Afiliación: {cobertura?.tipo_afiliacion ?? '-'}</Text>
+                <Text style={styles.detalle}>Cubrimiento: {cobertura?.porcentaje_cubrimiento ?? '-'}%</Text>
             </View>
             <View style={styles.actions}>
-                <TouchableOpacity onPress={onDetails} style={styles.iconBtn}>
+                <TouchableOpacity onPress={onDetail} style={styles.iconBtn}>
                     <Ionicons name="information-circle-outline" size={24} color="#4CAF50" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={onEdit} style={styles.iconBtn}>
@@ -28,6 +21,7 @@ export default function UsuariosCard({ usuarios, onEdit, onDelete, onDetails }) 
                 <TouchableOpacity onPress={onDelete} style={styles.iconBtn}>
                     <Ionicons name="trash-outline" size={24} color="#D32F2F" />
                 </TouchableOpacity>
+                
             </View>
         </View>
     );
@@ -51,7 +45,7 @@ const styles = StyleSheet.create({
     info: {
         flex: 1,
     },
-    nombre: {
+    Nombre: {
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 4,

@@ -11,7 +11,7 @@ export default function MedicoCard({ medico, onEdit, onDelete, onDetail }) {
             </View>
             <View style={styles.actions}>
                 <TouchableOpacity onPress={onDetail} style={styles.iconBtn}>
-                    <Ionicons name="eye-outline" size={24} color="#4CAF50" />
+                    <Ionicons name="information-circle-outline" size={24} color="#4CAF50" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={onEdit} style={styles.iconBtn}>
                     <Ionicons name="create-outline" size={24} color="#1976D2" />

@@ -9,6 +9,8 @@ export default function EditarCobertura({ navigation }) {
     const route = useRoute();
 
     const cobertura = route.params?.cobertura;
+     //         'tipo_afiliacion',
+        // 'porcentaje_cubrimiento',
 
     const [tipo_afiliacion, setTipoAfiliacion] = useState(cobertura?.tipo_afiliacion || "");
     const [porcentaje_cubrimiento, setPorecntajeCubrimiento] = useState(cobertura?.porcentaje_cubrimiento || "");
@@ -28,13 +30,13 @@ export default function EditarCobertura({ navigation }) {
         try {
             if (esEdicion) {
                 result = await editarCobertura(cobertura.id, {
-                    TipoAfiliacion: tipo_afiliacion,
-                    PorcentajeCubrimiento: porcentaje_cubrimiento
+                    tipo_afiliacion: tipo_afiliacion,
+                    porcentaje_cubrimiento: porcentaje_cubrimiento
                 });
             } else {
-                result = await crearCobertura({
-                    TipoAfiliacion: tipo_afiliacion,
-                    PorcentajeCubrimiento: porcentaje_cubrimiento
+                result = await crearCoberturas({
+                    tipo_afiliacion: tipo_afiliacion,
+                    porcentaje_cubrimiento: porcentaje_cubrimiento
 
                 });
             }

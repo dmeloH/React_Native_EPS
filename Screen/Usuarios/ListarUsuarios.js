@@ -63,7 +63,7 @@ export default function ListarUsuarios (){
     }
 
     const handleCrear = () => {
-        navigation.navigate('CrearUsuarios');
+        navigation.navigate('EditarUsuarios');
     };
 
     if (loading) {
@@ -74,10 +74,8 @@ export default function ListarUsuarios (){
         );
     }
 
-    const handleEditar = (consultorio) => {
-        navigation.navigate("EditarUsuarios", {consultorio});
-
-
+    const handleEditar = (usuarios) => {
+        navigation.navigate("EditarUsuarios", {usuarios});
     }
 
     return (
@@ -87,9 +85,10 @@ export default function ListarUsuarios (){
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
                 <UsuariosCard
-                consultorio= {item}
+                usuarios= {item}
                 onEdit={() => handleEditar (item)}
                 onDelete={() => handleEliminar (item.id)}
+                onDetail={() => handleDetalle (item)}
             />
             )}
             ListEmptyComponent = {<Text style = {styles.emptyText}>No Hay Usuarios Registrados. </Text>}

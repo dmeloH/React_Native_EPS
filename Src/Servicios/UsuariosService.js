@@ -56,7 +56,7 @@ export const eliminarUsuarios = async (id) => {
     }
 };
 
-export const CrearUsuarios = async (data) => {
+export const crearUsuarios = async (data) => {
     try {
         const response = await api.post("/usuarios", data);
         console.log("Respuesta crearUsuario:", response.data);
@@ -71,7 +71,7 @@ export const CrearUsuarios = async (data) => {
     }
 };
 
-export const EditarUsuarios = async (id, data) => { // Asegúrate de que 'id' se pase como primer argumento
+export const editarUsuarios = async (id, data) => { // Asegúrate de que 'id' se pase como primer argumento
     try {
         // La URL debe incluir el ID de la especialidad a editar
         const response = await api.put(`/usuarios/${id}`, data); // Asumiendo que tu ruta de Laravel es /actualizarUsuario/{id}
