@@ -14,15 +14,7 @@ export default function EpsStack () {
                 name= "ListarEps"
                 component={ListarEps}
                 options={{ 
-                    title: "Eps" ,
-                    // Verificacion PRUEBA
-                    headerRight: () => (
-                        <Button
-                          onPress={() => alert("Boton en el header")}
-                          title="Info"
-                          color="red"
-                        />
-                    ),
+                    title: "Eps" 
                 }}
             />
              <Stack.Screen 

@@ -9,9 +9,6 @@ export default function DetalleCobertura({ route, navigation }) {
     const [cobertura, setCobertura] = useState(null);
     const [loading, setLoading] = useState(true);
 
-  
-    
-
     useEffect(() => {
         // Simular una carga de datos basada en el especialidadId
         const foundCobertura = coberturasEjemplo.find(e => e.id === coberturaId);

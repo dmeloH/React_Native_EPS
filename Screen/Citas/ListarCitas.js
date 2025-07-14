@@ -85,7 +85,7 @@ export default function ListarCita (){
             data={citas}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
-                <CitaCardCard
+                <CitaCard
                 especialidad= {item}
                 onEdit={() => handleEditar (item)}
                 onDelete={() => handleEliminar (item.id)}

@@ -1,24 +1,25 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function UsuariosCard({ usuario, onEdit, onDelete }) {
+export default function EpsCard({ eps, onEdit, onDelete, onDetails }) {
+
     return (
         <View style={styles.card}>
             <View style={styles.info}>
-                <Text style={styles.nombre_completo}>{usuario?.NombreCompleto ?? 'Sin nombre'}</Text>
-                <Text style={styles.detalle}>Tipo documento: {usuario?.TipoDocumento ?? '-'}</Text>
-                <Text style={styles.detalle}>Número documento: {usuario?.NumeroDocumento ?? '-'}</Text>
-                <Text style={styles.detalle}>Fecha nacimiento: {usuario?.FechaNacimiento ?? '-'}</Text>
-                <Text style={styles.detalle}>Tipo afiliación: {usuario?.TipoAfiliacion ?? '-'}</Text>
-                <Text style={styles.detalle}>EPS: {usuario?.EpsId ?? '-'}</Text>
+                <Text style={styles.nombre}>{eps?.nombre ?? 'Sin nombre'}</Text>
+                <Text style={styles.detalle}>Estado: {eps?.estado ?? '-'}</Text>
             </View>
             <View style={styles.actions}>
+                <TouchableOpacity onPress={onDetails} style={styles.iconBtn}>
+                    <Ionicons name="information-circle-outline" size={24} color="#4CAF50" />
+                </TouchableOpacity>
                 <TouchableOpacity onPress={onEdit} style={styles.iconBtn}>
                     <Ionicons name="create-outline" size={24} color="#1976D2" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={onDelete} style={styles.iconBtn}>
                     <Ionicons name="trash-outline" size={24} color="#D32F2F" />
                 </TouchableOpacity>
+
             </View>
         </View>
     );

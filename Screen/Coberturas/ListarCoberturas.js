@@ -62,7 +62,7 @@ export default function ListarCobertura (){
     }
 
     const handleCrear = () => {
-        navigation.navigate('CrearCobertura');
+        navigation.navigate('crearCobertura');
     };
 
     if (loading) {

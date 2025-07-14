@@ -11,7 +11,7 @@ export default function RegistroScreen({ navigation }) {
     const [role, setRole] = useState(""); // Estado para el rol, inicialmente vacío para que el usuario lo escriba
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(""); 
-
+    
     const handleRegister = async () => {
         setError(""); 
         setLoading(true);
@@ -96,7 +96,7 @@ export default function RegistroScreen({ navigation }) {
             />
 
             <BottonComponent
-                title={loading ? <ActivityIndicator color="#fff" /> : "Registrarse"}
+                title={loading ? <ActivityIndicator color="#fff" /> : "Registrate"}
                 onPress={handleRegister}
                 disabled={loading}
             />

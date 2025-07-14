@@ -1,12 +1,11 @@
 import { View, Text, FlatList, Alert, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
-import BotonComponent from "../../components/BottonComponent"; // Asegúrate de que la ruta sea correcta
-import EspecialidadCard from "../../components/EspecialidadCard";
 import { useNavigation } from "@react-navigation/native";
 import { listarEps, eliminarEps } from "../../Src/Servicios/EpsService";
+import EpsCard from '../../components/EpsCard';
 
-export default function ListarEps (){
+export default function ListarEps() {
     const [Eps, setEps] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigation = useNavigation();
@@ -18,10 +17,10 @@ export default function ListarEps (){
             if (result.success) {
                 setEps(result.data);
             } else {
-                Alert.alert ("Error", result.message || "No se pudierón cargas las Eps");
+                Alert.alert("Error", result.message || "No se pudierón cargas las Eps");
             }
         } catch (error) {
-            Alert.alert ("Error", "No se pudierón cargas las Eps");
+            Alert.alert("Error", "No se pudierón cargas las Eps");
         } finally {
             setLoading(false);
         }
@@ -62,8 +61,14 @@ export default function ListarEps (){
     }
 
     const handleCrear = () => {
-        navigation.navigate('CrearEps');
+        navigation.navigate('EditarEps');
     };
+
+
+    const handleDetalles = (eps) => {
+        navigation.navigate("DetalleEps", { eps });
+    };
+
 
     if (loading) {
         return (
@@ -73,25 +78,26 @@ export default function ListarEps (){
         );
     }
 
-    const handleEditar = (Eps) => {
-        navigation.navigate("EditarEps", {Eps});
+    const handleEditar = (eps) => {
+        navigation.navigate("EditarEps", { eps });
 
 
     }
 
     return (
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
             <FlatList
-            data={Eps}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-                <EpsCard
-                Eps= {item}
-                onEdit={() => handleEditar (item)}
-                onDelete={() => handleEliminar (item.id)}
-            />
-            )}
-            ListEmptyComponent = {<Text style = {styles.emptyText}>No Hay Eps Registradas. </Text>}
+                data={Eps}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                    <EpsCard
+                        eps={item}
+                        onEdit={() => handleEditar(item)}
+                        onDelete={() => handleEliminar(item.id)}
+                        onDetails={() => handleDetalles(item)}
+                    />
+                )}
+                ListEmptyComponent={<Text style={styles.emptyText}>No Hay Eps Registradas. </Text>}
             />
 
             <TouchableOpacity style={styles.botonCrear} onPress={handleCrear}>

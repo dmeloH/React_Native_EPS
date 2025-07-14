@@ -1,7 +1,6 @@
 import { View, Text, FlatList, Alert, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
-import BotonComponent from "../../components/BottonComponent"; // Asegúrate de que la ruta sea correcta
 import MedicoCard from "../../components/MedicoCard";
 import { useNavigation } from "@react-navigation/native";
 import { listarMedicos, eliminarMedico } from "../../Src/Servicios/MedicosService";
@@ -61,10 +60,6 @@ export default function ListarMedico (){
         )
     }
 
-    const handleCrear = () => {
-        navigation.navigate('CrearMedico');
-    };
-
     if (loading) {
         return (
             <View style={styles.centered}>
@@ -75,8 +70,14 @@ export default function ListarMedico (){
 
     const handleEditar = (medico) => {
         navigation.navigate("EditarMedico", {medico});
+    }
 
+    const handleCrear = () => {
+        navigation.navigate("EditarMedico"); 
+    }
 
+    const handleDetalle = (medico) => {
+        navigation.navigate("DetalleMedico", {medico});    
     }
 
     return (
@@ -89,6 +90,7 @@ export default function ListarMedico (){
                 medico = {item}
                 onEdit={() => handleEditar (item)}
                 onDelete={() => handleEliminar (item.id)}
+                onDetail={()=> handleDetalle(item)}
             />
             )}
             ListEmptyComponent = {<Text style = {styles.emptyText}>No Hay Medicos Registrados. </Text>}

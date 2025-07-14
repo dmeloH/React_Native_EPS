@@ -35,9 +35,10 @@ export default function AgregarCoberturas({ navigation }) {
         setLoading(true);
         try {
             const result = await crearCoberturas({
-                TipoAfiliacion: tipo_afiliacion,
-                PorcentajeCubrimiento: porcentaje_cubrimiento
+                tipo_afiliacion: tipo_afiliacion,
+                porcentaje_cubrimiento: porcentaje_cubrimiento
             });
+
 
             if (result.success) {
                 Alert.alert("Éxito", "Coberturas creada correctamente");

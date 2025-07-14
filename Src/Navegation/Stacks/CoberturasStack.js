@@ -27,7 +27,7 @@ export default function CoberturasStack () {
                 options={{ title: "Nuevo/Editar Coberturas" }}
             />
             <Stack.Screen
-                name= "CrearCoberturas" // Nuevo nombre de ruta para la pantalla de creación
+                name= "crearCobertura" // Nuevo nombre de ruta para la pantalla de creación
                 component={AgregarCoberturas} // Asigna el nuevo componente
                 options={{ title: "Nueva Cobertura" }}
             />

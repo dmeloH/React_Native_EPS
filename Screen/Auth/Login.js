@@ -3,8 +3,6 @@ import BottonComponent from "../../components/BottonComponent";
 import { useState, } from "react";
 import { loginUser } from "../../Src/Servicios/AuthService";
 
-
-
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

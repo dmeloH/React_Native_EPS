@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet, Button, TouchableOpacity, ActivityIn
 import { useRoute } from '@react-navigation/native';
 import BotonComponent from "../../components/BottonComponent";
 
-import { crearCobertura, editarCobertura } from "../../Src/Servicios/CoberturasService";
+import { crearCoberturas, editarCobertura } from "../../Src/Servicios/CoberturasService";
 
 export default function EditarCobertura({ navigation }) {
     const route = useRoute();
