@@ -28,7 +28,7 @@ export default function CitaCard({ citas, onEdit, onDelete, onDetail }) {
 const styles = StyleSheet.create({
     card: {
         backgroundColor: '#fff',
-        borderRadius: 8,
+        borderRadius: 12,
         padding: 16,
         marginVertical: 8,
         flexDirection: 'row',
@@ -38,24 +38,26 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 4,
-        elevation: 2,
+        elevation: 3,
     },
     info: {
         flex: 1,
+        paddingRight: 8,
     },
     nombre: {
         fontSize: 18,
         fontWeight: 'bold',
+        color: '#333',
         marginBottom: 4,
     },
     detalle: {
         fontSize: 14,
-        color: '#555',
+        color: '#666',
         marginBottom: 2,
     },
     actions: {
         flexDirection: 'row',
-        marginLeft: 8,
+        alignItems: 'center',
     },
     iconBtn: {
         marginLeft: 10,

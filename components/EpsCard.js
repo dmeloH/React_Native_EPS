@@ -1,8 +1,16 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
+/**
+ * Tarjeta para mostrar información de una EPS con opciones de acción.
+ * 
+ * @param {Object} props
+ * @param {Object} props.eps - Objeto que contiene la información de la EPS.
+ * @param {Function} props.onEdit - Función que se ejecuta al presionar el botón de editar.
+ * @param {Function} props.onDelete - Función que se ejecuta al presionar el botón de eliminar.
+ * @param {Function} props.onDetails - Función que se ejecuta al presionar el botón de detalles.
+ */
 export default function EpsCard({ eps, onEdit, onDelete, onDetails }) {
-
     return (
         <View style={styles.card}>
             <View style={styles.info}>
@@ -19,7 +27,6 @@ export default function EpsCard({ eps, onEdit, onDelete, onDetails }) {
                 <TouchableOpacity onPress={onDelete} style={styles.iconBtn}>
                     <Ionicons name="trash-outline" size={24} color="#D32F2F" />
                 </TouchableOpacity>
-
             </View>
         </View>
     );
@@ -59,4 +66,3 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
 });
-

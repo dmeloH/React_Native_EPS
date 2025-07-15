@@ -1,13 +1,23 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
+/**
+ * Componente de tarjeta que muestra la información de un médico.
+ * Incluye botones para ver detalles, editar o eliminar el registro.
+ *
+ * @param {Object} props
+ * @param {Object} props.medico - Datos del médico a mostrar.
+ * @param {Function} props.onEdit - Acción al presionar "editar".
+ * @param {Function} props.onDelete - Acción al presionar "eliminar".
+ * @param {Function} props.onDetail - Acción al presionar "ver detalles".
+ */
 export default function MedicoCard({ medico, onEdit, onDelete, onDetail }) {
     return (
         <View style={styles.card}>
             <View style={styles.info}>
-                <Text style={styles.Nombre}>{medico.nombre}</Text>
-                <Text style={styles.detalle}>Especialidad: {medico.especialidad}</Text>
-                <Text style={styles.detalle}>Estado: {medico.estado}</Text>
+                <Text style={styles.nombre}>{medico?.nombre ?? 'Sin nombre'}</Text>
+                <Text style={styles.detalle}>Especialidad: {medico?.especialidad ?? '-'}</Text>
+                <Text style={styles.detalle}>Estado: {medico?.estado ?? '-'}</Text>
             </View>
             <View style={styles.actions}>
                 <TouchableOpacity onPress={onDetail} style={styles.iconBtn}>
@@ -19,7 +29,6 @@ export default function MedicoCard({ medico, onEdit, onDelete, onDetail }) {
                 <TouchableOpacity onPress={onDelete} style={styles.iconBtn}>
                     <Ionicons name="trash-outline" size={24} color="#D32F2F" />
                 </TouchableOpacity>
-                
             </View>
         </View>
     );
@@ -43,7 +52,7 @@ const styles = StyleSheet.create({
     info: {
         flex: 1,
     },
-    Nombre: {
+    nombre: {
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 4,
@@ -59,4 +68,3 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
 });
-
