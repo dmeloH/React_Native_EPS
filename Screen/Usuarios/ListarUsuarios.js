@@ -1,17 +1,21 @@
 import { View, Text, FlatList, Alert, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import { listarUsuarios, eliminarUsuarios } from "../../Src/Servicios/UsuariosService";
 import UsuariosCard from '../../components/UsuariosCard';
 
 export default function ListarUsuarios() {
+    // Estado local para almacenar usuarios y controlar la carga
     const [usuarios, setUsuarios] = useState([]);
     const [loading, setLoading] = useState(true);
+
     const navigation = useNavigation();
 
+    /**
+     * Función para obtener la lista de usuarios desde el servicio
+     */
     const handleUsuarios = async () => {
-        console.log("Cargando usuarios...");
         setLoading(true);
         try {
             const result = await listarUsuarios();
@@ -26,64 +30,71 @@ export default function ListarUsuarios() {
         } finally {
             setLoading(false);
         }
-
     };
 
+    // Se vuelve a cargar la lista cada vez que se vuelve a enfocar esta pantalla
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', handleUsuarios);
         return unsubscribe;
     }, [navigation]);
 
+    /**
+     * Maneja la eliminación de un usuario con confirmación previa
+     * @param {number} id - ID del usuario a eliminar
+     */
     const handleEliminar = (id) => {
         Alert.alert(
             "Eliminar Usuarios",
-            "¿Estás seguro de que deseas eliminar este consultorio?",
+            "¿Estás seguro de que deseas eliminar este usuario?",
             [
                 { text: "Cancelar", style: "cancel" },
                 {
                     text: "Eliminar",
                     style: "destructive",
-
                     onPress: async () => {
                         try {
                             const result = await eliminarUsuarios(id);
                             if (result.success) {
-                                // setEspecialidades (especialidades.filter((e) => e.id !== id));
-                                handleUsuarios();
+                                handleUsuarios(); // Actualiza la lista
                             } else {
-                                Alert.alert("Error", result.message || "No se pudo eliminar el Usuarios");
+                                Alert.alert("Error", result.message || "No se pudo eliminar el usuario");
                             }
                         } catch (error) {
-                            Alert.alert("Error", "No se pudo eliminar el consultorio");
+                            Alert.alert("Error", "No se pudo eliminar el usuario");
                         }
                     },
                 }
             ]
-        )
-    }
+        );
+    };
 
+    // Navega a la pantalla de creación de usuario
     const handleCrear = () => {
         navigation.navigate('EditarUsuarios');
     };
 
+    // Navega a la pantalla de edición con los datos del usuario
+    const handleEditar = (usuarios) => {
+        navigation.navigate("EditarUsuarios", { usuarios });
+    };
+
+    // Navega a la pantalla de detalle del usuario
+    const handleDetalle = (usuarios) => {
+        navigation.navigate("DetalleUsuarios", { usuarios });
+    };
+
+    // Mientras se cargan los datos, muestra un indicador
     if (loading) {
         return (
             <View style={styles.centered}>
-                <ActivityIndicator size="large" color="#1976D2" />
+                <ActivityIndicator size="large" color="#7E60BF" />
             </View>
         );
     }
 
-    const handleEditar = (usuarios) => {
-        navigation.navigate("EditarUsuarios", { usuarios });
-    }
-
-    const handleDetalle = (usuarios) => {
-        navigation.navigate("DetalleUsuarios", { usuarios });
-    }
-
     return (
-        <View style={{ flex: 1 }}>
+        <View style={styles.container}>
+            {/* Lista de usuarios */}
             <FlatList
                 data={usuarios}
                 keyExtractor={(item) => item.id.toString()}
@@ -95,70 +106,64 @@ export default function ListarUsuarios() {
                         onDetail={() => handleDetalle(item)}
                     />
                 )}
-                ListEmptyComponent={<Text style={styles.emptyText}>No Hay Usuarios Registrados. </Text>}
+                ListEmptyComponent={<Text style={styles.emptyText}>No hay usuarios registrados.</Text>}
             />
 
+            {/* Botón para crear nuevo usuario */}
             <TouchableOpacity style={styles.botonCrear} onPress={handleCrear}>
                 <View style={styles.botonCrearContent}>
                     <Ionicons name="add-circle-outline" size={24} color="#fff" style={styles.botonCrearIcon} />
-                    <Text style={styles.textoBotonCrear}>Nuevo Usuarios</Text>
+                    <Text style={styles.textoBotonCrear}>Nuevo Usuario</Text>
                 </View>
             </TouchableOpacity>
         </View>
-    )
+    );
 }
 
+// Estilos del componente
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F8F8F8',
-        paddingHorizontal: 10,
-        paddingTop: 10,
+        backgroundColor: '#FFEFF8',
+        paddingHorizontal: 12,
+        paddingTop: 12,
     },
     centered: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F8F8F8',
+        backgroundColor: '#FFEFF8',
     },
     emptyText: {
         fontSize: 16,
-        color: '#7F8C8D',
+        color: '#433878',
         textAlign: 'center',
         marginTop: 50,
     },
-    emptyListContainer: {
-        flexGrow: 1,
-        justifyContent: 'center',
+    botonCrear: {
+        backgroundColor: '#7E60BF',
+        paddingVertical: 14,
+        paddingHorizontal: 20,
+        borderRadius: 16,
         alignItems: 'center',
-    },
-    botonCrear: { // Estilo para el TouchableOpacity
-        backgroundColor: '#1976D2', // Color de fondo
-        padding: 15,
-        borderRadius: 8,
-        alignItems: 'center',
-        margin: 10,
-        // Sombra para un efecto más bonito
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.27,
-        shadowRadius: 4.65,
+        margin: 16,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.25,
+        shadowRadius: 5,
         elevation: 6,
     },
-    botonCrearContent: { // Contenedor interno para el icono y el texto
+    botonCrearContent: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
     },
-    botonCrearIcon: { // Estilo para el icono
-        marginRight: 8, // Espacio entre el icono y el texto
+    botonCrearIcon: {
+        marginRight: 10,
     },
-    textoBotonCrear: { // Estilo para el texto del botón
+    textoBotonCrear: {
         color: '#FFFFFF',
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: 'bold',
     },
 });

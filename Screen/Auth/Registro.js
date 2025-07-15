@@ -1,142 +1,187 @@
-import { View, Text, TextInput, StyleSheet, Alert, ActivityIndicator } from "react-native";
+// RegistroScreen.js
+// Pantalla de registro de nuevos usuarios.
+// Permite registrar nombre, correo, contraseña, confirmación y rol del usuario.
+
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 import BottonComponent from "../../components/BottonComponent";
-import { useState } from "react";
 import { Register } from "../../Src/Servicios/AuthService";
 
+/**
+ * Componente funcional para el registro de usuarios.
+ *
+ * @param {object} props - Propiedades del componente.
+ * @param {object} props.navigation - Objeto de navegación de React Navigation.
+ * @returns {JSX.Element} Pantalla de registro.
+ */
 export default function RegistroScreen({ navigation }) {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [role, setRole] = useState(""); // Estado para el rol, inicialmente vacío para que el usuario lo escriba
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(""); 
-    
-    const handleRegister = async () => {
-        setError(""); 
-        setLoading(true);
+  // Estados locales para capturar los valores del formulario
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [role, setRole] = useState(""); // Puede ser "admin", "user", etc.
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-        if (!name || !email || !password || !confirmPassword || !role) { // Añadido 'role' a la validación
-            setError("Todos los campos (nombre, correo, contraseña, confirmar contraseña, rol) son obligatorios.");
-            setLoading(false);
-            return;
-        }
+  /**
+   * Maneja el proceso de validación y registro del usuario.
+   * Realiza validaciones básicas y llama al servicio Register.
+   */
+  const handleRegister = async () => {
+    setError("");
+    setLoading(true);
 
-        if (password !== confirmPassword) {
-            setError("Las contraseñas no coinciden.");
-            setLoading(false);
-            return;
-        }
+    // Validación de campos vacíos
+    if (!name || !email || !password || !confirmPassword || !role) {
+      setError(
+        "Todos los campos (nombre, correo, contraseña, confirmar contraseña, rol) son obligatorios."
+      );
+      setLoading(false);
+      return;
+    }
 
-        try {
-            const result = await Register(name, email, password, role); 
+    // Validación de coincidencia de contraseñas
+    if (password !== confirmPassword) {
+      setError("Las contraseñas no coinciden.");
+      setLoading(false);
+      return;
+    }
 
-            if (result.success) {
-                Alert.alert("Éxito", "¡Registro exitoso! Ahora puedes iniciar sesión.");
-                navigation.navigate("Login"); 
-            } else {
-                Alert.alert(
-                    "Error de Registro",
-                    result.message || "Ocurrió un error al registrar el usuario."
-                );
-            }
-        } catch (err) {
-            console.error("Error inesperado en el registro:", err);
-            Alert.alert(
-                "Error",
-                "Ocurrió un error inesperado al intentar registrarse."
-            );
-        } finally {
-            setLoading(false);
-        }
-    };
+    try {
+      // Llamado al servicio de registro
+      const result = await Register(name, email, password, role);
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Registrarse</Text>
+      if (result.success) {
+        Alert.alert("Éxito", "¡Registro exitoso! Ahora puedes iniciar sesión.");
+        navigation.navigate("Login"); // Navegación a pantalla de login
+      } else {
+        Alert.alert(
+          "Error de Registro",
+          result.message || "Ocurrió un error al registrar el usuario."
+        );
+      }
+    } catch (err) {
+      console.error("Error inesperado en el registro:", err);
+      Alert.alert(
+        "Error",
+        "Ocurrió un error inesperado al intentar registrarse."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
-            {error ? <Text style={styles.errorText}>{error}</Text> : null}
+  // Interfaz del usuario para el registro
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Registrarse</Text>
 
-            <TextInput
-                style={styles.input}
-                placeholder="Nombre Completo"
-                value={name}
-                onChangeText={setName}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Correo Electrónico"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Contraseña"
-                secureTextEntry
-                value={password}
-                onChangeText={setPassword}
-                autoCapitalize="none"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Confirmar Contraseña"
-                secureTextEntry
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
-                autoCapitalize="none"
-            />
-            <TextInput // TextInput para el rol
-                style={styles.input}
-                placeholder="Rol (ej. user o admin)"
-                value={role}
-                onChangeText={setRole}
-                autoCapitalize="none"
-            />
+      {/* Mensaje de error si aplica */}
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-            <BottonComponent
-                title={loading ? <ActivityIndicator color="#fff" /> : "Registrate"}
-                onPress={handleRegister}
-                disabled={loading}
-            />
-            <BottonComponent
-                title="¿Ya tienes cuenta?, Iniciar Sesión"
-                onPress={() => navigation.navigate("Login")}
-                buttonStyle={{ backgroundColor: "#3498DB", marginTop: 10 }}
-                textStyle={{ color: "#FFFFFF" }}
-            />
-        </View>
-    );
+      {/* Input: Nombre */}
+      <TextInput
+        style={styles.input}
+        placeholder="Nombre Completo"
+        value={name}
+        onChangeText={setName}
+      />
+
+      {/* Input: Correo electrónico */}
+      <TextInput
+        style={styles.input}
+        placeholder="Correo Electrónico"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
+
+      {/* Input: Contraseña */}
+      <TextInput
+        style={styles.input}
+        placeholder="Contraseña"
+        secureTextEntry
+        value={password}
+        onChangeText={setPassword}
+        autoCapitalize="none"
+      />
+
+      {/* Input: Confirmar contraseña */}
+      <TextInput
+        style={styles.input}
+        placeholder="Confirmar Contraseña"
+        secureTextEntry
+        value={confirmPassword}
+        onChangeText={setConfirmPassword}
+        autoCapitalize="none"
+      />
+
+      {/* Input: Rol del usuario */}
+      <TextInput
+        style={styles.input}
+        placeholder="Rol (ej. user o admin)"
+        value={role}
+        onChangeText={setRole}
+        autoCapitalize="none"
+      />
+
+      {/* Botón de registro con indicador de carga */}
+      <BottonComponent
+        title={loading ? <ActivityIndicator color="#fff" /> : "Regístrate"}
+        onPress={handleRegister}
+        disabled={loading}
+      />
+
+      {/* Botón para volver al login */}
+      <BottonComponent
+        title="¿Ya tienes cuenta?, Iniciar Sesión"
+        onPress={() => navigation.navigate("Login")}
+        buttonStyle={{ backgroundColor: "#3498DB", marginTop: 10 }}
+        textStyle={{ color: "#FFFFFF" }}
+      />
+    </View>
+  );
 }
 
+// Estilos del componente RegistroScreen
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        padding: 16,
-        backgroundColor: "#f5f5f5",
-    },
-    title: {
-        fontSize: 28,
-        fontWeight: "bold",
-        marginBottom: 24,
-        textAlign: "center",
-        color: "#333",
-    },
-    input: {
-        height: 50,
-        borderColor: "#ccc",
-        borderWidth: 1,
-        borderRadius: 8,
-        paddingHorizontal: 16,
-        marginBottom: 16,
-        backgroundColor: "#fff",
-    },
-    errorText: {
-        color: "red",
-        textAlign: "center",
-        marginBottom: 10,
-        fontSize: 14,
-    },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    padding: 16,
+    backgroundColor: "#FFEFF8", // Fondo rosado suave
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "bold",
+    marginBottom: 24,
+    textAlign: "center",
+    color: "#433878", // Púrpura oscuro
+  },
+  input: {
+    height: 50,
+    borderColor: "#E4B1F0", // Borde rosado claro
+    borderWidth: 1.5,
+    borderRadius: 10,
+    paddingHorizontal: 16,
+    marginBottom: 16,
+    backgroundColor: "#FFFFFF", // Fondo blanco
+    color: "#433878", // Texto púrpura oscuro
+  },
+  errorText: {
+    color: "#D32F2F", // Rojo para errores
+    textAlign: "center",
+    marginBottom: 10,
+    fontSize: 14,
+    fontWeight: "bold",
+  },
 });

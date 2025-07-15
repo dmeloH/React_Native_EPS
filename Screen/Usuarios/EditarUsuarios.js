@@ -15,10 +15,15 @@ import { listarCoberturas } from "../../Src/Servicios/CoberturasService";
 import { listarEps } from "../../Src/Servicios/EpsService";
 import { Picker } from "@react-native-picker/picker";
 
+/**
+ * Componente para crear o editar un usuario.
+ * Permite seleccionar EPS y cobertura, así como capturar información básica del usuario.
+ */
 export default function EditarUsuarios({ navigation }) {
     const route = useRoute();
     const usuarios = route.params?.usuarios;
 
+    // Estados para el formulario
     const [nombre_completo, setNombreCompleto] = useState(usuarios?.nombre_completo || "");
     const [tipo_documento, setTipoDocumento] = useState(usuarios?.tipo_documento || "");
     const [numero_documento, setNumeroDocumento] = useState(usuarios?.numero_documento || "");
@@ -26,6 +31,7 @@ export default function EditarUsuarios({ navigation }) {
     const [eps_id, setEps_id] = useState(usuarios?.eps_id?.toString() || "");
     const [cobertura_id, setCobertura_id] = useState(usuarios?.cobertura_id?.toString() || "");
 
+    // Datos de EPS y Coberturas
     const [eps, setEps] = useState([]);
     const [coberturas, setCoberturas] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -34,6 +40,7 @@ export default function EditarUsuarios({ navigation }) {
 
     const tiposDocumento = ["CC", "TI", "CE", "RC"];
 
+    // Cargar EPS y Coberturas al montar el componente
     useEffect(() => {
         const loadData = async () => {
             try {
@@ -57,6 +64,9 @@ export default function EditarUsuarios({ navigation }) {
         loadData();
     }, []);
 
+    /**
+     * Valida y guarda los datos del usuario (crear o editar).
+     */
     const handleGuardar = async () => {
         if (
             !nombre_completo ||
@@ -114,7 +124,7 @@ export default function EditarUsuarios({ navigation }) {
                     onChangeText={setNombreCompleto}
                 />
 
-                {/* Picker tipo documento */}
+                {/* Tipo de documento */}
                 <View style={styles.pickerContainer}>
                     <Text style={styles.pickerLabel}>Tipo de Documento</Text>
                     <Picker
@@ -144,7 +154,7 @@ export default function EditarUsuarios({ navigation }) {
                     onChangeText={setFechaNacimiento}
                 />
 
-                {/* Picker EPS */}
+                {/* EPS */}
                 <View style={styles.pickerContainer}>
                     <Text style={styles.pickerLabel}>Seleccione una EPS</Text>
                     <Picker
@@ -159,7 +169,7 @@ export default function EditarUsuarios({ navigation }) {
                     </Picker>
                 </View>
 
-                {/* Picker Cobertura */}
+                {/* Cobertura */}
                 <View style={styles.pickerContainer}>
                     <Text style={styles.pickerLabel}>Seleccione una Cobertura</Text>
                     <Picker
@@ -174,6 +184,7 @@ export default function EditarUsuarios({ navigation }) {
                     </Picker>
                 </View>
 
+                {/* Botón Guardar */}
                 <TouchableOpacity style={styles.boton} onPress={handleGuardar} disabled={loading}>
                     {loading ? (
                         <ActivityIndicator color="#fff" />
@@ -188,59 +199,72 @@ export default function EditarUsuarios({ navigation }) {
     );
 }
 
+// Estilos del componente
 const styles = StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#f5f5f5",
+        backgroundColor: "#FFF5FA",
         paddingVertical: 30,
     },
     container: {
         width: "90%",
-        backgroundColor: "#fff",
+        backgroundColor: "#FFFFFF",
         padding: 20,
-        borderRadius: 10,
+        borderRadius: 12,
         shadowColor: "#000",
         shadowOpacity: 0.1,
-        shadowRadius: 10,
-        elevation: 3,
+        shadowRadius: 8,
+        shadowOffset: { width: 0, height: 2 },
+        elevation: 4,
     },
     title: {
-        fontSize: 22,
+        fontSize: 24,
         fontWeight: "bold",
         marginBottom: 20,
         textAlign: "center",
+        color: "#433878",
     },
     input: {
         height: 50,
-        borderColor: "#ccc",
+        borderColor: "#dcdfe6",
         borderWidth: 1,
-        borderRadius: 8,
+        borderRadius: 10,
         paddingHorizontal: 16,
         marginBottom: 16,
+        backgroundColor: "#fff",
+        fontSize: 16,
+        color: "#333",
     },
     pickerContainer: {
         marginBottom: 16,
     },
     pickerLabel: {
         fontWeight: "bold",
-        marginBottom: 4,
-        fontSize: 14,
+        marginBottom: 6,
+        fontSize: 15,
+        color: "#7E60BF",
     },
     picker: {
         height: 50,
         backgroundColor: "#fff",
         borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 8,
+        borderColor: "#dcdfe6",
+        borderRadius: 10,
+        color: "#333",
     },
     boton: {
-        backgroundColor: "#1976D2",
-        padding: 15,
-        borderRadius: 8,
+        backgroundColor: "#7E60BF",
+        paddingVertical: 14,
+        borderRadius: 10,
         alignItems: "center",
         marginTop: 10,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.15,
+        shadowRadius: 4.5,
+        elevation: 5,
     },
     textoBoton: {
         color: "#fff",

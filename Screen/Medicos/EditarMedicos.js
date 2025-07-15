@@ -15,11 +15,26 @@ import { useRoute } from '@react-navigation/native';
 import { crearMedico, editarMedico } from "../../Src/Servicios/MedicosService";
 import { Picker } from "@react-native-picker/picker";
 
+/**
+ * Paleta de colores personalizada para el formulario
+ */
+const Colors = {
+    background: "#FFF5FC",         // Fondo rosado suave
+    cardBackground: "#FFFFFF",    // Fondo de los inputs
+    primary: "#7E60BF",           // Color primario (botones)
+    border: "#E0E0E0",            // Bordes suaves
+    textPrimary: "#2c3e50",       // Texto principal
+    placeholder: "#aaa",          // Color de placeholder
+};
 
+/**
+ * Componente para crear o editar un médico
+ */
 export default function EditarMedico({ navigation }) {
     const route = useRoute();
     const medico = route.params?.medico;
 
+    // Estados de los campos del formulario
     const [nombre, setNombre] = useState(medico?.nombre || "");
     const [especialidad, setEspecialidad] = useState(medico?.especialidad || "");
     const [numero_documento, setNumeroDocumento] = useState(medico?.numero_documento || "");
@@ -32,13 +47,18 @@ export default function EditarMedico({ navigation }) {
     const [loading, setLoading] = useState(false);
     const esEdicion = !!medico;
 
+    /**
+     * Valida los campos y guarda la información del médico
+     */
     const handleGuardar = async () => {
+        // Validación simple de campos vacíos
         if (!nombre || !especialidad || !numero_documento || !registro_profesional || !telefono || !correo || !direccion || !estado) {
             Alert.alert("Campos requeridos", "Por favor, ingrese todos los campos");
             return;
         }
 
         setLoading(true);
+
         try {
             const data = {
                 nombre,
@@ -51,6 +71,7 @@ export default function EditarMedico({ navigation }) {
                 estado,
             };
 
+            // Lógica para crear o editar médico según contexto
             const result = esEdicion
                 ? await editarMedico(medico?.id, data)
                 : await crearMedico(data);
@@ -77,13 +98,16 @@ export default function EditarMedico({ navigation }) {
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <Text style={styles.title}>{esEdicion ? "Editar Médico" : "Nuevo Médico"}</Text>
 
-                <TextInput style={styles.input} placeholder="Nombre" value={nombre} onChangeText={setNombre} />
-                <TextInput style={styles.input} placeholder="Especialidad" value={especialidad} onChangeText={setEspecialidad} />
-                <TextInput style={styles.input} placeholder="Número Documento" value={numero_documento} onChangeText={setNumeroDocumento} />
-                <TextInput style={styles.input} placeholder="Registro Profesional" value={registro_profesional} onChangeText={setRegistroProfesional} />
-                <TextInput style={styles.input} placeholder="Teléfono" value={telefono} onChangeText={setTelefono} keyboardType="phone-pad" />
-                <TextInput style={styles.input} placeholder="Correo" value={correo} onChangeText={setCorreo} keyboardType="email-address" />
-                <TextInput style={styles.input} placeholder="Dirección" value={direccion} onChangeText={setDireccion} />
+                {/* Campos de entrada */}
+                <TextInput style={styles.input} placeholder="Nombre" value={nombre} onChangeText={setNombre} placeholderTextColor={Colors.placeholder} />
+                <TextInput style={styles.input} placeholder="Especialidad" value={especialidad} onChangeText={setEspecialidad} placeholderTextColor={Colors.placeholder} />
+                <TextInput style={styles.input} placeholder="Número Documento" value={numero_documento} onChangeText={setNumeroDocumento} placeholderTextColor={Colors.placeholder} />
+                <TextInput style={styles.input} placeholder="Registro Profesional" value={registro_profesional} onChangeText={setRegistroProfesional} placeholderTextColor={Colors.placeholder} />
+                <TextInput style={styles.input} placeholder="Teléfono" value={telefono} onChangeText={setTelefono} keyboardType="phone-pad" placeholderTextColor={Colors.placeholder} />
+                <TextInput style={styles.input} placeholder="Correo" value={correo} onChangeText={setCorreo} keyboardType="email-address" placeholderTextColor={Colors.placeholder} />
+                <TextInput style={styles.input} placeholder="Dirección" value={direccion} onChangeText={setDireccion} placeholderTextColor={Colors.placeholder} />
+
+                {/* Picker para seleccionar estado */}
                 <View style={styles.pickerContainer}>
                     <Picker
                         selectedValue={estado}
@@ -96,7 +120,7 @@ export default function EditarMedico({ navigation }) {
                     </Picker>
                 </View>
 
-
+                {/* Botón de acción */}
                 <TouchableOpacity style={styles.boton} onPress={handleGuardar} disabled={loading}>
                     {loading ? (
                         <ActivityIndicator color="#fff" />
@@ -111,53 +135,72 @@ export default function EditarMedico({ navigation }) {
     );
 }
 
+// Estilos del componente
 const styles = StyleSheet.create({
     scrollContainer: {
         padding: 16,
         alignItems: "center",
-        backgroundColor: "#f5f5f5",
+        backgroundColor: Colors.background,
         paddingBottom: 40,
     },
     title: {
-        fontSize: 24,
+        fontSize: 26,
         fontWeight: "bold",
         marginBottom: 24,
         textAlign: "center",
+        color: Colors.textPrimary,
     },
     input: {
         height: 50,
-        borderColor: "#ccc",
+        borderColor: Colors.border,
         borderWidth: 1,
-        borderRadius: 8,
+        borderRadius: 10,
         paddingHorizontal: 16,
         marginBottom: 16,
         width: "90%",
-        backgroundColor: "#fff",
+        backgroundColor: Colors.cardBackground,
+        fontSize: 16,
+        color: Colors.textPrimary,
+        elevation: 2,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.05,
+        shadowRadius: 3,
+    },
+    pickerContainer: {
+        borderWidth: 1,
+        borderColor: Colors.border,
+        borderRadius: 10,
+        backgroundColor: Colors.cardBackground,
+        marginBottom: 16,
+        width: "90%",
+        elevation: 2,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.05,
+        shadowRadius: 3,
+    },
+    picker: {
+        height: 50,
+        width: "100%",
+        color: Colors.textPrimary,
     },
     boton: {
-        backgroundColor: "#1976D2",
-        padding: 15,
-        borderRadius: 8,
+        backgroundColor: Colors.primary,
+        paddingVertical: 14,
+        borderRadius: 10,
         alignItems: "center",
         width: "90%",
         marginTop: 10,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.15,
+        shadowRadius: 4.5,
+        elevation: 6,
     },
     textoBoton: {
         color: "#fff",
         fontSize: 16,
         fontWeight: "bold",
     },
-    pickerContainer: {
-        borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 8,
-        marginBottom: 16,
-        backgroundColor: "#fff",
-        width: "90%",
-    },
-    picker: {
-        height: 50,
-        width: "100%",
-    },
-
 });

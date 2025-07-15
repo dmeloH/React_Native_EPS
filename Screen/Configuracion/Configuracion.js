@@ -1,17 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Switch, SafeAreaView } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage"; // Importar AsyncStorage
+import {
+    View,
+    Text,
+    StyleSheet,
+    Switch,
+    SafeAreaView
+} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+/**
+ * Componente de configuración general de la aplicación.
+ * Permite al usuario activar o desactivar el modo oscuro.
+ *
+ * @returns {JSX.Element} Pantalla de configuración
+ */
 export default function Configuracion() {
     const [isDarkMode, setIsDarkMode] = useState(false);
 
-    // Cargar la preferencia de modo oscuro al iniciar el componente
+    /**
+     * Carga la preferencia de modo oscuro desde el almacenamiento local.
+     */
     useEffect(() => {
         const loadDarkModePreference = async () => {
             try {
                 const preference = await AsyncStorage.getItem('darkMode');
                 if (preference !== null) {
-                    setIsDarkMode(JSON.parse(preference)); // Convertir string a booleano
+                    setIsDarkMode(JSON.parse(preference));
                 }
             } catch (error) {
                 console.error("Error al cargar la preferencia de modo oscuro:", error);
@@ -20,59 +34,54 @@ export default function Configuracion() {
         loadDarkModePreference();
     }, []);
 
-    // Guardar la preferencia de modo oscuro cuando cambia
+    /**
+     * Alterna entre modo claro y oscuro, y guarda la preferencia en AsyncStorage.
+     */
     const toggleDarkMode = async () => {
         try {
             const newValue = !isDarkMode;
             setIsDarkMode(newValue);
-            await AsyncStorage.setItem('darkMode', JSON.stringify(newValue)); // Convertir booleano a string
+            await AsyncStorage.setItem('darkMode', JSON.stringify(newValue));
         } catch (error) {
             console.error("Error al guardar la preferencia de modo oscuro:", error);
         }
     };
 
-
+    // Estilos dinámicos según el tema
     const containerStyle = {
-        backgroundColor: isDarkMode ? '#1a1a1a' : '#f0f4f8', // Fondo oscuro o claro
+        backgroundColor: isDarkMode ? '#1a1a1a' : '#FFEFF8',
     };
 
     const textStyle = {
-        color: isDarkMode ? '#f0f0f0' : '#2c3e50', // Color de texto claro u oscuro
+        color: isDarkMode ? '#f0f0f0' : '#433878',
     };
 
     const cardStyle = {
-        backgroundColor: isDarkMode ? '#333333' : '#FFFFFF', // Fondo de tarjeta oscuro o claro
-        shadowColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)', // Sombra para modo oscuro
+        backgroundColor: isDarkMode ? '#2a2a2a' : '#FFFFFF',
+        shadowColor: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.1)',
     };
 
     return (
         <SafeAreaView style={[styles.container, containerStyle]}>
             <Text style={[styles.title, textStyle]}>Configuración</Text>
 
+            {/* Tarjeta de opción: Modo Oscuro */}
             <View style={[styles.optionCard, cardStyle]}>
-                <Text style={[styles.optionText, textStyle]}>Modo Oscuro</Text>
+                <Text style={[styles.optionText, textStyle]}>
+                    Activar modo oscuro
+                </Text>
                 <Switch
-                    trackColor={{ false: "#767577", true: "#81b0ff" }}
-                    thumbColor={isDarkMode ? "#f5dd4b" : "#f4f3f4"}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={toggleDarkMode}
                     value={isDarkMode}
-                />
-            </View>
-
-            {/* Puedes agregar más opciones de configuración aquí */}
-            <View style={[styles.optionCard, cardStyle]}>
-                <Text style={[styles.optionText, textStyle]}>Notificaciones</Text>
-                <Switch
-                    // Puedes manejar el estado de las notificaciones con otro useState
-                    value={true} // Ejemplo: siempre activado
-                    onValueChange={() => {}}
+                    onValueChange={toggleDarkMode}
+                    trackColor={{ false: '#ccc', true: '#7E60BF' }}
+                    thumbColor={isDarkMode ? '#f4f3f4' : '#f4f3f4'}
                 />
             </View>
         </SafeAreaView>
     );
 }
 
+// Estilos base
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -91,16 +100,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         maxWidth: 400,
-        padding: 15,
-        borderRadius: 10,
-        marginBottom: 15,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
+        padding: 18,
+        borderRadius: 14,
+        marginBottom: 16,
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.15,
+        shadowRadius: 4,
+        elevation: 6,
     },
     optionText: {
         fontSize: 18,
-        flex: 1, 
+        flex: 1,
     },
 });

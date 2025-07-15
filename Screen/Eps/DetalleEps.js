@@ -1,114 +1,146 @@
 import React from "react";
-import { View, Text, StyleSheet, ActivityIndicator, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import BotonComponent from "../../components/BottonComponent";
 
+/**
+ * Componente que muestra el detalle de una EPS (Entidad Promotora de Salud).
+ *
+ * @component
+ * @param {object} route - Propiedad que contiene los parámetros enviados a la ruta.
+ * @param {object} navigation - Propiedad que permite manejar la navegación entre pantallas.
+ * @returns {JSX.Element} Vista detallada de la EPS seleccionada.
+ */
 export default function DetalleEps({ route, navigation }) {
     const { eps } = route.params;
 
+    // Validación: Si no hay información de EPS, mostrar mensaje de error y botón de regreso.
     if (!eps) {
         return (
             <SafeAreaView style={styles.container}>
                 <Text style={styles.title}>Detalle de EPS</Text>
                 <View style={styles.detailCard}>
-                    <Text style={styles.errorText}>No se encontraron detalles para esta EPS.</Text>
+                    <Text style={styles.errorText}>
+                        No se encontraron detalles para esta EPS.
+                    </Text>
                     <BotonComponent
                         title="Volver al Listado"
                         onPress={() => navigation.goBack()}
-                        buttonStyle={styles.backButton}
-                        textStyle={styles.buttonText}
+                        buttonStyle={styles.botonVolver}
+                        textStyle={styles.textoBoton}
                     />
                 </View>
             </SafeAreaView>
         );
     }
 
+    // Renderizado principal con los datos completos de la EPS
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Detalle de EPS</Text>
 
             <View style={styles.detailCard}>
                 <Text style={styles.epsName}>{eps.nombre}</Text>
-                <Text style={styles.detailText}><Text style={styles.detailLabel}>ID:</Text> {eps.id}</Text>
-                <Text style={styles.detailText}><Text style={styles.detailLabel}>Dirección:</Text> {eps.direccion}</Text>
-                <Text style={styles.detailText}><Text style={styles.detailLabel}>Teléfono:</Text> {eps.telefono}</Text>
-                <Text style={styles.detailText}><Text style={styles.detailLabel}>NIT:</Text> {eps.nit}</Text>
-                <Text style={styles.detailText}><Text style={styles.detailLabel}>Estado:</Text> {eps.estado}</Text>
+                <Text style={styles.detailText}>
+                    <Text style={styles.detailLabel}>ID:</Text> {eps.id}
+                </Text>
+                <Text style={styles.detailText}>
+                    <Text style={styles.detailLabel}>Dirección:</Text> {eps.direccion}
+                </Text>
+                <Text style={styles.detailText}>
+                    <Text style={styles.detailLabel}>Teléfono:</Text> {eps.telefono}
+                </Text>
+                <Text style={styles.detailText}>
+                    <Text style={styles.detailLabel}>NIT:</Text> {eps.nit}
+                </Text>
+                <Text style={styles.detailText}>
+                    <Text style={styles.detailLabel}>Estado:</Text> {eps.estado}
+                </Text>
             </View>
 
             <BotonComponent
                 title="Volver al Listado"
                 onPress={() => navigation.goBack()}
-                buttonStyle={styles.backButton}
-                textStyle={styles.buttonText}
+                buttonStyle={styles.botonVolver}
+                textStyle={styles.textoBoton}
             />
         </SafeAreaView>
     );
 }
 
+// Estilos del componente definidos con claridad y coherencia visual
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
-        backgroundColor: '#f0f4f8',
+        backgroundColor: '#FFF5FC',
+        paddingHorizontal: 16,
+        paddingTop: 20,
     },
     title: {
-        fontSize: 28,
+        fontSize: 26,
         fontWeight: "bold",
-        marginBottom: 25,
+        marginBottom: 24,
         textAlign: 'center',
-        color: '#2c3e50',
+        color: '#433878',
     },
     detailCard: {
         width: "100%",
         maxWidth: 400,
         alignSelf: 'center',
-        padding: 25,
-        borderRadius: 15,
+        padding: 24,
+        borderRadius: 16,
         backgroundColor: '#FFFFFF',
-        shadowColor: 'rgba(0, 0, 0, 0.1)',
+        shadowColor: "#000",
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.15,
-        shadowRadius: 8,
-        elevation: 8,
-        marginBottom: 20,
+        shadowRadius: 6,
+        elevation: 6,
+        marginBottom: 24,
     },
     epsName: {
-        fontSize: 24,
+        fontSize: 22,
         fontWeight: "bold",
-        marginBottom: 15,
+        marginBottom: 16,
         textAlign: 'center',
+        color: '#7E60BF',
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: '#ccc',
-        paddingBottom: 10,
+        borderBottomColor: '#E4B1F0',
+        paddingBottom: 8,
     },
     detailText: {
         fontSize: 18,
-        marginBottom: 8,
+        marginBottom: 10,
+        color: '#444',
     },
     detailLabel: {
         fontWeight: 'bold',
-        color: '#333',
+        color: '#433878',
     },
     errorText: {
         fontSize: 18,
-        color: 'red',
+        color: '#B00020',
         textAlign: 'center',
         marginBottom: 20,
     },
-    backButton: {
-        backgroundColor: "#007B8C",
-        paddingVertical: 12,
-        paddingHorizontal: 25,
-        borderRadius: 8,
-        marginTop: 15,
+    botonVolver: {
+        backgroundColor: '#7E60BF',
+        padding: 14,
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        marginTop: 10,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 5,
+        elevation: 6,
+        alignSelf: 'center',
         width: '80%',
         maxWidth: 300,
-        alignSelf: 'center',
     },
-    buttonText: {
-        color: "#FFFFFF",
-        fontWeight: "bold",
+    textoBoton: {
+        color: '#fff',
         fontSize: 16,
-        textAlign: 'center',
+        fontWeight: '700',
     },
 });

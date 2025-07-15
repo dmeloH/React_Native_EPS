@@ -12,23 +12,17 @@ import {
 import { useRoute } from '@react-navigation/native';
 import { crearEps, editarEps } from "../../Src/Servicios/EpsService";
 
-// 🎨 Paleta de colores moderna y limpia
-const Colors = {
-    background: '#F5F7FA',
-    cardBackground: '#FFFFFF',
-    primary: '#007AFF',
-    primaryDark: '#005BBF',
-    textPrimary: '#1C1C1E',
-    textSecondary: '#6A6A6A',
-    inputBorder: '#E0E0E0',
-    shadow: 'rgba(0, 0, 0, 0.08)',
-    danger: '#FF3B30',
-};
-
+/**
+ * Componente para crear o editar una EPS (Entidad Promotora de Salud).
+ * 
+ * Si recibe un objeto `eps` desde la ruta, se activa el modo edición.
+ * Caso contrario, se muestra el formulario para crear una nueva EPS.
+ * 
+ * @param {object} navigation - Prop para manejar navegación entre pantallas.
+ * @returns {JSX.Element} Formulario de EPS.
+ */
 export default function EditarEps({ navigation }) {
     const route = useRoute();
-
-    // Obtener datos de la EPS desde parámetros de navegación (si vienen)
     const eps = route.params?.eps;
 
     // Estados del formulario
@@ -37,12 +31,12 @@ export default function EditarEps({ navigation }) {
     const [direccion, setDireccion] = useState(eps?.direccion || "");
     const [telefono, setTelefono] = useState(eps?.telefono || "");
     const [estado, setEstado] = useState(eps?.estado || "");
-
     const [loading, setLoading] = useState(false);
+
     const esEdicion = !!eps;
 
     /**
-     * Valida los campos y realiza la creación o edición de una EPS
+     * Valida campos, realiza llamada al servicio correspondiente (crear o editar).
      */
     const handleGuardar = async () => {
         if (!nombre || !nit || !direccion || !telefono || !estado) {
@@ -55,12 +49,9 @@ export default function EditarEps({ navigation }) {
         const datosEps = { nombre, nit, direccion, telefono, estado };
 
         try {
-            let result;
-            if (esEdicion) {
-                result = await editarEps(eps.id, datosEps);
-            } else {
-                result = await crearEps(datosEps);
-            }
+            const result = esEdicion
+                ? await editarEps(eps.id, datosEps)
+                : await crearEps(datosEps);
 
             if (result.success) {
                 Alert.alert("Éxito", esEdicion ? "EPS actualizada correctamente" : "EPS creada correctamente");
@@ -69,8 +60,7 @@ export default function EditarEps({ navigation }) {
                 Alert.alert("Error", result.message || "No se pudo guardar la EPS");
             }
         } catch (error) {
-            console.error("Error al guardar EPS:", error);
-            Alert.alert("Error", error.message || "Ocurrió un error inesperado al guardar la EPS.");
+            Alert.alert("Error", "Ocurrió un error inesperado al guardar la EPS.");
         } finally {
             setLoading(false);
         }
@@ -80,44 +70,43 @@ export default function EditarEps({ navigation }) {
         <View style={styles.container}>
             <Text style={styles.title}>{esEdicion ? "Editar EPS" : "Nueva EPS"}</Text>
 
-            {/* Campo: Nombre */}
+            {/* Campos de texto */}
             <TextInput
                 style={styles.input}
                 placeholder="Nombre de la EPS"
                 value={nombre}
                 onChangeText={setNombre}
+                placeholderTextColor="#999"
             />
-
-            {/* Campo: NIT */}
             <TextInput
                 style={styles.input}
                 placeholder="NIT"
                 value={nit}
                 onChangeText={setNit}
+                placeholderTextColor="#999"
             />
-
-            {/* Campo: Dirección */}
             <TextInput
                 style={styles.input}
                 placeholder="Dirección"
                 value={direccion}
                 onChangeText={setDireccion}
+                placeholderTextColor="#999"
             />
-
-            {/* Campo: Teléfono */}
             <TextInput
                 style={styles.input}
                 placeholder="Teléfono"
                 value={telefono}
                 onChangeText={setTelefono}
+                placeholderTextColor="#999"
+                keyboardType="phone-pad"
             />
 
-            {/* Selector: Estado */}
+            {/* Picker para estado */}
             <Text style={styles.label}>Estado</Text>
             <View style={styles.pickerContainer}>
                 <Picker
                     selectedValue={estado}
-                    onValueChange={(itemValue) => setEstado(itemValue)} // ✅ Corregido aquí
+                    onValueChange={setEstado}
                     style={styles.picker}
                     itemStyle={styles.pickerItem}
                 >
@@ -126,12 +115,8 @@ export default function EditarEps({ navigation }) {
                 </Picker>
             </View>
 
-            {/* Botón: Guardar */}
-            <TouchableOpacity
-                style={styles.boton}
-                onPress={handleGuardar}
-                disabled={loading}
-            >
+            {/* Botón de guardar */}
+            <TouchableOpacity style={styles.botonGuardar} onPress={handleGuardar} disabled={loading}>
                 {loading ? (
                     <ActivityIndicator color="#fff" />
                 ) : (
@@ -144,74 +129,80 @@ export default function EditarEps({ navigation }) {
     );
 }
 
-// 🧱 Estilos del componente
+// Estilos profesionales, consistentes y accesibles
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        padding: 16,
-        backgroundColor: Colors.background,
+        backgroundColor: '#FFF5FC',
+        paddingHorizontal: 20,
+        paddingTop: 30,
+        alignItems: 'center',
     },
     title: {
-        fontSize: 24,
-        fontWeight: "bold",
-        marginBottom: 24,
-        textAlign: "center",
-        color: Colors.textPrimary,
+        fontSize: 26,
+        fontWeight: 'bold',
+        color: '#433878',
+        marginBottom: 20,
+        textAlign: 'center',
     },
     input: {
         height: 50,
-        borderColor: Colors.inputBorder,
+        borderColor: '#E4B1F0',
         borderWidth: 1,
-        borderRadius: 8,
+        borderRadius: 10,
         paddingHorizontal: 16,
         marginBottom: 16,
-        width: "80%",
-        backgroundColor: Colors.cardBackground,
-        color: Colors.textPrimary,
+        width: '100%',
+        backgroundColor: '#FFFFFF',
+        color: '#433878',
     },
     label: {
         fontSize: 16,
-        color: Colors.textSecondary,
-        alignSelf: "flex-start",
-        marginLeft: "10%",
+        color: '#7E60BF',
+        alignSelf: 'flex-start',
+        marginLeft: 5,
         marginBottom: 6,
     },
     pickerContainer: {
-        backgroundColor: Colors.cardBackground,
+        backgroundColor: '#FFFFFF',
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: Colors.inputBorder,
+        borderColor: '#E4B1F0',
         marginBottom: 20,
-        overflow: 'hidden',
-        shadowColor: Colors.shadow,
+        width: '100%',
+        shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-        elevation: 2,
-        width: "80%",
+        shadowOpacity: 0.08,
+        shadowRadius: 4,
+        elevation: 3,
     },
     picker: {
         height: 50,
-        width: "100%",
-        color: Colors.textPrimary,
+        width: '100%',
+        color: '#433878',
     },
     pickerItem: {
         fontSize: 16,
-        color: Colors.textPrimary,
+        color: '#433878',
     },
-    boton: {
-        backgroundColor: Colors.primary,
-        padding: 15,
-        borderRadius: 8,
-        alignItems: "center",
-        width: "80%",
-        marginTop: 20,
+    botonGuardar: {
+        backgroundColor: '#7E60BF',
+        paddingVertical: 14,
+        paddingHorizontal: 30,
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 10,
+        width: '100%',
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 5,
+        elevation: 6,
     },
     textoBoton: {
-        color: "#fff",
+        color: '#fff',
         fontSize: 16,
-        fontWeight: "bold",
+        fontWeight: 'bold',
     },
 });

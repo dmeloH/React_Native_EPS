@@ -1,121 +1,117 @@
-// src/Screen/Inicio/Inicio.js
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, StatusBar, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  SafeAreaView,
+  StatusBar,
+  Dimensions,
+  ScrollView,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { ScrollView } from 'react-native-gesture-handler';
-
 import Fontisto from '@expo/vector-icons/Fontisto';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 const { width } = Dimensions.get('window');
 const itemWidth = (width / 2) - 30;
 
 export default function Inicio() {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
 
-    const navigateToFlow = (flowName) => {
-        navigation.navigate(flowName);
-    };
+  const menuItems = [
+    { label: 'Citas', icon: <Fontisto name="date" size={45} color="#433878" />, route: 'CitasScreen' },
+    { label: 'Usuarios', icon: <MaterialCommunityIcons name="account-multiple-plus" size={45} color="#7E60BF" />, route: 'UsuariosScreen' },
+    { label: 'Eps', icon: <MaterialCommunityIcons name="city-variant" size={45} color="#433878" />, route: 'EpsScreen' },
+    { label: 'Coberturas', icon: <MaterialCommunityIcons name="mother-heart" size={45} color="#7E60BF" />, route: 'CoberturasScreen' },
+    { label: 'Médicos', icon: <Fontisto name="doctor" size={45} color="#433878" />, route: 'MedicosScreen' },
+  ];
 
-    return (
-        <SafeAreaView style={styles.safeArea}>
-            <StatusBar barStyle="dark-content" backgroundColor="#f0f2f5" />
-            <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
-                {/* Encabezado */}
-                <View style={styles.header}>
-                    <Text style={styles.headerTitle}>Bienvenido a Eps</Text>
-                    <Text style={styles.headerSubtitle}>
-                        Estado: <Text style={styles.statusText}>Habilitado</Text>
-                    </Text>
-                </View>
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      <StatusBar barStyle="dark-content" backgroundColor="#FFF5FC" />
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* Encabezado de bienvenida */}
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Bienvenido a EPS</Text>
+          <Text style={styles.headerSubtitle}>
+            Estado: <Text style={styles.statusText}>Habilitado</Text>
+          </Text>
+        </View>
 
-                {/* Iconos con nombres */}
-                <View style={styles.gridContainer}>
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('CitasScreen')}>
-                        <Fontisto name="date" size={45} color="#FF8282" style={styles.iconShadow} />
-                        <Text style={styles.iconLabel}>Citas</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('UsuariosScreen')}>
-                        <MaterialCommunityIcons name="account-multiple-plus" size={45} color="#FF8282" style={styles.iconShadow} />
-                        <Text style={styles.iconLabel}>Usuarios</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('EpsScreen')}>
-                        <MaterialCommunityIcons name="city-variant" size={45} color="#FF6363" style={styles.iconShadow} />
-                        <Text style={styles.iconLabel}>Eps</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('CoberturasScreen')}>
-                        <MaterialCommunityIcons name="mother-heart" size={45} color="#FF6363" style={styles.iconShadow} />
-                        <Text style={styles.iconLabel}>Coberturas</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('MedicosScreen')}>
-                        <Fontisto name="doctor" size={45} color="#rgb(190, 228, 208)" style={styles.iconShadow} />
-                        <Text style={styles.iconLabel}>Medicos</Text>
-                    </TouchableOpacity>
-                </View>
-            </ScrollView>
-        </SafeAreaView>
-    );
+        {/* Menú principal */}
+        <View style={styles.gridContainer}>
+          {menuItems.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              style={styles.iconContainer}
+              onPress={() => navigation.navigate(item.route)}
+            >
+              <View style={styles.iconShadow}>{item.icon}</View>
+              <Text style={styles.iconLabel}>{item.label}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
-    safeArea: {
-        flex: 1,
-        backgroundColor: '#f0f2f5',
-    },
-    container: {
-        flex: 1,
-        paddingHorizontal: 20,
-    },
-    scrollContent: {
-        alignItems: 'center', // Centra todo el contenido
-        paddingBottom: 40,
-    },
-    header: {
-        alignItems: 'center',
-        marginTop: 30,
-        marginBottom: 100,
-    },
-    headerTitle: {
-        fontSize: 32,
-        fontWeight: '800',
-        color: '#333',
-        marginBottom: 5,
-    },
-    headerSubtitle: {
-        fontSize: 18,
-        color: '#666',
-    },
-    statusText: {
-        fontWeight: 'bold',
-        color: '#28a745',
-    },
-    gridContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        gap: 20,
-    },
-    iconContainer: {
-        width: itemWidth,
-        alignItems: 'center',
-        marginVertical: 15,
-    },
-    iconShadow: {
-        textShadowColor: 'rgba(0, 0, 0, 0.3)',
-        textShadowOffset: { width: 2, height: 4 },
-        textShadowRadius: 6,
-    },
-    iconLabel: {
-        marginTop: 15,
-        fontSize: 16,
-        fontWeight: '600',
-        color: '#444',
-        textAlign: 'center',
-    },
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#FFF5FC',
+  },
+  scrollContent: {
+    paddingHorizontal: 20,
+    paddingBottom: 40,
+    alignItems: 'center',
+  },
+  header: {
+    alignItems: 'center',
+    marginTop: 30,
+    marginBottom: 60,
+  },
+  headerTitle: {
+    fontSize: 30,
+    fontWeight: '800',
+    color: '#433878',
+  },
+  headerSubtitle: {
+    fontSize: 18,
+    color: '#7E60BF',
+    marginTop: 5,
+  },
+  statusText: {
+    fontWeight: 'bold',
+    color: '#28a745',
+  },
+  gridContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: 20,
+  },
+  iconContainer: {
+    width: itemWidth,
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    paddingVertical: 16,
+    marginVertical: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 4,
+  },
+  iconShadow: {
+    marginBottom: 10,
+  },
+  iconLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#433878',
+    textAlign: 'center',
+  },
 });

@@ -3,9 +3,6 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function CoberturasCard({ cobertura, onEdit, onDelete, onDetail }) {
     return (
-
-        //         'tipo_afiliacion',
-        // 'porcentaje_cubrimiento',
         <View style={styles.card}>
             <View style={styles.info}>
                 <Text style={styles.detalle}>Afiliación: {cobertura?.tipo_afiliacion ?? '-'}</Text>

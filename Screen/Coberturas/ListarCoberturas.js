@@ -1,15 +1,38 @@
-import { View, Text, FlatList, Alert, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
+import React, { useEffect, useState } from 'react';
+import {
+    View,
+    Text,
+    FlatList,
+    Alert,
+    ActivityIndicator,
+    TouchableOpacity,
+    StyleSheet
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
+
+// Servicios de la API REST
 import { listarCoberturas, eliminarCobertura } from "../../Src/Servicios/CoberturasService";
+
+// Componente personalizado para mostrar datos de cobertura
 import CoberturasCard from '../../components/CoberturasCard';
 
-export default function ListarCobertura (){
+/**
+ * Componente principal para listar todas las coberturas registradas.
+ * Permite ver, editar, eliminar o crear nuevas coberturas.
+ * 
+ * @returns {JSX.Element} Componente de pantalla de listado
+ */
+export default function ListarCobertura() {
+    // Estados del componente
     const [cobertura, setCoberturas] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigation = useNavigation();
 
+    /**
+     * Obtiene la lista de coberturas desde el servicio externo
+     * y actualiza el estado local del componente.
+     */
     const handleCoberturas = async () => {
         setLoading(true);
         try {
@@ -17,83 +40,103 @@ export default function ListarCobertura (){
             if (result.success) {
                 setCoberturas(result.data);
             } else {
-                Alert.alert ("Error", result.message || "No se pudierón cargas las Coberturas");
+                Alert.alert("Error", result.message || "No se pudieron cargar las coberturas.");
             }
         } catch (error) {
-            Alert.alert ("Error", "No se pudierón cargas las Coberturas");
+            Alert.alert("Error", "Ocurrió un error al cargar las coberturas.");
         } finally {
             setLoading(false);
         }
-
     };
 
+    /**
+     * Efecto que se ejecuta al enfocar la pantalla para refrescar los datos.
+     */
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', handleCoberturas);
         return unsubscribe;
     }, [navigation]);
 
+    /**
+     * Lanza una alerta de confirmación antes de eliminar una cobertura.
+     * @param {number} id - ID de la cobertura a eliminar
+     */
     const handleEliminar = (id) => {
         Alert.alert(
             "Eliminar Cobertura",
-            "¿Estás seguro de que deseas eliminar esta Cobertura?",
+            "¿Estás seguro de que deseas eliminar esta cobertura?",
             [
                 { text: "Cancelar", style: "cancel" },
                 {
                     text: "Eliminar",
                     style: "destructive",
-
                     onPress: async () => {
                         try {
                             const result = await eliminarCobertura(id);
                             if (result.success) {
-                                // setEspecialidades (especialidades.filter((e) => e.id !== id));
                                 handleCoberturas();
                             } else {
-                                Alert.alert("Error", result.message || "No se pudo eliminar la Cobertura");
+                                Alert.alert("Error", result.message || "No se pudo eliminar la cobertura.");
                             }
                         } catch (error) {
-                            Alert.alert("Error", "No se pudo eliminar la Cobertura");
+                            Alert.alert("Error", "No se pudo eliminar la cobertura.");
                         }
                     },
                 }
             ]
-        )
-    }
+        );
+    };
 
+    /**
+     * Navega a la pantalla para crear una nueva cobertura.
+     */
     const handleCrear = () => {
         navigation.navigate('EditarCoberturas');
     };
 
+    /**
+     * Navega a la pantalla de edición de la cobertura seleccionada.
+     * @param {object} cobertura - Objeto cobertura a editar
+     */
+    const handleEditar = (cobertura) => {
+        navigation.navigate("EditarCoberturas", { cobertura });
+    };
+
+    /**
+     * Navega a la pantalla de detalle de la cobertura seleccionada.
+     * @param {object} cobertura - Objeto cobertura a mostrar en detalle
+     */
+    const handleDetalle = (cobertura) => {
+        navigation.navigate("DetalleCoberturas", { cobertura });
+    };
+
+    // Mostrar loader mientras se cargan los datos
     if (loading) {
         return (
             <View style={styles.centered}>
-                <ActivityIndicator size="large" color="#1976D2" />
+                <ActivityIndicator size="large" color="#7E60BF" />
+                <Text style={{ marginTop: 12, color: "#666" }}>Cargando coberturas...</Text>
             </View>
         );
     }
 
-    const handleEditar = (cobertura) => {
-        navigation.navigate("EditarCoberturas", {cobertura});
-    }
-
-    const handleDetalle = (cobertura) => {
-        navigation.navigate("DetalleCoberturas", {cobertura});
-    }
-
     return (
-        <View style={{flex: 1}}>
+        <View style={styles.container}>
             <FlatList
-            data={cobertura}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-                <CoberturasCard
-                cobertura= {item}
-                onEdit={() => handleEditar (item)}
-                onDelete={() => handleEliminar (item.id)}
-                onDetail={() => handleDetalle(item)}
-            />
-            )}
-            ListEmptyComponent = {<Text style = {styles.emptyText}>No Hay Coberturas Registradas. </Text>}
+                data={cobertura}
+                keyExtractor={(item) => item.id.toString()}
+                contentContainerStyle={cobertura.length === 0 && styles.emptyListContainer}
+                renderItem={({ item }) => (
+                    <CoberturasCard
+                        cobertura={item}
+                        onEdit={() => handleEditar(item)}
+                        onDelete={() => handleEliminar(item.id)}
+                        onDetail={() => handleDetalle(item)}
+                    />
+                )}
+                ListEmptyComponent={
+                    <Text style={styles.emptyText}>No hay coberturas registradas.</Text>
+                }
             />
 
             <TouchableOpacity style={styles.botonCrear} onPress={handleCrear}>
@@ -103,13 +146,14 @@ export default function ListarCobertura (){
                 </View>
             </TouchableOpacity>
         </View>
-    )
+    );
 }
 
+// Estilos del componente
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F8F8F8',
+        backgroundColor: '#FFF5FC',
         paddingHorizontal: 10,
         paddingTop: 10,
     },
@@ -117,11 +161,11 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F8F8F8',
+        backgroundColor: '#FFF5FC',
     },
     emptyText: {
         fontSize: 16,
-        color: '#7F8C8D',
+        color: '#999',
         textAlign: 'center',
         marginTop: 50,
     },
@@ -130,33 +174,30 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    botonCrear: { // Estilo para el TouchableOpacity
-        backgroundColor: '#1976D2', // Color de fondo
-        padding: 15,
-        borderRadius: 8,
-        alignItems: 'center',
-        margin: 10,
-        // Sombra para un efecto más bonito
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.27,
-        shadowRadius: 4.65,
-        elevation: 6,
-    },
-    botonCrearContent: { // Contenedor interno para el icono y el texto
-        flexDirection: 'row',
+    botonCrear: {
+        backgroundColor: '#7E60BF',
+        padding: 14,
+        borderRadius: 50,
         alignItems: 'center',
         justifyContent: 'center',
+        flexDirection: 'row',
+        margin: 15,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 5,
+        elevation: 6,
     },
-    botonCrearIcon: { // Estilo para el icono
-        marginRight: 8, // Espacio entre el icono y el texto
+    botonCrearContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
-    textoBotonCrear: { // Estilo para el texto del botón
-        color: '#FFFFFF',
+    botonCrearIcon: {
+        marginRight: 8,
+    },
+    textoBotonCrear: {
+        color: '#fff',
         fontSize: 16,
-        fontWeight: 'bold',
+        fontWeight: '700',
     },
 });

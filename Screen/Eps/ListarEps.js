@@ -1,93 +1,109 @@
-import { View, Text, FlatList, Alert, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
-import { useNavigation } from "@react-navigation/native";
-import { listarEps, eliminarEps } from "../../Src/Servicios/EpsService";
+import {
+    View,
+    Text,
+    FlatList,
+    Alert,
+    ActivityIndicator,
+    TouchableOpacity,
+    StyleSheet,
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+
+import { listarEps, eliminarEps } from '../../Src/Servicios/EpsService';
 import EpsCard from '../../components/EpsCard';
 
+/**
+ * Pantalla que muestra una lista de EPS registradas en el sistema.
+ * Permite al usuario ver detalles, editar o eliminar una EPS existente,
+ * así como crear una nueva.
+ */
 export default function ListarEps() {
-    const [Eps, setEps] = useState([]);
+    const [epsList, setEpsList] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigation = useNavigation();
 
-    const handleEps = async () => {
+    /**
+     * Función encargada de cargar las EPS desde el backend.
+     */
+    const cargarEps = async () => {
         setLoading(true);
         try {
             const result = await listarEps();
             if (result.success) {
-                setEps(result.data);
+                setEpsList(result.data);
             } else {
-                Alert.alert("Error", result.message || "No se pudierón cargas las Eps");
+                Alert.alert("Error", result.message || "No se pudieron cargar las EPS.");
             }
         } catch (error) {
-            Alert.alert("Error", "No se pudierón cargas las Eps");
+            Alert.alert("Error", "Ocurrió un error al cargar las EPS.");
         } finally {
             setLoading(false);
         }
-
     };
 
+    /**
+     * Efecto que recarga la lista cada vez que se vuelve a enfocar la pantalla.
+     */
     useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', handleEps);
+        const unsubscribe = navigation.addListener('focus', cargarEps);
         return unsubscribe;
     }, [navigation]);
 
+    /**
+     * Función que gestiona la eliminación de una EPS con confirmación.
+     * @param {number} id - ID de la EPS a eliminar.
+     */
     const handleEliminar = (id) => {
         Alert.alert(
-            "Eliminar Eps",
-            "¿Estás seguro de que deseas eliminar esta Eps?",
+            "Eliminar EPS",
+            "¿Estás seguro de que deseas eliminar esta EPS?",
             [
                 { text: "Cancelar", style: "cancel" },
                 {
                     text: "Eliminar",
                     style: "destructive",
-
                     onPress: async () => {
                         try {
                             const result = await eliminarEps(id);
                             if (result.success) {
-                                // setEspecialidades (especialidades.filter((e) => e.id !== id));
-                                handleEps();
+                                cargarEps();
                             } else {
-                                Alert.alert("Error", result.message || "No se pudo eliminar la Eps");
+                                Alert.alert("Error", result.message || "No se pudo eliminar la EPS.");
                             }
                         } catch (error) {
-                            Alert.alert("Error", "No se pudo eliminar la Eps");
+                            Alert.alert("Error", "No se pudo eliminar la EPS.");
                         }
                     },
-                }
+                },
             ]
-        )
-    }
-
-    const handleCrear = () => {
-        navigation.navigate('EditarEps');
+        );
     };
 
+    // Navega a la pantalla de creación de una nueva EPS
+    const handleCrear = () => navigation.navigate('EditarEps');
 
-    const handleDetalles = (eps) => {
-        navigation.navigate("DetalleEps", { eps });
-    };
+    // Navega a la pantalla de detalles de una EPS específica
+    const handleDetalles = (eps) => navigation.navigate('DetalleEps', { eps });
 
+    // Navega a la pantalla de edición de una EPS específica
+    const handleEditar = (eps) => navigation.navigate('EditarEps', { eps });
 
+    // Vista de carga
     if (loading) {
         return (
             <View style={styles.centered}>
-                <ActivityIndicator size="large" color="#1976D2" />
+                <ActivityIndicator size="large" color="#7E60BF" />
+                <Text style={{ marginTop: 12, color: "#666" }}>Cargando EPS...</Text>
             </View>
         );
     }
 
-    const handleEditar = (eps) => {
-        navigation.navigate("EditarEps", { eps });
-
-
-    }
-
     return (
-        <View style={{ flex: 1 }}>
+        <View style={styles.container}>
             <FlatList
-                data={Eps}
+                data={epsList}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
                     <EpsCard
@@ -97,23 +113,28 @@ export default function ListarEps() {
                         onDetails={() => handleDetalles(item)}
                     />
                 )}
-                ListEmptyComponent={<Text style={styles.emptyText}>No Hay Eps Registradas. </Text>}
+                ListEmptyComponent={
+                    <Text style={styles.emptyText}>No hay EPS registradas.</Text>
+                }
+                contentContainerStyle={epsList.length === 0 && styles.emptyListContainer}
             />
 
+            {/* Botón flotante para crear nueva EPS */}
             <TouchableOpacity style={styles.botonCrear} onPress={handleCrear}>
                 <View style={styles.botonCrearContent}>
                     <Ionicons name="add-circle-outline" size={24} color="#fff" style={styles.botonCrearIcon} />
-                    <Text style={styles.textoBotonCrear}>Nueva Eps</Text>
+                    <Text style={styles.textoBotonCrear}>Nueva EPS</Text>
                 </View>
             </TouchableOpacity>
         </View>
-    )
+    );
 }
 
+// Estilos del componente
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F8F8F8',
+        backgroundColor: '#FFF5FC',
         paddingHorizontal: 10,
         paddingTop: 10,
     },
@@ -121,11 +142,11 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F8F8F8',
+        backgroundColor: '#FFF5FC',
     },
     emptyText: {
         fontSize: 16,
-        color: '#7F8C8D',
+        color: '#999',
         textAlign: 'center',
         marginTop: 50,
     },
@@ -134,33 +155,30 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    botonCrear: { // Estilo para el TouchableOpacity
-        backgroundColor: '#1976D2', // Color de fondo
-        padding: 15,
-        borderRadius: 8,
-        alignItems: 'center',
-        margin: 10,
-        // Sombra para un efecto más bonito
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.27,
-        shadowRadius: 4.65,
-        elevation: 6,
-    },
-    botonCrearContent: { // Contenedor interno para el icono y el texto
-        flexDirection: 'row',
+    botonCrear: {
+        backgroundColor: '#7E60BF',
+        padding: 14,
+        borderRadius: 50,
         alignItems: 'center',
         justifyContent: 'center',
+        flexDirection: 'row',
+        margin: 15,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 5,
+        elevation: 6,
     },
-    botonCrearIcon: { // Estilo para el icono
-        marginRight: 8, // Espacio entre el icono y el texto
+    botonCrearContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
-    textoBotonCrear: { // Estilo para el texto del botón
-        color: '#FFFFFF',
+    botonCrearIcon: {
+        marginRight: 8,
+    },
+    textoBotonCrear: {
+        color: '#fff',
         fontSize: 16,
-        fontWeight: 'bold',
+        fontWeight: '700',
     },
 });

@@ -1,11 +1,21 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import api from "./conexion";
+// src/Servicios/AuthService.js
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import api from "./conexion"; // Axios configurado con baseURL
+
+/**
+ * Inicia sesión del usuario mediante API y guarda el token en AsyncStorage.
+ * 
+ * @param {string} email - Correo electrónico del usuario
+ * @param {string} password - Contraseña del usuario
+ * @returns {Promise<object>} Objeto con éxito y token o mensaje de error
+ */
 export const loginUser = async (email, password) => {
     try {
-        const response = await api.post("/login", {email, password});
+        const response = await api.post("/login", { email, password });
         const { token } = response.data;
 
+        // Guarda el token en el almacenamiento local
         await AsyncStorage.setItem("userToken", token);
 
         return { success: true, token };
@@ -23,10 +33,16 @@ export const loginUser = async (email, password) => {
     }
 };
 
+/**
+ * Cierra sesión del usuario, llama al endpoint de logout y elimina el token.
+ * 
+ * @returns {Promise<object>} Objeto con éxito o mensaje de error
+ */
 export const logoutUser = async () => {
     try {
-        await api.post("/logout"); // Asumiendo que tienes un endpoint de logout
-        await AsyncStorage.removeItem("userToken");
+        await api.post("/logout"); // Endpoint de logout (opcional, depende del backend)
+        await AsyncStorage.removeItem("userToken"); // Borra el token local
+
         return { success: true };
     } catch (error) {
         console.error(
@@ -42,13 +58,22 @@ export const logoutUser = async () => {
     }
 };
 
-// Renombrado de 'Register' a 'register' para consistencia con el uso en RegistroScreen
-export const Register = async (name, email, password, role) => { // Añadido 'telefono' aquí
+/**
+ * Registra un nuevo usuario, obtiene el token y lo guarda localmente.
+ * 
+ * @param {string} name - Nombre del usuario
+ * @param {string} email - Correo electrónico
+ * @param {string} password - Contraseña
+ * @param {string} role - Rol asignado al usuario
+ * @returns {Promise<object>} Objeto con éxito y token o mensaje de error
+ */
+export const Register = async (name, email, password, role) => {
     try {
-        // Asegúrate de que tu API espera 'telefono' si lo estás enviando
-        const response = await api.post("/register", {name, email, password, role});
+        // Envío de datos al endpoint /register
+        const response = await api.post("/register", { name, email, password, role });
         const { token } = response.data;
 
+        // Guardado del token en almacenamiento local
         await AsyncStorage.setItem("userToken", token);
 
         return { success: true, token };

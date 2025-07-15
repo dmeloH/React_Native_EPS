@@ -1,15 +1,30 @@
-import { View, Text, FlatList, Alert, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+    View,
+    Text,
+    FlatList,
+    Alert,
+    ActivityIndicator,
+    TouchableOpacity,
+    StyleSheet
+} from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
-import CitaCard from "../../components/CitaCard";
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
+import CitaCard from "../../components/CitaCard";
 import { listarCitas, eliminarCita } from "../../Src/Servicios/CitasService";
 
+/**
+ * Pantalla que lista todas las citas médicas registradas.
+ * Permite crear, editar, ver detalles o eliminar citas.
+ */
 export default function ListarCita() {
-    const [citas, setCitas] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const navigation = useNavigation();
+    const [citas, setCitas] = useState([]);           // Lista de citas
+    const [loading, setLoading] = useState(true);     // Estado de carga
+    const navigation = useNavigation();               // Hook de navegación
 
+    /**
+     * Función para cargar las citas desde el servicio.
+     */
     const handleCitas = async () => {
         setLoading(true);
         try {
@@ -17,21 +32,25 @@ export default function ListarCita() {
             if (result.success) {
                 setCitas(result.data);
             } else {
-                Alert.alert("Error", result.message || "No se pudierón cargas las citas");
+                Alert.alert("Error", result.message || "No se pudieron cargar las citas.");
             }
         } catch (error) {
-            Alert.alert("Error", "No se pudierón cargas las citas");
+            Alert.alert("Error", "No se pudieron cargar las citas.");
         } finally {
             setLoading(false);
         }
-
     };
 
+    // Carga las citas cada vez que se enfoca la pantalla
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', handleCitas);
         return unsubscribe;
     }, [navigation]);
 
+    /**
+     * Maneja la eliminación de una cita, con confirmación.
+     * @param {number} id - ID de la cita a eliminar
+     */
     const handleEliminar = (id) => {
         Alert.alert(
             "Eliminar Cita",
@@ -41,15 +60,13 @@ export default function ListarCita() {
                 {
                     text: "Eliminar",
                     style: "destructive",
-
                     onPress: async () => {
                         try {
                             const result = await eliminarCita(id);
                             if (result.success) {
-                                // setEspecialidades (especialidades.filter((e) => e.id !== id));
                                 handleCitas();
                             } else {
-                                Alert.alert("Error", result.message || "No se pudo eliminar la Cita");
+                                Alert.alert("Error", result.message || "No se pudo eliminar la cita");
                             }
                         } catch (error) {
                             Alert.alert("Error", "No se pudo eliminar la cita");
@@ -57,32 +74,46 @@ export default function ListarCita() {
                     },
                 }
             ]
-        )
-    }
+        );
+    };
 
+    /**
+     * Navega a la pantalla para crear una nueva cita.
+     */
     const handleCrear = () => {
         navigation.navigate('EditarCitas');
     };
 
-    if (loading) {
-        return (
-            <View style={styles.centered}>
-                <ActivityIndicator size="large" color="#1976D2" />
-            </View>
-        );
-    }
-
+    /**
+     * Navega a la pantalla para editar una cita existente.
+     * @param {Object} cita - Objeto cita a editar
+     */
     const handleEditar = (cita) => {
         navigation.navigate("EditarCitas", { cita });
-    }
+    };
+
+    /**
+     * Navega a la pantalla de detalles de una cita.
+     * @param {Object} cita - Objeto cita a visualizar
+     */
     const handleDetalle = (cita) => {
         navigation.navigate("DetalleCitas", { cita });
     };
 
-
+    /**
+     * Muestra una vista de carga mientras se obtienen las citas.
+     */
+    if (loading) {
+        return (
+            <View style={styles.centered}>
+                <ActivityIndicator size="large" color="#7E60BF" />
+                <Text style={{ marginTop: 12, color: "#666" }}>Cargando citas...</Text>
+            </View>
+        );
+    }
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={styles.container}>
             <FlatList
                 data={citas}
                 keyExtractor={(item) => item.id.toString()}
@@ -94,9 +125,11 @@ export default function ListarCita() {
                         onDetail={() => handleDetalle(item)}
                     />
                 )}
-                ListEmptyComponent={<Text style={styles.emptyText}>No Hay Citas Registradas. </Text>}
+                ListEmptyComponent={<Text style={styles.emptyText}>No hay citas registradas.</Text>}
+                contentContainerStyle={citas.length === 0 && styles.emptyListContainer}
             />
 
+            {/* Botón flotante para crear una nueva cita */}
             <TouchableOpacity style={styles.botonCrear} onPress={handleCrear}>
                 <View style={styles.botonCrearContent}>
                     <Ionicons name="add-circle-outline" size={24} color="#fff" style={styles.botonCrearIcon} />
@@ -104,13 +137,14 @@ export default function ListarCita() {
                 </View>
             </TouchableOpacity>
         </View>
-    )
+    );
 }
 
+// Estilos del componente
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F8F8F8',
+        backgroundColor: '#FFF5FC',
         paddingHorizontal: 10,
         paddingTop: 10,
     },
@@ -118,11 +152,11 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F8F8F8',
+        backgroundColor: '#FFF5FC',
     },
     emptyText: {
         fontSize: 16,
-        color: '#7F8C8D',
+        color: '#999',
         textAlign: 'center',
         marginTop: 50,
     },
@@ -131,33 +165,30 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    botonCrear: { // Estilo para el TouchableOpacity
-        backgroundColor: '#1976D2', // Color de fondo
-        padding: 15,
-        borderRadius: 8,
-        alignItems: 'center',
-        margin: 10,
-        // Sombra para un efecto más bonito
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.27,
-        shadowRadius: 4.65,
-        elevation: 6,
-    },
-    botonCrearContent: { // Contenedor interno para el icono y el texto
-        flexDirection: 'row',
+    botonCrear: {
+        backgroundColor: '#7E60BF',
+        padding: 14,
+        borderRadius: 50,
         alignItems: 'center',
         justifyContent: 'center',
+        flexDirection: 'row',
+        margin: 15,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 5,
+        elevation: 6,
     },
-    botonCrearIcon: { // Estilo para el icono
-        marginRight: 8, // Espacio entre el icono y el texto
+    botonCrearContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
-    textoBotonCrear: { // Estilo para el texto del botón
-        color: '#FFFFFF',
+    botonCrearIcon: {
+        marginRight: 8,
+    },
+    textoBotonCrear: {
+        color: '#fff',
         fontSize: 16,
-        fontWeight: 'bold',
+        fontWeight: '700',
     },
 });
