@@ -1,12 +1,11 @@
 import { View, Text, FlatList, Alert, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
-import BotonComponent from "../../components/BottonComponent"; // Asegúrate de que la ruta sea correcta
 import CitaCard from "../../components/CitaCard";
 import { useNavigation } from "@react-navigation/native";
-import { listarCitas, eliminarCitas } from "../../Src/Servicios/CitasService";
+import { listarCitas, eliminarCita } from "../../Src/Servicios/CitasService";
 
-export default function ListarCita (){
+export default function ListarCita() {
     const [citas, setCitas] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigation = useNavigation();
@@ -18,10 +17,10 @@ export default function ListarCita (){
             if (result.success) {
                 setCitas(result.data);
             } else {
-                Alert.alert ("Error", result.message || "No se pudierón cargas las citas");
+                Alert.alert("Error", result.message || "No se pudierón cargas las citas");
             }
         } catch (error) {
-            Alert.alert ("Error", "No se pudierón cargas las citas");
+            Alert.alert("Error", "No se pudierón cargas las citas");
         } finally {
             setLoading(false);
         }
@@ -45,7 +44,7 @@ export default function ListarCita (){
 
                     onPress: async () => {
                         try {
-                            const result = await eliminarCitas(id);
+                            const result = await eliminarCita(id);
                             if (result.success) {
                                 // setEspecialidades (especialidades.filter((e) => e.id !== id));
                                 handleCitas();
@@ -62,7 +61,7 @@ export default function ListarCita (){
     }
 
     const handleCrear = () => {
-        navigation.navigate('CrearCita');
+        navigation.navigate('EditarCitas');
     };
 
     if (loading) {
@@ -74,24 +73,28 @@ export default function ListarCita (){
     }
 
     const handleEditar = (cita) => {
-        navigation.navigate("EditarCita", {cita});
-
-
+        navigation.navigate("EditarCitas", { cita });
     }
+    const handleDetalle = (cita) => {
+        navigation.navigate("DetalleCitas", { cita });
+    };
+
+
 
     return (
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
             <FlatList
-            data={citas}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-                <CitaCard
-                especialidad= {item}
-                onEdit={() => handleEditar (item)}
-                onDelete={() => handleEliminar (item.id)}
-            />
-            )}
-            ListEmptyComponent = {<Text style = {styles.emptyText}>No Hay Citas Registradas. </Text>}
+                data={citas}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                    <CitaCard
+                        citas={item}
+                        onEdit={() => handleEditar(item)}
+                        onDelete={() => handleEliminar(item.id)}
+                        onDetail={() => handleDetalle(item)}
+                    />
+                )}
+                ListEmptyComponent={<Text style={styles.emptyText}>No Hay Citas Registradas. </Text>}
             />
 
             <TouchableOpacity style={styles.botonCrear} onPress={handleCrear}>

@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import ListarUsuarios from "../../../Screen/Usuarios/ListarUsuarios";
 import DetalleUsuarios from "../../../Screen/Usuarios/DetalleUsuarios";
 import EditarUsuarios from "../../../Screen/Usuarios/EditarUsuarios";
+import DetalleUsuario from "../../../Screen/Usuarios/DetalleUsuarios";
 
 const Stack = createStackNavigator();
 
@@ -16,7 +17,7 @@ export default function UsuariosStack () {
             />
              <Stack.Screen 
                 name= "DetalleUsuarios"
-                component={DetalleUsuarios}
+                component={DetalleUsuario}
                 options={{ title: "Detalle Usuarios" }}
             />
              <Stack.Screen 

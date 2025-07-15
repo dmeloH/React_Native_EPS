@@ -1,63 +1,62 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator, SafeAreaView } from "react-native";
-import BotonComponent from "../../components/BottonComponent"; 
+import BotonComponent from "../../components/BottonComponent";
+import { listarCoberturas } from "../../Src/Servicios/CoberturasService";
+import { listarEps } from "../../Src/Servicios/EpsService";
 
 export default function DetalleUsuario({ route, navigation }) {
-   
-    const { usuarioId } = route.params;
+    const { usuarios } = route.params;
 
-    const [usuario, setUsuario] = useState(null);
+    const [epsNombre, setEpsNombre] = useState("Cargando...");
+    const [coberturaNombre, setCoberturaNombre] = useState("Cargando...");
     const [loading, setLoading] = useState(true);
-
-  
-    
-
     useEffect(() => {
-        // Simular una carga de datos basada en el especialidadId
-        const foundUsuario = usuariosEjemplo.find(co => co.id === usuarioId);
-        setEspecialidad(foundEspecialidad);
-        setLoading(false);
-    }, [usuarioId]);
+        const fetchRelacionados = async () => {
+            try {
+                const [epsResponse, coberturaResponse] = await Promise.all([listarEps(), listarCoberturas()]);
+
+                if (epsResponse.success && Array.isArray(epsResponse.data)) {
+                    const eps = epsResponse.data.find(e => Number(e.id) === Number(usuarios.eps_id));
+                    setEpsNombre(eps ? (eps.tipo_afiliacion ?? eps.nombre ?? "No definida") : "No encontrada");
+                }
+
+                if (coberturaResponse.success && Array.isArray(coberturaResponse.data)) {
+                    const cobertura = coberturaResponse.data.find(c => Number(c.id) === Number(usuarios.cobertura_id));
+                    setCoberturaNombre(cobertura ? (cobertura.porcentaje_cubrimiento ?? "No definida") : "No encontrada");
+                }
+            } catch (error) {
+                console.error("Error al obtener EPS o Cobertura:", error);
+                setEpsNombre("Error");
+                setCoberturaNombre("Error");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchRelacionados();
+    }, []);
+
 
     if (loading) {
         return (
-            <View style={[styles.container, { justifyContent: 'center', alignItems: 'center', backgroundColor: '#f0f4f8' }]}>
+            <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
                 <ActivityIndicator size="large" color="#007B8C" />
-                <Text style={{ marginTop: 15, fontSize: 18, color: '#555' }}>Cargando detalles del Usuario...</Text>
+                <Text style={{ marginTop: 15 }}>Cargando detalles del Usuario...</Text>
             </View>
         );
     }
 
-    if (!usuario) {
-        return (
-            <SafeAreaView style={[styles.container, {backgroundColor: '#f0f4f8'}]}>
-                <Text style={[styles.title, {color: '#2c3e50'}]}>Detalle del Usuario</Text>
-                <View style={[styles.detailCard, {backgroundColor: '#FFFFFF', shadowColor: 'rgba(0, 0, 0, 0.1)'}]}>
-                    <Text style={[styles.errorText, {color: 'red'}]}>No se encontraron detalles para este usuario.</Text>
-                    <BotonComponent
-                        title="Volver al Listado"
-                        onPress={() => navigation.goBack()}
-                        buttonStyle={styles.backButton}
-                        textStyle={styles.buttonText}
-                    />
-                </View>
-            </SafeAreaView>
-        );
-    }
-
     return (
-        <SafeAreaView style={[styles.container, {backgroundColor: '#f0f4f8'}]}>
-            <Text style={[styles.title, {color: '#2c3e50'}]}>Detalle del Usuario</Text>
+        <SafeAreaView style={styles.container}>
+            <Text style={styles.title}>Detalle del Usuario</Text>
 
-            <View style={[styles.detailCard, {backgroundColor: '#FFFFFF', shadowColor: 'rgba(0, 0, 0, 0.1)'}]}>
-                <Text style={[styles.usuarioName, {color: '#2c3e50'}]}>{usuario.Nombre}</Text>
-                <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>ID: </Text>{usuario.id}</Text>
-                <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>Número: </Text>{usuario.Numero}</Text>
-                <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>Id Sede: </Text>{usuario.IdSede}</Text>
-
-                {usuario.Area && (
-                    <Text style={[styles.detailText, {color: '#5C6F7F'}]}><Text style={styles.detailLabel}>Área: </Text>{usuario.Area}</Text>
-                )}
+            <View style={styles.detailCard}>
+                <Text style={styles.usuarioName}>{usuarios.nombre_completo}</Text>
+                <Text style={styles.detailText}><Text style={styles.detailLabel}>Tipo Documento: </Text>{usuarios.tipo_documento}</Text>
+                <Text style={styles.detailText}><Text style={styles.detailLabel}>Número Documento: </Text>{usuarios.numero_documento}</Text>
+                <Text style={styles.detailText}><Text style={styles.detailLabel}>Fecha de Nacimiento: </Text>{usuarios.fecha_nacimiento}</Text>
+                <Text style={styles.detailText}><Text style={styles.detailLabel}>EPS: </Text>{epsNombre}</Text>
+                <Text style={styles.detailText}><Text style={styles.detailLabel}>Cobertura: </Text>{coberturaNombre} %</Text>
             </View>
 
             <BotonComponent
@@ -76,6 +75,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         padding: 20,
+        backgroundColor: '#f0f4f8',
     },
     title: {
         fontSize: 28,
@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
         maxWidth: 400,
         padding: 25,
         borderRadius: 15,
+        backgroundColor: "#FFFFFF",
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.15,
         shadowRadius: 8,
@@ -113,15 +114,8 @@ const styles = StyleSheet.create({
     detailLabel: {
         fontWeight: 'bold',
     },
-    errorText: {
-        fontSize: 18,
-        color: 'red',
-        textAlign: 'center',
-        marginBottom: 20,
-        width: '100%',
-    },
     backButton: {
-        backgroundColor: "#007B8C", // Color consistente con el tema
+        backgroundColor: "#007B8C",
         paddingVertical: 12,
         paddingHorizontal: 25,
         borderRadius: 8,

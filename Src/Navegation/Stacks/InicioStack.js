@@ -9,7 +9,6 @@ import CitasStack from "./CitasStack";
 import EpsStack from "./EpsStack";
 import MedicosStack from "./MedicosStack";
 import CoberturasStack from "./CoberturasStack";
-import TipoCitasStack from "./TipoCitasStack";
 import UsuariosStack from "./UsuariosStack";
 
 const Stack = createStackNavigator();
@@ -23,35 +22,30 @@ export default function InicioStack () {
                 options={{ headerShown: false }} 
             />
             <Stack.Screen
-                name="CitasFlow" 
+                name="CitasScreen" 
                 component={CitasStack}
                 options={{ headerShown: false }}
             />
 
             <Stack.Screen
-                name="UsuariosFlow" 
+                name="UsuariosScreen" 
                 component={UsuariosStack}
                 options={{ headerShown: false }}
             />
 
             <Stack.Screen
-                name="EpsFlow" 
+                name="EpsScreen" 
                 component={EpsStack}
                 options={{ headerShown: false }}
             />
 
             <Stack.Screen
-                name="TipoCitasFlow" 
-                component={TipoCitasStack}
-                options={{ headerShown: false }}
-            />
-            <Stack.Screen
-                name="MedicosFlow" 
+                name="MedicosScreen" 
                 component={MedicosStack}
                 options={{ headerShown: false }}
             />
             <Stack.Screen
-                name="CoberturasFlow" 
+                name="CoberturasScreen" 
                 component={CoberturasStack}
                 options={{ headerShown: false }}
             />

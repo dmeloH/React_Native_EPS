@@ -11,7 +11,7 @@ export const loginUser = async (email, password) => {
         return { success: true, token };
     } catch (error) {
         console.error(
-            "Error de login:",
+            "Error de Login:",
             error.response ? error.response.data : error.message
         );
         return {

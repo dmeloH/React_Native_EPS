@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     View,
     Text,
@@ -6,10 +6,14 @@ import {
     StyleSheet,
     TouchableOpacity,
     ActivityIndicator,
-    Alert
+    Alert,
+    ScrollView,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { crearUsuarios, editarUsuarios } from "../../Src/Servicios/UsuariosService";
+import { listarCoberturas } from "../../Src/Servicios/CoberturasService";
+import { listarEps } from "../../Src/Servicios/EpsService";
+import { Picker } from "@react-native-picker/picker";
 
 export default function EditarUsuarios({ navigation }) {
     const route = useRoute();
@@ -18,13 +22,40 @@ export default function EditarUsuarios({ navigation }) {
     const [nombre_completo, setNombreCompleto] = useState(usuarios?.nombre_completo || "");
     const [tipo_documento, setTipoDocumento] = useState(usuarios?.tipo_documento || "");
     const [numero_documento, setNumeroDocumento] = useState(usuarios?.numero_documento || "");
-    const [fecha_nacimiento, setFechaNacimiento] = useState(usuarios?.fecha_nacimiento || "");
+    const [fecha_nacimiento, setFechaNacimiento] = useState(usuarios?.fecha_nacimiento?.slice(0, 10) || "");
     const [eps_id, setEps_id] = useState(usuarios?.eps_id?.toString() || "");
     const [cobertura_id, setCobertura_id] = useState(usuarios?.cobertura_id?.toString() || "");
 
+    const [eps, setEps] = useState([]);
+    const [coberturas, setCoberturas] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const esEdicion = !!usuarios;
+
+    const tiposDocumento = ["CC", "TI", "CE", "RC"];
+
+    useEffect(() => {
+        const loadData = async () => {
+            try {
+                const [epsResponse, coberturaResponse] = await Promise.all([
+                    listarEps(),
+                    listarCoberturas(),
+                ]);
+
+                if (epsResponse.success && coberturaResponse.success) {
+                    setEps(epsResponse.data);
+                    setCoberturas(coberturaResponse.data);
+                } else {
+                    Alert.alert("Error", "No se pudieron cargar EPS o Coberturas");
+                }
+            } catch (error) {
+                console.error("Error al cargar datos:", error);
+                Alert.alert("Error", "Ocurrió un error al cargar los datos.");
+            }
+        };
+
+        loadData();
+    }, []);
 
     const handleGuardar = async () => {
         if (
@@ -33,9 +64,11 @@ export default function EditarUsuarios({ navigation }) {
             !numero_documento ||
             !fecha_nacimiento ||
             !eps_id ||
-            !cobertura_id
+            isNaN(parseInt(eps_id)) ||
+            !cobertura_id ||
+            isNaN(parseInt(cobertura_id))
         ) {
-            Alert.alert("Campos requeridos", "Por favor, ingrese todos los campos.");
+            Alert.alert("Campos requeridos", "Por favor, complete todos los campos correctamente.");
             return;
         }
 
@@ -46,7 +79,6 @@ export default function EditarUsuarios({ navigation }) {
             tipo_documento,
             numero_documento,
             fecha_nacimiento,
-
             eps_id: parseInt(eps_id),
             cobertura_id: parseInt(cobertura_id),
         };
@@ -60,82 +92,124 @@ export default function EditarUsuarios({ navigation }) {
                 Alert.alert("Éxito", esEdicion ? "Usuario actualizado correctamente" : "Usuario creado correctamente");
                 navigation.goBack();
             } else {
-                Alert.alert("Error", result.message || "No se pudo guardar el usuarios.");
+                Alert.alert("Error", result.message || "No se pudo guardar el usuario.");
             }
         } catch (error) {
-            console.error("Error al guardar usuarios:", error);
-            Alert.alert("Error", error.message || "Ocurrió un error inesperado al guardar el usuarios.");
+            console.error("Error al guardar usuario:", error);
+            Alert.alert("Error", "Ocurrió un error inesperado.");
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>{esEdicion ? "Editar Usuario" : "Nuevo Usuario"}</Text>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+            <View style={styles.container}>
+                <Text style={styles.title}>{esEdicion ? "Editar Usuario" : "Nuevo Usuario"}</Text>
 
-            <TextInput
-                style={styles.input}
-                placeholder="Nombre Completo"
-                value={nombre_completo}
-                onChangeText={setNombreCompleto}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Tipo Documento"
-                value={tipo_documento}
-                onChangeText={setTipoDocumento}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Número Documento"
-                value={numero_documento}
-                onChangeText={setNumeroDocumento}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Fecha de Nacimiento (YYYY-MM-DD)"
-                value={fecha_nacimiento}
-                onChangeText={setFechaNacimiento}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="EPS ID"
-                value={eps_id}
-                onChangeText={setEps_id}
-                keyboardType="numeric"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Cobertura ID"
-                value={cobertura_id}
-                onChangeText={setCobertura_id}
-                keyboardType="numeric"
-            />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Nombre Completo"
+                    value={nombre_completo}
+                    onChangeText={setNombreCompleto}
+                />
 
-            <TouchableOpacity style={styles.boton} onPress={handleGuardar} disabled={loading}>
-                {loading ? (
-                    <ActivityIndicator color="#fff" />
-                ) : (
-                    <Text style={styles.textoBoton}>{esEdicion ? "Guardar cambios" : "Crear usuarios"}</Text>
-                )}
-            </TouchableOpacity>
-        </View>
+                {/* Picker tipo documento */}
+                <View style={styles.pickerContainer}>
+                    <Text style={styles.pickerLabel}>Tipo de Documento</Text>
+                    <Picker
+                        selectedValue={tipo_documento}
+                        onValueChange={setTipoDocumento}
+                        style={styles.picker}
+                    >
+                        <Picker.Item label="-- Seleccione --" value="" />
+                        {tiposDocumento.map((tipo) => (
+                            <Picker.Item key={tipo} label={tipo} value={tipo} />
+                        ))}
+                    </Picker>
+                </View>
+
+                <TextInput
+                    style={styles.input}
+                    placeholder="Número Documento"
+                    value={numero_documento}
+                    onChangeText={setNumeroDocumento}
+                    keyboardType="numeric"
+                />
+
+                <TextInput
+                    style={styles.input}
+                    placeholder="Fecha de Nacimiento (YYYY-MM-DD)"
+                    value={fecha_nacimiento}
+                    onChangeText={setFechaNacimiento}
+                />
+
+                {/* Picker EPS */}
+                <View style={styles.pickerContainer}>
+                    <Text style={styles.pickerLabel}>Seleccione una EPS</Text>
+                    <Picker
+                        selectedValue={eps_id}
+                        onValueChange={setEps_id}
+                        style={styles.picker}
+                    >
+                        <Picker.Item label="-- Seleccione EPS --" value="" />
+                        {eps.map((item) => (
+                            <Picker.Item key={item.id} label={item.nombre} value={String(item.id)} />
+                        ))}
+                    </Picker>
+                </View>
+
+                {/* Picker Cobertura */}
+                <View style={styles.pickerContainer}>
+                    <Text style={styles.pickerLabel}>Seleccione una Cobertura</Text>
+                    <Picker
+                        selectedValue={cobertura_id}
+                        onValueChange={setCobertura_id}
+                        style={styles.picker}
+                    >
+                        <Picker.Item label="-- Seleccione Cobertura --" value="" />
+                        {coberturas.map((item) => (
+                            <Picker.Item key={item.id} label={item.tipo_afiliacion} value={String(item.id)} />
+                        ))}
+                    </Picker>
+                </View>
+
+                <TouchableOpacity style={styles.boton} onPress={handleGuardar} disabled={loading}>
+                    {loading ? (
+                        <ActivityIndicator color="#fff" />
+                    ) : (
+                        <Text style={styles.textoBoton}>
+                            {esEdicion ? "Guardar cambios" : "Crear Usuario"}
+                        </Text>
+                    )}
+                </TouchableOpacity>
+            </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
+    scrollContainer: {
+        flexGrow: 1,
         justifyContent: "center",
         alignItems: "center",
-        padding: 16,
         backgroundColor: "#f5f5f5",
+        paddingVertical: 30,
+    },
+    container: {
+        width: "90%",
+        backgroundColor: "#fff",
+        padding: 20,
+        borderRadius: 10,
+        shadowColor: "#000",
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
+        elevation: 3,
     },
     title: {
-        fontSize: 24,
+        fontSize: 22,
         fontWeight: "bold",
-        marginBottom: 24,
+        marginBottom: 20,
         textAlign: "center",
     },
     input: {
@@ -145,24 +219,32 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         paddingHorizontal: 16,
         marginBottom: 16,
-        width: "80%",
+    },
+    pickerContainer: {
+        marginBottom: 16,
+    },
+    pickerLabel: {
+        fontWeight: "bold",
+        marginBottom: 4,
+        fontSize: 14,
+    },
+    picker: {
+        height: 50,
+        backgroundColor: "#fff",
+        borderWidth: 1,
+        borderColor: "#ccc",
+        borderRadius: 8,
     },
     boton: {
         backgroundColor: "#1976D2",
         padding: 15,
         borderRadius: 8,
         alignItems: "center",
-        width: "80%",
-        marginTop: 20,
+        marginTop: 10,
     },
     textoBoton: {
         color: "#fff",
         fontSize: 16,
         fontWeight: "bold",
-    },
-    error: {
-        color: "red",
-        marginTop: 10,
-        textAlign: "center",
     },
 });

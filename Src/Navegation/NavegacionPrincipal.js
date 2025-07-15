@@ -61,7 +61,7 @@ export default function NavegacionPrincipal() {
             />
 
             <Tab.Screen
-                name="Perfil" // Nombre de la ruta (lo que usas para navegar si es necesario)
+                name="PerfilScreen" // Nombre de la ruta (lo que usas para navegar si es necesario)
                 component={PerfilesStack}
                 options={{
                     headerShown: false,

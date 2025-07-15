@@ -1,11 +1,11 @@
 import { View, Text, FlatList, Alert, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons'; // Importa Ionicons
 import { useNavigation } from "@react-navigation/native";
 import { listarUsuarios, eliminarUsuarios } from "../../Src/Servicios/UsuariosService";
 import UsuariosCard from '../../components/UsuariosCard';
 
-export default function ListarUsuarios (){
+export default function ListarUsuarios() {
     const [usuarios, setUsuarios] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigation = useNavigation();
@@ -19,10 +19,10 @@ export default function ListarUsuarios (){
                 setUsuarios(result.data);
                 console.log("Usuarios cargados:", result.data);
             } else {
-                Alert.alert ("Error", result.message || "No se pudieron cargar los usuarios");
+                Alert.alert("Error", result.message || "No se pudieron cargar los usuarios");
             }
         } catch (error) {
-            Alert.alert ("Error", "No se pudieron cargar los usuarios");
+            Alert.alert("Error", "No se pudieron cargar los usuarios");
         } finally {
             setLoading(false);
         }
@@ -75,23 +75,27 @@ export default function ListarUsuarios (){
     }
 
     const handleEditar = (usuarios) => {
-        navigation.navigate("EditarUsuarios", {usuarios});
+        navigation.navigate("EditarUsuarios", { usuarios });
+    }
+
+    const handleDetalle = (usuarios) => {
+        navigation.navigate("DetalleUsuarios", { usuarios });
     }
 
     return (
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
             <FlatList
-            data={usuarios}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-                <UsuariosCard
-                usuarios= {item}
-                onEdit={() => handleEditar (item)}
-                onDelete={() => handleEliminar (item.id)}
-                onDetail={() => handleDetalle (item)}
-            />
-            )}
-            ListEmptyComponent = {<Text style = {styles.emptyText}>No Hay Usuarios Registrados. </Text>}
+                data={usuarios}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                    <UsuariosCard
+                        usuarios={item}
+                        onEdit={() => handleEditar(item)}
+                        onDelete={() => handleEliminar(item.id)}
+                        onDetail={() => handleDetalle(item)}
+                    />
+                )}
+                ListEmptyComponent={<Text style={styles.emptyText}>No Hay Usuarios Registrados. </Text>}
             />
 
             <TouchableOpacity style={styles.botonCrear} onPress={handleCrear}>

@@ -13,6 +13,7 @@ export default function PantallaPerfil({ navigation }) {
 
     useEffect(() => {
         const cargarPerfil = async () => {
+            console.log(AsyncStorage.getItem("userToken"));
             try {
                 const token = await AsyncStorage.getItem("userToken");
                 if (!token) {
@@ -81,7 +82,7 @@ export default function PantallaPerfil({ navigation }) {
         const result = await logoutUser();
         if (result.success) {
           Alert.alert("Sesión Cerrada", "Has cerrado sesión exitosamente.");
-          navigation.replace("Login"); // Redirigir al login
+          navigation.replace("Login"); // Redirigir al Login
         } else {
           Alert.alert("Error al cerrar sesión", result.message || "No se pudo cerrar la sesión.");
         }

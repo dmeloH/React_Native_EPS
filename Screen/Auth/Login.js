@@ -29,7 +29,7 @@ export default function LoginScreen({ navigation }) {
         );
       }
     } catch (error) {
-      console.error("Error inesperado en login:", error);
+      console.error("Error inesperado en Login:", error);
       Alert.alert(
         "Error",
         "Ocurrió un error inesperado al intentar iniciar sesión."

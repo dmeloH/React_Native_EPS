@@ -33,27 +33,27 @@ export default function Inicio() {
 
                 {/* Iconos con nombres */}
                 <View style={styles.gridContainer}>
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('CitasFlow')}>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('CitasScreen')}>
                         <Fontisto name="date" size={45} color="#FF8282" style={styles.iconShadow} />
                         <Text style={styles.iconLabel}>Citas</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('UsuariosFlow')}>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('UsuariosScreen')}>
                         <MaterialCommunityIcons name="account-multiple-plus" size={45} color="#FF8282" style={styles.iconShadow} />
                         <Text style={styles.iconLabel}>Usuarios</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('EpsFlow')}>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('EpsScreen')}>
                         <MaterialCommunityIcons name="city-variant" size={45} color="#FF6363" style={styles.iconShadow} />
                         <Text style={styles.iconLabel}>Eps</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('CoberturasFlow')}>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('CoberturasScreen')}>
                         <MaterialCommunityIcons name="mother-heart" size={45} color="#FF6363" style={styles.iconShadow} />
                         <Text style={styles.iconLabel}>Coberturas</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('MedicosFlow')}>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => navigateToFlow('MedicosScreen')}>
                         <Fontisto name="doctor" size={45} color="#rgb(190, 228, 208)" style={styles.iconShadow} />
                         <Text style={styles.iconLabel}>Medicos</Text>
                     </TouchableOpacity>

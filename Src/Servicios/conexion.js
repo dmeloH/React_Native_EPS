@@ -11,7 +11,7 @@ const api = axios.create({
     },
 });
 
-const RutasPublicas = ['/login', '/registrar'];
+const RutasPublicas = ['/Login', '/registrar'];
 
 api.interceptors.request.use(
     async (config) => {
@@ -41,7 +41,7 @@ api.interceptors.response.use(
         if (error.response && error.response.status === 401 && !originalRequest._retry && !isRutaPublica) {
             originalRequest._retry = true;
 
-            console.log("Token expirado o no autorizado. Redirigiendo al login.");
+            console.log("Token expirado o no autorizado. Redirigiendo al Login.");
             await AsyncStorage.removeItem('userToken');
         }
         return Promise.reject(error);
