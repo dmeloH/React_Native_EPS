@@ -17,7 +17,7 @@ export default function AuthNavegacion() {
       screenOptions={{
         // Estilos para la cabecera (header) de cada pantalla
         headerStyle: {
-          backgroundColor: '#007B8C', // Azul oscuro tipo teal
+          backgroundColor: '#433878', // Azul oscuro tipo teal
           shadowColor: '#000',        // Color de la sombra de cabecera
           shadowOffset: {
             width: 0,
@@ -27,7 +27,7 @@ export default function AuthNavegacion() {
           shadowRadius: 3.84,
           elevation: 5, // Elevación para Android
         },
-        headerTintColor: '#FFFFFF', // Color blanco para texto e íconos
+        headerTintColor: '#FFF5FC', // Color blanco para texto e íconos
         headerTitleStyle: {
           fontWeight: 'bold',        // Negrita para el título
           fontSize: 20,              // Tamaño del texto del título

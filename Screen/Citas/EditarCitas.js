@@ -1,29 +1,24 @@
 import React, { useState, useEffect } from "react";
 import {
-    View, Text, TextInput, StyleSheet, TouchableOpacity,
-    ActivityIndicator, Alert, ScrollView
+    Text, TextInput, StyleSheet, TouchableOpacity,
+    ActivityIndicator, Alert
 } from "react-native";
 import { useRoute } from '@react-navigation/native';
 import { crearCita, editarCita } from "../../Src/Servicios/CitasService";
 import { listarUsuarios } from "../../Src/Servicios/UsuariosService";
 import { listarMedicos } from "../../Src/Servicios/MedicosService";
 import { Picker } from "@react-native-picker/picker";
+import FormularioCard from "../../components/FormularioCard";
 
-/**
- * Componente que permite crear o editar citas médicas.
- * Carga dinámicamente la lista de usuarios y médicos, y presenta un formulario.
- */
 export default function EditarCitas({ navigation }) {
     const route = useRoute();
     const cita = route.params?.cita;
 
-    // Estados para listas desplegables
     const [usuarios, setUsuarios] = useState([]);
     const [medicos, setMedicos] = useState([]);
 
-    // Estados para los campos del formulario
-    const [usuarios_id, setUsuariosId] = useState(cita?.usuarios_id || "");
-    const [medico_id, setMedicoId] = useState(cita?.medico_id || "");
+    const [usuarios_id, setUsuariosId] = useState(cita?.id_usuario || "");
+    const [medico_id, setMedicoId] = useState(cita?.id_medico || "");
     const [tipo_cita, setTipoCita] = useState(cita?.tipo_cita || "");
     const [fecha, setFecha] = useState(cita?.fecha || "");
     const [hora, setHora] = useState(cita?.hora || "");
@@ -31,13 +26,10 @@ export default function EditarCitas({ navigation }) {
     const [costo_total, setCostoTotal] = useState(cita?.costo_total?.toString() || "");
     const [valor_eps, setValorEps] = useState(cita?.valor_eps?.toString() || "");
     const [valor_usuario, setValorUsuario] = useState(cita?.valor_usuario?.toString() || "");
-
     const [loading, setLoading] = useState(false);
+
     const esEdicion = !!cita;
 
-    /**
-     * Carga la lista de usuarios y médicos al montar el componente.
-     */
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -53,9 +45,6 @@ export default function EditarCitas({ navigation }) {
         fetchData();
     }, []);
 
-    /**
-     * Valida y guarda los datos del formulario, sea creando o editando una cita.
-     */
     const handleGuardar = async () => {
         if (!usuarios_id || !medico_id || !tipo_cita || !fecha || !hora || !estado || !costo_total || !valor_eps || !valor_usuario) {
             Alert.alert("Campos requeridos", "Por favor, complete todos los campos.");
@@ -95,96 +84,90 @@ export default function EditarCitas({ navigation }) {
     };
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
+        <FormularioCard>
             <Text style={styles.title}>
                 {esEdicion ? "✏️ Editar Cita" : "🩺 Nueva Cita"}
             </Text>
 
-            <View style={styles.card}>
-                {/* Selector de usuario */}
-                <Picker
-                    selectedValue={usuarios_id}
-                    onValueChange={setUsuariosId}
-                    style={styles.picker}
-                >
-                    <Picker.Item label="Seleccione un usuario" value="" />
-                    {usuarios.map(u => (
-                        <Picker.Item key={u.id} label={u.nombre_completo} value={u.id} />
-                    ))}
-                </Picker>
+            <Picker
+                selectedValue={usuarios_id}
+                onValueChange={setUsuariosId}
+                style={styles.picker}
+            >
+                <Picker.Item label="Seleccione un usuario" value="" />
+                {usuarios.map(u => (
+                    <Picker.Item key={u.id} label={u.nombre_completo} value={u.id} />
+                ))}
+            </Picker>
 
-                {/* Selector de médico */}
-                <Picker
-                    selectedValue={medico_id}
-                    onValueChange={setMedicoId}
-                    style={styles.picker}
-                >
-                    <Picker.Item label="Seleccione un médico" value="" />
-                    {medicos.map(m => (
-                        <Picker.Item key={m.id} label={m.nombre} value={m.id} />
-                    ))}
-                </Picker>
+            <Picker
+                selectedValue={medico_id}
+                onValueChange={setMedicoId}
+                style={styles.picker}
+            >
+                <Picker.Item label="Seleccione un médico" value="" />
+                {medicos.map(m => (
+                    <Picker.Item key={m.id} label={m.nombre} value={m.id} />
+                ))}
+            </Picker>
 
-                {/* Selector de tipo de cita */}
-                <Picker
-                    selectedValue={tipo_cita}
-                    onValueChange={setTipoCita}
-                    style={styles.picker}
-                >
-                    <Picker.Item label="Seleccione tipo de cita" value="" />
-                    <Picker.Item label="Consulta" value="consulta" />
-                    <Picker.Item label="Urgencia" value="urgencia" />
-                </Picker>
+            <Picker
+                selectedValue={tipo_cita}
+                onValueChange={setTipoCita}
+                style={styles.picker}
+                
+            >
+                <Picker.Item label="Seleccione tipo de cita" value="" />
+                <Picker.Item label="Consulta" value="consulta" />
+                <Picker.Item label="Urgencia" value="urgencia" />
+            </Picker>
 
-                {/* Selector de estado */}
-                <Picker
-                    selectedValue={estado}
-                    onValueChange={setEstado}
-                    style={styles.picker}
-                >
-                    <Picker.Item label="Seleccione estado" value="" />
-                    <Picker.Item label="Pendiente" value="1" />
-                    <Picker.Item label="Confirmada" value="2" />
-                    <Picker.Item label="Cancelada" value="3" />
-                </Picker>
+            <Picker
+                selectedValue={estado}
+                onValueChange={setEstado}
+                style={styles.picker}
+                itemStyle={styles.pickerItem}
+            >
+                <Picker.Item label="Seleccione estado" value="" />
+                <Picker.Item label="Pendiente" value="1" />
+                <Picker.Item label="Confirmada" value="2" />
+                <Picker.Item label="Cancelada" value="3" />
+            </Picker>
 
-                {/* Campos de entrada */}
-                <TextInput
-                    style={styles.input}
-                    placeholder="📅 Fecha (YYYY-MM-DD)"
-                    value={fecha}
-                    onChangeText={setFecha}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="⏰ Hora (HH:MM)"
-                    value={hora}
-                    onChangeText={setHora}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="💰 Costo Total"
-                    keyboardType="numeric"
-                    value={costo_total}
-                    onChangeText={setCostoTotal}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="🏥 Valor EPS"
-                    keyboardType="numeric"
-                    value={valor_eps}
-                    onChangeText={setValorEps}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="🙋 Valor Usuario"
-                    keyboardType="numeric"
-                    value={valor_usuario}
-                    onChangeText={setValorUsuario}
-                />
-            </View>
+            <TextInput
+                style={styles.input}
+                placeholder="📅 Fecha (YYYY-MM-DD)"
+                value={fecha}
+                onChangeText={setFecha}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="⏰ Hora (HH:MM)"
+                value={hora}
+                onChangeText={setHora}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="💰 Costo Total"
+                keyboardType="numeric"
+                value={costo_total}
+                onChangeText={setCostoTotal}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="🏥 Valor EPS"
+                keyboardType="numeric"
+                value={valor_eps}
+                onChangeText={setValorEps}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="🙋 Valor Usuario"
+                keyboardType="numeric"
+                value={valor_usuario}
+                onChangeText={setValorUsuario}
+            />
 
-            {/* Botón de acción */}
             <TouchableOpacity
                 style={styles.boton}
                 onPress={handleGuardar}
@@ -196,49 +179,38 @@ export default function EditarCitas({ navigation }) {
                         {esEdicion ? "Guardar cambios" : "Crear cita"}
                     </Text>}
             </TouchableOpacity>
-        </ScrollView>
+        </FormularioCard>
     );
 }
 
-// Estilos del componente
 const styles = StyleSheet.create({
-    container: {
-        padding: 20,
-        backgroundColor: "#FFF5FC",
-    },
     title: {
-        fontSize: 26,
-        fontWeight: "700",
-        color: "#433878",
+        fontSize: 24,
+        fontWeight: "bold",
         marginBottom: 20,
         textAlign: "center",
-    },
-    card: {
-        backgroundColor: "#fff",
-        borderRadius: 16,
-        padding: 20,
-        shadowColor: "#A782EC",
-        shadowOffset: { width: 0, height: 6 },
-        shadowOpacity: 0.1,
-        shadowRadius: 8,
-        elevation: 6,
+        color: "#433878",
     },
     picker: {
         height: 50,
-        backgroundColor: "#F0F0F0",
+        backgroundColor: "#fff",
+        borderWidth: 1,
+        borderColor: "#dcdfe6",
         borderRadius: 10,
-        marginBottom: 15,
+        marginBottom: 16,
         paddingHorizontal: 10,
+        color: "#333",
     },
     input: {
-        backgroundColor: "#F9F9F9",
+        backgroundColor: "#fff",
         paddingHorizontal: 16,
         height: 50,
         borderRadius: 10,
         marginBottom: 15,
         fontSize: 16,
-        borderColor: "#DDD",
+        borderColor: "#E4B1F0",
         borderWidth: 1,
+        color: "#333",
     },
     boton: {
         backgroundColor: "#7E60BF",
@@ -246,10 +218,15 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         marginTop: 25,
         alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.15,
+        shadowRadius: 4.5,
+        elevation: 5,
     },
     textoBoton: {
-        color: "#FFF",
+        color: "#fff",
         fontSize: 16,
-        fontWeight: "700",
+        fontWeight: "bold",
     },
 });

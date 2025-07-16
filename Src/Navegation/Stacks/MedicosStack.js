@@ -14,28 +14,52 @@ const Stack = createStackNavigator();
  * - DetalleMedico: Muestra información detallada del médico seleccionado.
  * - EditarMedico: Permite crear o editar datos del médico.
  */
-export default function MedicosStack () {
+export default function MedicosStack() {
     return (
         <Stack.Navigator>
             {/* Pantalla de listado de médicos */}
-            <Stack.Screen 
+            <Stack.Screen
                 name="ListarMedicos"
                 component={ListarMedico}
-                options={{ title: "Médicos" }}
+                options={{
+                    title: "Médicos", headerStyle: {
+                        backgroundColor: '#6A5ACD', // Color uniforme en la cabecera
+                    },
+                    headerTintColor: '#FFFFFF', // Color del texto e íconos
+                    headerTitleStyle: {
+                        fontWeight: 'bold', // Título en negrita
+                    },
+                }}
             />
 
             {/* Pantalla de detalle de un médico */}
-            <Stack.Screen 
+            <Stack.Screen
                 name="DetalleMedico"
                 component={DetalleMedico}
-                options={{ title: "Detalle Médico" }}
+                options={{
+                    title: "Detalle Médico", headerStyle: {
+                        backgroundColor: '#6A5ACD', // Color uniforme en la cabecera
+                    },
+                    headerTintColor: '#FFFFFF', // Color del texto e íconos
+                    headerTitleStyle: {
+                        fontWeight: 'bold', // Título en negrita
+                    },
+                }}
             />
 
             {/* Pantalla para crear o editar médicos */}
-            <Stack.Screen 
+            <Stack.Screen
                 name="EditarMedico"
                 component={EditarMedico}
-                options={{ title: "Nuevo/Editar Médico" }}
+                options={{
+                    title: "Nuevo/Editar Médico", headerStyle: {
+                        backgroundColor: '#6A5ACD', // Color uniforme en la cabecera
+                    },
+                    headerTintColor: '#FFFFFF', // Color del texto e íconos
+                    headerTitleStyle: {
+                        fontWeight: 'bold', // Título en negrita
+                    },
+                }}
             />
         </Stack.Navigator>
     );

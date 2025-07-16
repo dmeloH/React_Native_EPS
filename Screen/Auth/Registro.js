@@ -22,24 +22,18 @@ import { Register } from "../../Src/Servicios/AuthService";
  * @returns {JSX.Element} Pantalla de registro.
  */
 export default function RegistroScreen({ navigation }) {
-  // Estados locales para capturar los valores del formulario
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState(""); // Puede ser "admin", "user", etc.
+  const [role, setRole] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  /**
-   * Maneja el proceso de validación y registro del usuario.
-   * Realiza validaciones básicas y llama al servicio Register.
-   */
   const handleRegister = async () => {
     setError("");
     setLoading(true);
 
-    // Validación de campos vacíos
     if (!name || !email || !password || !confirmPassword || !role) {
       setError(
         "Todos los campos (nombre, correo, contraseña, confirmar contraseña, rol) son obligatorios."
@@ -48,7 +42,6 @@ export default function RegistroScreen({ navigation }) {
       return;
     }
 
-    // Validación de coincidencia de contraseñas
     if (password !== confirmPassword) {
       setError("Las contraseñas no coinciden.");
       setLoading(false);
@@ -56,12 +49,16 @@ export default function RegistroScreen({ navigation }) {
     }
 
     try {
-      // Llamado al servicio de registro
       const result = await Register(name, email, password, role);
+      console.log("Resultado del registro:", result);
 
       if (result.success) {
-        Alert.alert("Éxito", "¡Registro exitoso! Ahora puedes iniciar sesión.");
-        navigation.navigate("Login"); // Navegación a pantalla de login
+        Alert.alert("Éxito", "¡Registro exitoso! Ahora puedes iniciar sesión.", [
+          {
+            text: "OK",
+            onPress: () => navigation.replace("Login"), // ✅ redirección corregida
+          },
+        ]);
       } else {
         Alert.alert(
           "Error de Registro",
@@ -79,23 +76,18 @@ export default function RegistroScreen({ navigation }) {
     }
   };
 
-  // Interfaz del usuario para el registro
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Registrarse</Text>
 
-      {/* Mensaje de error si aplica */}
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-      {/* Input: Nombre */}
       <TextInput
         style={styles.input}
         placeholder="Nombre Completo"
         value={name}
         onChangeText={setName}
       />
-
-      {/* Input: Correo electrónico */}
       <TextInput
         style={styles.input}
         placeholder="Correo Electrónico"
@@ -104,8 +96,6 @@ export default function RegistroScreen({ navigation }) {
         keyboardType="email-address"
         autoCapitalize="none"
       />
-
-      {/* Input: Contraseña */}
       <TextInput
         style={styles.input}
         placeholder="Contraseña"
@@ -114,8 +104,6 @@ export default function RegistroScreen({ navigation }) {
         onChangeText={setPassword}
         autoCapitalize="none"
       />
-
-      {/* Input: Confirmar contraseña */}
       <TextInput
         style={styles.input}
         placeholder="Confirmar Contraseña"
@@ -124,8 +112,6 @@ export default function RegistroScreen({ navigation }) {
         onChangeText={setConfirmPassword}
         autoCapitalize="none"
       />
-
-      {/* Input: Rol del usuario */}
       <TextInput
         style={styles.input}
         placeholder="Rol (ej. user o admin)"
@@ -134,14 +120,12 @@ export default function RegistroScreen({ navigation }) {
         autoCapitalize="none"
       />
 
-      {/* Botón de registro con indicador de carga */}
       <BottonComponent
         title={loading ? <ActivityIndicator color="#fff" /> : "Regístrate"}
         onPress={handleRegister}
         disabled={loading}
       />
 
-      {/* Botón para volver al login */}
       <BottonComponent
         title="¿Ya tienes cuenta?, Iniciar Sesión"
         onPress={() => navigation.navigate("Login")}
@@ -152,33 +136,32 @@ export default function RegistroScreen({ navigation }) {
   );
 }
 
-// Estilos del componente RegistroScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
     padding: 16,
-    backgroundColor: "#FFEFF8", // Fondo rosado suave
+    backgroundColor: "#FFEFF8",
   },
   title: {
     fontSize: 28,
     fontWeight: "bold",
     marginBottom: 24,
     textAlign: "center",
-    color: "#433878", // Púrpura oscuro
+    color: "#433878",
   },
   input: {
     height: 50,
-    borderColor: "#E4B1F0", // Borde rosado claro
+    borderColor: "#E4B1F0",
     borderWidth: 1.5,
     borderRadius: 10,
     paddingHorizontal: 16,
     marginBottom: 16,
-    backgroundColor: "#FFFFFF", // Fondo blanco
-    color: "#433878", // Texto púrpura oscuro
+    backgroundColor: "#FFFFFF",
+    color: "#433878",
   },
   errorText: {
-    color: "#D32F2F", // Rojo para errores
+    color: "#D32F2F",
     textAlign: "center",
     marginBottom: 10,
     fontSize: 14,

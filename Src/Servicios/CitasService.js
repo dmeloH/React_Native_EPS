@@ -61,6 +61,7 @@ export const eliminarCita = async (id) => {
         return {
             success: true,
             message: response.data.message || "Cita eliminada correctamente"
+            
         };
     } catch (error) {
         const errorMessage = error.response

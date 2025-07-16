@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-    View,
     Text,
     TextInput,
     StyleSheet,
@@ -8,37 +7,23 @@ import {
     ActivityIndicator,
     Alert,
     KeyboardAvoidingView,
-    Platform,
-    ScrollView
+    Platform
 } from "react-native";
 import { useRoute } from '@react-navigation/native';
 import { crearCoberturas, editarCobertura } from "../../Src/Servicios/CoberturasService";
+import FormularioCard from "../../components/FormularioCard";
 
-/**
- * Componente para crear o editar una cobertura.
- *
- * Si se recibe una cobertura por parámetros, el formulario se comporta como edición.
- * Caso contrario, permite crear una nueva cobertura.
- *
- * @param {object} navigation - Prop de navegación de React Navigation.
- * @returns {JSX.Element} Componente de formulario de cobertura.
- */
 export default function EditarCobertura({ navigation }) {
     const route = useRoute();
     const cobertura = route.params?.cobertura;
 
-    // Estado local para los campos del formulario
     const [tipo_afiliacion, setTipoAfiliacion] = useState(cobertura?.tipo_afiliacion || "");
     const [porcentaje_cubrimiento, setPorcentajeCubrimiento] = useState(cobertura?.porcentaje_cubrimiento || "");
     const [loading, setLoading] = useState(false);
 
     const esEdicion = !!cobertura;
 
-    /**
-     * Maneja la acción de guardar la cobertura (crear o editar).
-     */
     const handleGuardar = async () => {
-        // Validación de campos
         if (!tipo_afiliacion || !porcentaje_cubrimiento) {
             Alert.alert("Campos requeridos", "Por favor, ingrese todos los campos");
             return;
@@ -69,11 +54,11 @@ export default function EditarCobertura({ navigation }) {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : undefined}
-            style={styles.flex}
+            style={{ flex: 1, backgroundColor: "#FFF5FC" }}
         >
-            <ScrollView contentContainerStyle={styles.container}>
+            <FormularioCard>
                 <Text style={styles.title}>
-                    {esEdicion ? "Editar Cobertura" : "Nueva Cobertura"}
+                    {esEdicion ? "🧾 Editar Cobertura" : "➕ Nueva Cobertura"}
                 </Text>
 
                 <TextInput
@@ -106,57 +91,38 @@ export default function EditarCobertura({ navigation }) {
                         </Text>
                     )}
                 </TouchableOpacity>
-            </ScrollView>
+            </FormularioCard>
         </KeyboardAvoidingView>
     );
 }
 
-// Estilos del componente
 const styles = StyleSheet.create({
-    flex: {
-        flex: 1,
-        backgroundColor: "#FFF5FC", // Fondo suave
-    },
-    container: {
-        flexGrow: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        padding: 20,
-    },
     title: {
-        fontSize: 26,
+        fontSize: 24,
         fontWeight: "bold",
-        marginBottom: 24,
+        marginBottom: 20,
         textAlign: "center",
         color: "#433878",
     },
     input: {
         height: 50,
         width: "100%",
-        maxWidth: 400,
         backgroundColor: "#fff",
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: "#E0E0E0",
+        borderColor: "#E4B1F0",
         paddingHorizontal: 16,
         marginBottom: 18,
         fontSize: 16,
         color: "#333",
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.05,
-        shadowRadius: 4,
-        elevation: 2,
     },
     boton: {
         backgroundColor: "#7E60BF",
         paddingVertical: 14,
-        paddingHorizontal: 28,
-        borderRadius: 10,
-        width: "100%",
-        maxWidth: 400,
+        borderRadius: 12,
         alignItems: "center",
         marginTop: 10,
+        width: "100%",
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 3 },
         shadowOpacity: 0.15,

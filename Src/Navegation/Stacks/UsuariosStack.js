@@ -23,24 +23,48 @@ export default function UsuariosStack() {
     return (
         <Stack.Navigator>
             {/* Pantalla principal: Lista de usuarios */}
-            <Stack.Screen 
+            <Stack.Screen
                 name="ListarUsuarios"
                 component={ListarUsuarios}
-                options={{ title: "Usuarios" }}
+                options={{
+                    title: "Usuarios", headerStyle: {
+                        backgroundColor: '#6A5ACD', // Color uniforme en la cabecera
+                    },
+                    headerTintColor: '#FFFFFF', // Color del texto e íconos
+                    headerTitleStyle: {
+                        fontWeight: 'bold', // Título en negrita
+                    },
+                }}
             />
 
             {/* Pantalla de detalle de usuario */}
-            <Stack.Screen 
+            <Stack.Screen
                 name="DetalleUsuarios"
                 component={DetalleUsuarios} // Aquí corregimos: ya usas DetalleUsuarios
-                options={{ title: "Detalle Usuarios" }}
+                options={{
+                    title: "Detalle Usuarios", headerStyle: {
+                        backgroundColor: '#6A5ACD', // Color uniforme en la cabecera
+                    },
+                    headerTintColor: '#FFFFFF', // Color del texto e íconos
+                    headerTitleStyle: {
+                        fontWeight: 'bold', // Título en negrita
+                    },
+                }}
             />
 
             {/* Pantalla para crear o editar usuarios */}
-            <Stack.Screen 
+            <Stack.Screen
                 name="EditarUsuarios"
                 component={EditarUsuarios}
-                options={{ title: "Nuevo/Editar Usuarios" }}
+                options={{
+                    title: "Nuevo/Editar Usuarios", headerStyle: {
+                        backgroundColor: '#6A5ACD', // Color uniforme en la cabecera
+                    },
+                    headerTintColor: '#FFFFFF', // Color del texto e íconos
+                    headerTitleStyle: {
+                        fontWeight: 'bold', // Título en negrita
+                    },
+                }}
             />
         </Stack.Navigator>
     );

@@ -79,7 +79,7 @@ export const eliminarCobertura = async (id) => {
 export const crearCoberturas = async (data) => {
     try {
         const response = await api.post("/coberturas", data);
-        console.log("Respuesta crearCobertura:", response.data);
+        console.log("Respuesta crear cobertura:", response.data);
         return { success: true, data: response.data };
     } catch (error) {
         const errorMessage = error.response
